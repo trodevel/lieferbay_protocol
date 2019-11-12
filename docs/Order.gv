@@ -1,0 +1,110 @@
+# Order FSM.
+#
+# Copyright (C) 2019 Sergey Kolevatov
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# SKV 19a31
+#
+# $Id:$
+#
+# execute: FL=Order; dot -l sdl.ps -Tps $FL.gv -o $FL.ps; ps2pdf $FL.ps $FL.pdf
+
+digraph Order
+{
+
+label="$Id:$";
+
+size="7,7";
+ratio=fill;
+splines=true;
+node [peripheries=0 style=filled fillcolor=white]
+
+######################################################
+# states
+
+START                           [ shape = sdl_start ]
+WAITING_OFFERS                  [ label = "IDLE /\nWAITING_OFFERS"                shape = sdl_state fillcolor=yellow ]
+ACCEPTED_WAITING_SHOPPING_START [ label = "ACCEPTED /\nWAITING_SHOPPING_START"    shape = sdl_state fillcolor=yellow ]
+SHOPPING_WAITING_SHOPPING_END   [ label = "SHOPPING /\nWAITING_SHOPPING_END"      shape = sdl_state fillcolor=yellow ]
+CANCELLED_IN_SHOPPING           [ label = "CANCELLED_IN_\nSHOPPING"               shape = sdl_state fillcolor=yellow ]
+SHOPPING_ENDED_WAITING_DELIVERY [ label = "SHOPPING_ENDED /\nWAITING_DELIVERY"    shape = sdl_state fillcolor=yellow ]
+CANCELLED_IN_SHOPPING_ENDED     [ label = "CANCELLED_IN_\nSHOPPING_ENDED"         shape = sdl_state fillcolor=yellow ]
+DELIVERED_WAITING_CONFIRMATION  [ label = "DELIVERED /\nWAITING_CONFIRMATION"     shape = sdl_state fillcolor=yellow ]
+DELIVERY_CONFIRMED_WAITING_FEEDBACK      [ label = "DELIVERY_CONFIRMED /\nWAITING_FEEDBACK"         shape = sdl_state fillcolor=yellow ]
+DONE                            [ label = "DONE"                                  shape = sdl_state fillcolor=yellow ]
+
+######################################################
+# actions
+
+WAITING_OFFERS__ACCEPT_OFFER            [ label="AcceptOffer"                       shape = sdl_input_from_left  fillcolor=green ]
+WAITING_OFFERS__CALL_DECLINE_OTHER_OFFERS [ label="decline other offers"            shape = sdl_call ]
+WAITING_OFFERS__CANCEL_ORDER            [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
+WAITING_OFFERS__RESOL_1                 [ label="resolution := CANCELLED_BY_USER"   shape = sdl_task ]
+WAITING_OFFERS__ADD_OFFER               [ label="AddOffer\nModifyOffer\nDeleteOffer" shape = sdl_input_from_right fillcolor=cyan ]
+WAITING_OFFERS__END                     [ label = ""                                shape = sdl_stop  style=solid ]
+
+ACCEPTED_WAITING_SHOPPING_START__SHOPPING_STARTED [ label="ShoppingStarted"                   shape = sdl_input_from_right fillcolor=cyan ]
+ACCEPTED_WAITING_SHOPPING_START__CANCEL_ORDER     [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
+ACCEPTED_WAITING_SHOPPING_START__RESOL_1          [ label="resolution := CANCELLED_BY_USER"   shape = sdl_task ]
+ACCEPTED_WAITING_SHOPPING_START__CANCEL_RIDE      [ label="CancelRide"                        shape = sdl_input_from_right fillcolor=cyan ]
+ACCEPTED_WAITING_SHOPPING_START__END              [ label = ""                                shape = sdl_stop  style=solid ]
+
+SHOPPING_WAITING_SHOPPING_END__SHOPPING_ENDED     [ label="ShoppingEnded"                     shape = sdl_input_from_right fillcolor=cyan ]
+SHOPPING_WAITING_SHOPPING_END__CANCEL_RIDE        [ label="CancelRide"                        shape = sdl_input_from_right fillcolor=cyan ]
+SHOPPING_WAITING_SHOPPING_END__CANNOT_COMPLETE    [ label="CannotComplete"                    shape = sdl_input_from_right fillcolor=cyan ]
+SHOPPING_WAITING_SHOPPING_END__CANCEL_ORDER       [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
+
+SHOPPING_ENDED_WAITING_DELIVERY__DELIVERED        [ label="Delivered"                         shape = sdl_input_from_right fillcolor=cyan ]
+SHOPPING_ENDED_WAITING_DELIVERY__CANCEL_ORDER     [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
+
+DELIVERED_WAITING_CONFIRMATION__CONFIRM           [ label="ConfirmDelivery"                   shape = sdl_input_from_left  fillcolor=green ]
+DELIVERED_WAITING_CONFIRMATION__COMPLAIN          [ label="Complain"                          shape = sdl_input_from_left  fillcolor=green ]
+
+DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATE_BUYER    [ label="RateBuyer"                        shape = sdl_input_from_left  fillcolor=green ]
+DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATE_USER     [ label="RateUser"                         shape = sdl_input_from_right fillcolor=cyan ]
+DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATING_COMPLETE [ label="rating\ncomplete?"              shape = diamond peripheries=1]
+DELIVERY_CONFIRMED_WAITING_FEEDBACK__RESOL_1         [ label="resolution := DELIVERED"        shape = sdl_task ]
+
+######################################################
+# transitions
+
+START -> WAITING_OFFERS
+
+WAITING_OFFERS -> WAITING_OFFERS__ACCEPT_OFFER   -> WAITING_OFFERS__CALL_DECLINE_OTHER_OFFERS -> ACCEPTED_WAITING_SHOPPING_START
+WAITING_OFFERS -> WAITING_OFFERS__CANCEL_ORDER   -> WAITING_OFFERS__RESOL_1 -> WAITING_OFFERS__END
+WAITING_OFFERS -> WAITING_OFFERS__ADD_OFFER      -> WAITING_OFFERS
+
+ACCEPTED_WAITING_SHOPPING_START -> ACCEPTED_WAITING_SHOPPING_START__SHOPPING_STARTED -> SHOPPING_WAITING_SHOPPING_END
+ACCEPTED_WAITING_SHOPPING_START -> ACCEPTED_WAITING_SHOPPING_START__CANCEL_ORDER     -> ACCEPTED_WAITING_SHOPPING_START__RESOL_1 -> ACCEPTED_WAITING_SHOPPING_START__END
+ACCEPTED_WAITING_SHOPPING_START -> ACCEPTED_WAITING_SHOPPING_START__CANCEL_RIDE      -> WAITING_OFFERS
+
+SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__SHOPPING_ENDED  -> SHOPPING_ENDED_WAITING_DELIVERY
+SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__CANCEL_RIDE     -> WAITING_OFFERS
+SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__CANNOT_COMPLETE -> WAITING_OFFERS
+SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__CANCEL_ORDER    -> CANCELLED_IN_SHOPPING
+
+SHOPPING_ENDED_WAITING_DELIVERY -> SHOPPING_ENDED_WAITING_DELIVERY__DELIVERED      -> DELIVERED_WAITING_CONFIRMATION
+SHOPPING_ENDED_WAITING_DELIVERY -> SHOPPING_ENDED_WAITING_DELIVERY__CANCEL_ORDER   -> CANCELLED_IN_SHOPPING_ENDED
+
+DELIVERED_WAITING_CONFIRMATION -> DELIVERED_WAITING_CONFIRMATION__CONFIRM  -> DELIVERY_CONFIRMED_WAITING_FEEDBACK
+DELIVERED_WAITING_CONFIRMATION -> DELIVERED_WAITING_CONFIRMATION__COMPLAIN -> DELIVERY_CONFIRMED_WAITING_FEEDBACK
+
+DELIVERY_CONFIRMED_WAITING_FEEDBACK -> DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATE_BUYER -> DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATING_COMPLETE
+DELIVERY_CONFIRMED_WAITING_FEEDBACK -> DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATE_USER  -> DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATING_COMPLETE
+                                                                                          DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATING_COMPLETE -> DELIVERY_CONFIRMED_WAITING_FEEDBACK__RESOL_1 [ label="Y" ]
+                                                                                                                                                  DELIVERY_CONFIRMED_WAITING_FEEDBACK__RESOL_1 -> DONE
+                                                                                          DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATING_COMPLETE -> DELIVERY_CONFIRMED_WAITING_FEEDBACK          [ label="N" ]
+
+}
