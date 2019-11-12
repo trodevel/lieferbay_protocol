@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12315 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 namespace lieferbay_protocol\web;
 
@@ -84,14 +84,14 @@ function parse_ShoppingListWithTotals( & $csv_arr, & $offset )
     return $res;
 }
 
-function parse_RideSummaryWithBuyer( & $csv_arr, & $offset )
+function parse_OfferWithBuyer( & $csv_arr, & $offset )
 {
     // 232323;50668;0;0;20190522173000;3.5;Johann=20Meyer;
 
-    $res = new RideSummaryWithBuyer;
+    $res = new OfferWithBuyer;
 
     $res->ride_id       = \basic_parser\parse_int( $csv_arr, $offset );
-    $res->ride          = \lieferbay_protocol\parse_RideSummary( $csv_arr, $offset );
+    $res->ride          = \lieferbay_protocol\parse_Offer( $csv_arr, $offset );
     $res->buyer_name  = \basic_parser\parse_enc_string( $csv_arr, $offset );
 
     return $res;
@@ -172,7 +172,7 @@ function parse_DashScreenUser( & $csv_arr, & $offset )
 
         for( $i = 0; $i < $size; $i++ )
         {
-            array_push( $res->rides, parse_RideSummaryWithBuyer( $csv_arr, $offset ) );
+            array_push( $res->rides, parse_OfferWithBuyer( $csv_arr, $offset ) );
         }
     }
 

@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12315 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL_CSV_RESPONSE_ENCODER_H
 #define LIB_LIEFERBAY_PROTOCOL_CSV_RESPONSE_ENCODER_H
@@ -36,7 +36,7 @@ public:
     static std::ostream & write( std::ostream & os, const ShoppingItem & r );
     static std::ostream & write( std::ostream & os, const ShoppingList & r );
     static std::ostream & write( std::ostream & os, const GeoPosition & r );
-    static std::ostream & write( std::ostream & os, const RideSummary & r );
+    static std::ostream & write( std::ostream & os, const Offer & r );
     static std::ostream & write( std::ostream & os, const Ride & r );
     static std::ostream & write( std::ostream & os, const Address & r );
     static std::ostream & write( std::ostream & os, const Order & r );
@@ -47,7 +47,7 @@ public:
     static std::ostream & write( std::ostream & os, const web::ShoppingItemWithProduct & r );
     static std::ostream & write( std::ostream & os, const web::ShoppingListWithProduct & r );
     static std::ostream & write( std::ostream & os, const web::ShoppingListWithTotals & r );
-    static std::ostream & write( std::ostream & os, const web::RideSummaryWithBuyer & r );
+    static std::ostream & write( std::ostream & os, const web::OfferWithBuyer & r );
     static std::ostream & write( std::ostream & os, const web::RideWithId & r );
     static std::ostream & write( std::ostream & os, const web::ShoppingRequestInfo & r );
     static std::ostream & write( std::ostream & os, const web::AcceptedOrderUser & r );

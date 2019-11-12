@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12315 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 #include "csv_response_encoder.h"       // self
 
@@ -206,7 +206,7 @@ std::ostream & CsvResponseEncoder::write( std::ostream & os, const web::DashScre
                 os,
                 r.rides.begin(),
                 r.rides.end(),
-                [](std::ostream & os, const web::RideSummaryWithBuyer & r ) { CsvResponseEncoder::write( os, r ); } );
+                [](std::ostream & os, const web::OfferWithBuyer & r ) { CsvResponseEncoder::write( os, r ); } );
 
     utils::CsvHelper::write_user_array<false>(
                 os,
@@ -268,7 +268,7 @@ std::ostream & CsvResponseEncoder::write( std::ostream & os, const GeoPosition &
     return os;
 }
 
-std::ostream & CsvResponseEncoder::write( std::ostream & os, const RideSummary & r )
+std::ostream & CsvResponseEncoder::write( std::ostream & os, const Offer & r )
 {
     write( os, r.position );
     basic_objects::CsvHelper::write( os, r.delivery_time );
@@ -323,7 +323,7 @@ std::ostream & CsvResponseEncoder::write( std::ostream & os, const Address & r )
     return os;
 }
 
-std::ostream & CsvResponseEncoder::write( std::ostream & os, const web::RideSummaryWithBuyer & r )
+std::ostream & CsvResponseEncoder::write( std::ostream & os, const web::OfferWithBuyer & r )
 {
     utils::CsvHelper::write( os, r.ride_id );
 

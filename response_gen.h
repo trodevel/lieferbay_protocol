@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12315 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL_RESPONSE_GEN_H
 #define LIB_LIEFERBAY_PROTOCOL_RESPONSE_GEN_H
@@ -58,8 +58,8 @@ inline GeoPosition * init_GeoPosition(
     return res;
 }
 
-inline RideSummary * init_RideSummary(
-        RideSummary           * res,
+inline Offer * init_Offer(
+        Offer           * res,
         const GeoPosition               & position,
         const basic_objects::LocalTime  & delivery_time,
         double                          max_weight )
@@ -74,7 +74,7 @@ inline RideSummary * init_RideSummary(
 inline Ride * init_Ride(
         Ride           * res,
         bool                            is_open,
-        const RideSummary               & summary,
+        const Offer               & summary,
         const std::vector<id_t>         & pending_order_ids,
         id_t                            accepted_order_id,
         ride_resolution_e               resolution )
@@ -201,7 +201,7 @@ inline GetDashScreenBuyerResponse * create_GetDashScreenBuyerResponse(
 inline DashScreenUser * init_DashScreenUser(
         DashScreenUser  * res,
         const basic_objects::LocalTime              & current_time,
-        const std::vector<RideSummaryWithBuyer>   & rides,
+        const std::vector<OfferWithBuyer>   & rides,
         const std::vector<AcceptedOrderUser>        & orders )
 {
     res->current_time   = current_time;

@@ -49,9 +49,9 @@ void test_CancelRideResponse()
 
 void test_GetRideResponse()
 {
-    lieferbay_protocol::RideSummary ride_summary;
+    lieferbay_protocol::Offer ride_summary;
 
-    lieferbay_protocol::init_RideSummary( & ride_summary, { 50668, 0, 0 }, { 2019, 05, 22, 18, 0, 0 }, 2.5 );
+    lieferbay_protocol::init_Offer( & ride_summary, { 50668, 0, 0 }, { 2019, 05, 22, 18, 0, 0 }, 2.5 );
 
     lieferbay_protocol::Ride ride;
 
@@ -180,7 +180,7 @@ void test_GetDashScreenUserResponse()
 {
     using namespace lieferbay_protocol;
 
-    std::vector<web::RideSummaryWithBuyer>      rides    =
+    std::vector<web::OfferWithBuyer>      rides    =
     {
             { 121212, { { 50668, 0, 0 }, { 2019, 5, 22, 17, 30, 0 }, 3.0 }, "Matthias Mayer" },
             { 232323, { { 50667, 0, 0 }, { 2019, 5, 22, 19, 45, 0 }, 1.0 }, "Lukas Himmelfarb" },

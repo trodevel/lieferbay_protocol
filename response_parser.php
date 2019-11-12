@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12315 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -71,7 +71,7 @@ function parse_GeoPosition( & $csv_arr, & $offset )
     return $res;
 }
 
-function parse_RideSummary( & $csv_arr, & $offset )
+function parse_Offer( & $csv_arr, & $offset )
 {
     // 50668;0;0;20190522173000;3.5
 
@@ -79,7 +79,7 @@ function parse_RideSummary( & $csv_arr, & $offset )
     $delivery_time  = \basic_objects\parse_LocalTime( $csv_arr, $offset );
     $max_weigth     = \basic_parser\parse_float( $csv_arr, $offset );
 
-    $res = new RideSummary( $position, $delivery_time, $max_weigth );
+    $res = new Offer( $position, $delivery_time, $max_weigth );
 
     return $res;
 }
@@ -91,7 +91,7 @@ function parse_Ride( & $csv_arr, & $offset )
     $res = new Ride;
 
     $res->is_open           = \basic_parser\parse_int( $csv_arr, $offset );
-    $res->summary           = parse_RideSummary( $csv_arr, $offset );
+    $res->summary           = parse_Offer( $csv_arr, $offset );
     $res->pending_order_ids = \basic_parser\parse_VectorInt( $csv_arr, $offset );
     $res->accepted_order_id = \basic_parser\parse_int( $csv_arr, $offset );
     $res->resolution        = \basic_parser\parse_int( $csv_arr, $offset );

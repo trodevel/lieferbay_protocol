@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12315 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 
 #include "request_validator.h"      // self
@@ -87,7 +87,7 @@ bool RequestValidator::validate( const GeoPosition & r )
     return true;
 }
 
-bool RequestValidator::validate( const RideSummary & r )
+bool RequestValidator::validate( const Offer & r )
 {
     validate( r.position );
     basic_objects::Validator::validate( r.delivery_time );

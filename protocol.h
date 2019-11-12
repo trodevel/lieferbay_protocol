@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12346 $ $Date:: 2019-11-12 #$ $Author: serge $
+// $Revision: 12348 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
 #define LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
@@ -70,11 +70,12 @@ struct GeoPosition
     double          longitude;
 };
 
-struct RideSummary
+struct Offer
 {
-    GeoPosition         position;
-    basic_objects::LocalTime delivery_time;
-    double              max_weight;
+    basic_objects::LocalTimeRange delivery_time;
+    double          delivery_price;
+    bool            can_return;
+    double          return_price;
 };
 
 enum class ride_resolution_e
@@ -87,7 +88,7 @@ enum class ride_resolution_e
 struct Ride
 {
     bool                is_open;
-    RideSummary         summary;
+    Offer         summary;
     std::vector<id_t>   pending_order_ids;
     id_t                accepted_order_id;
     ride_resolution_e   resolution;
@@ -150,7 +151,7 @@ struct Order
 
 struct AddRideRequest: public Request
 {
-    RideSummary     ride;
+    Offer     ride;
 };
 
 struct AddRideResponse: public generic_protocol::BackwardMessage
@@ -266,10 +267,10 @@ struct ShoppingListWithTotals
     double          weight;
 };
 
-struct RideSummaryWithBuyer
+struct OfferWithBuyer
 {
     id_t            ride_id;
-    RideSummary     ride;
+    Offer     ride;
     std::string     buyer_name;
 };
 
@@ -311,7 +312,7 @@ struct DashScreenUser
 {
     basic_objects::LocalTime        current_time;
 
-    std::vector<RideSummaryWithBuyer> rides;
+    std::vector<OfferWithBuyer> rides;
     std::vector<AcceptedOrderUser>      orders;
 };
 

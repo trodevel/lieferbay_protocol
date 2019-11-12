@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12317 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 namespace lieferbay_protocol\web;
 
@@ -150,18 +150,18 @@ function to_html_GetShoppingListWithTotalsResponse( & $obj )
     return $res;
 }
 
-function get_header_RideSummaryWithBuyer()
+function get_header_OfferWithBuyer()
 {
     return get_html_table_header_elems( array( 'RIDE ID' ) ) .
-        \lieferbay_protocol\get_header_RideSummary() .
+        \lieferbay_protocol\get_header_Offer() .
         get_html_table_header_elems( array( 'SHOPPER NAME' ) );
 }
 
-function to_html_RideSummaryWithBuyer_tabledata( & $obj )
+function to_html_OfferWithBuyer_tabledata( & $obj )
 {
     return get_html_table_data_elems( array(
         $obj->ride_id ) ) .
-        \lieferbay_protocol\to_html_RideSummary_tabledata( $obj->ride ) .
+        \lieferbay_protocol\to_html_Offer_tabledata( $obj->ride ) .
         get_html_table_data_elems( array(
             $obj->buyer_name ) );
 }
@@ -229,11 +229,11 @@ function to_html_DashScreenUser( & $obj )
         $body = '';
         for( $i = 0; $i < $num; $i++ )
         {
-            $body = $body . get_html_table_tr( to_html_RideSummaryWithBuyer_tabledata( $obj->rides[$i] ) );
+            $body = $body . get_html_table_tr( to_html_OfferWithBuyer_tabledata( $obj->rides[$i] ) );
         }
 
         $res = $res . get_html_table( NULL, NULL, NULL, 'border="1" cellspacing="1" cellpadding="3"',
-                get_html_table_tr( get_header_RideSummaryWithBuyer() ) . $body );
+                get_html_table_tr( get_header_OfferWithBuyer() ) . $body );
     }
 
     {

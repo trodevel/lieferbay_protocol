@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12315 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 namespace lieferbay_protocol\web;
 
@@ -55,10 +55,10 @@ class ShoppingListWithTotals
     public  $weight;            // double
 }
 
-class RideSummaryWithBuyer
+class OfferWithBuyer
 {
     public  $ride_id;           // id_t
-    public  $ride;              // RideSummary
+    public  $ride;              // Offer
     public  $buyer_name;      // string
 }
 
@@ -100,7 +100,7 @@ class DashScreenUser
 {
     public  $current_time;      // basic_objects::LocalTime
 
-    public  $rides;             // array<RideSummaryWithBuyer>
+    public  $rides;             // array<OfferWithBuyer>
     public  $orders;            // array<AcceptedOrderUser>
 }
 

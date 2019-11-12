@@ -1,6 +1,6 @@
 <?php
 
-// $Revision: 12315 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 require_once 'lieferbay_protocol_web.php';
 
@@ -9,7 +9,7 @@ echo "OK\n";
 $session_id = "afafaf";
 
 {
-    $ride_summary = new \lieferbay_protocol\RideSummary( \lieferbay_protocol\GeoPosition::withPlz( 50668 ), new \basic_objects\LocalTime( 2019, 05, 22, 17, 30, 0 ), 2.5 );
+    $ride_summary = new \lieferbay_protocol\Offer( \lieferbay_protocol\GeoPosition::withPlz( 50668 ), new \basic_objects\LocalTime( 2019, 05, 22, 17, 30, 0 ), 2.5 );
 
     $req = new \lieferbay_protocol\AddRideRequest( $session_id, $ride_summary );
 

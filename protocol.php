@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12346 $ $Date:: 2019-11-12 #$ $Author: serge $
+// $Revision: 12349 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -132,27 +132,30 @@ class GeoPosition
     }
 }
 
-class RideSummary
+class Offer
 {
-    public      $position;      // GeoPosition
-    public      $delivery_time; // basic_objects::LocalTime
-    public      $max_weight;    // double
+    public      $delivery_time; // basic_objects::LocalTimeRange
+    public      $delivery_price;    // double
+    public      $can_return;        // bool
+    public      $return_price;      // double
 
-    function __construct( $position, $delivery_time, $max_weight )
+    function __construct( $delivery_time, $delivery_price, $can_return, $return_price )
     {
-        $this->position         = $position;
         $this->delivery_time    = $delivery_time;
-        $this->max_weight       = $max_weight;
+        $this->delivery_price   = $delivery_price;
+        $this->can_return       = $can_return;
+        $this->return_price     = $return_price;
     }
 
     public function to_generic_request()
     {
         $res = array(
-            "MAX_WEIGHT"    => $this->max_weight
+            "DELIVERY_PRICE"    => $this->delivery_price,
+            "CAN_RETURN"        => $this->can_return,
+            "RETURN_PRICE"      => $this->return_price
             );
 
         return \generic_protocol\assemble_request( $res ) .
-            $this->position->to_generic_request() .
             $this->delivery_time->to_generic_request( "DELIVERY_TIME" );
     }
 }
@@ -164,7 +167,7 @@ const ride_resolution_e_CANCELLED               = 2;
 class Ride
 {
     public  $is_open;           // bool
-    public  $summary;           // RideSummary
+    public  $summary;           // Offer
     public  $pending_order_ids; // array<id_t>
     public  $accepted_order_id; // id_t
     public  $resolution;        // ride_resolution_e
@@ -243,7 +246,7 @@ class Order
 
 class AddRideRequest extends Request
 {
-    public $ride;   // RideSummary
+    public $ride;   // Offer
 
     function __construct( $session_id, $ride )
     {

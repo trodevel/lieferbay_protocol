@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12315 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 #include "protocol.h"    // Request...
 
@@ -34,7 +34,7 @@ public:
     static bool validate( const ShoppingItem & r );
     static bool validate( const ShoppingList & r );
     static bool validate( const GeoPosition & r );
-    static bool validate( const RideSummary & r );
+    static bool validate( const Offer & r );
     static bool validate( const Address & r );
     static bool validate( const AddRideRequest & r );
     static bool validate( const CancelRideRequest & r );
