@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12314 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12346 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -54,9 +54,16 @@ function to_string_order_state_e( $val )
 {
     $map = array(
         order_state_e_UNDEF                         => 'UNDEF',
-        order_state_e_IDLE_WAITING_ACCEPTANCE       => 'IDLE_WAITING_ACCEPTANCE',
-        order_state_e_ACCEPTED_WAITING_DELIVERY     => 'ACCEPTED_WAITING_DELIVERY',
-        order_state_e_DELIVERED_WAITING_FEEDBACK    => 'DELIVERED_WAITING_FEEDBACK',
+        order_state_e_IDLE_WAITING_OFFERS                   => 'IDLE_WAITING_OFFERS',
+        order_state_e_ACCEPTED_WAITING_SHOPPING_START       => 'ACCEPTED_WAITING_SHOPPING_START',
+        order_state_e_SHOPPING_WAITING_SHOPPING_END         => 'SHOPPING_WAITING_SHOPPING_END',
+        order_state_e_SHOPPING_ENDED_WAITING_DELIVERY       => 'SHOPPING_ENDED_WAITING_DELIVERY',
+        order_state_e_DELIVERED_WAITING_CONFIRMATION        => 'DELIVERED_WAITING_CONFIRMATION',
+        order_state_e_DELIVERY_CONFIRMED_WAITING_FEEDBACK   => 'DELIVERY_CONFIRMED_WAITING_FEEDBACK',
+        order_state_e_DONE                          => 'DONE',
+        order_state_e_CANCELLED_IN_SHOPPING         => 'CANCELLED_IN_SHOPPING',
+        order_state_e_CANCELLED_IN_SHOPPING_ENDED   => 'CANCELLED_IN_SHOPPING_ENDED',
+        
     );
 
     if( array_key_exists( $val, $map ) )

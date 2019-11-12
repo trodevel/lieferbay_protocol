@@ -19,10 +19,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12315 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12346 $ $Date:: 2019-11-12 #$ $Author: serge $
 
-#ifndef LIB_LIEFERBAY_PROTOCOL_LIEFERBAY_PROTOCOL_H
-#define LIB_LIEFERBAY_PROTOCOL_LIEFERBAY_PROTOCOL_H
+#ifndef LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
+#define LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
 
 #include <cstdint>              // uint32_t
 #include <map>                  // std::map
@@ -105,10 +105,16 @@ enum class order_resolution_e
 
 enum class order_state_e
 {
-    UNDEF                       = 0,
-    IDLE_WAITING_ACCEPTANCE     = 1,
-    ACCEPTED_WAITING_DELIVERY   = 2,
-    DELIVERED_WAITING_FEEDBACK  = 3,
+    UNDEF                           = 0,
+    IDLE_WAITING_OFFERS             = 1,
+    ACCEPTED_WAITING_SHOPPING_START = 2,
+    SHOPPING_WAITING_SHOPPING_END   = 3,
+    SHOPPING_ENDED_WAITING_DELIVERY = 4,
+    DELIVERED_WAITING_CONFIRMATION  = 5,
+    DELIVERY_CONFIRMED_WAITING_FEEDBACK  = 6,
+    DONE                            = 7,
+    CANCELLED_IN_SHOPPING           = 8,
+    CANCELLED_IN_SHOPPING_ENDED     = 9,
 };
 
 enum class gender_e
@@ -376,4 +382,4 @@ struct GetDashScreenBuyerResponse: public generic_protocol::BackwardMessage
 
 } // namespace lieferbay_protocol
 
-#endif // LIB_LIEFERBAY_PROTOCOL_LIEFERBAY_PROTOCOL_H
+#endif // LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H

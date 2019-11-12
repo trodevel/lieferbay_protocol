@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12315 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12346 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -177,11 +177,16 @@ const order_resolution_e_RIDE_CANCELLED         = 3;
 const order_resolution_e_CANCELLED_BY_SHOPPER   = 4;
 const order_resolution_e_CANCELLED_BY_USER      = 5;
 
-
-const order_state_e_UNDEF                       = 0;
-const order_state_e_IDLE_WAITING_ACCEPTANCE     = 1;
-const order_state_e_ACCEPTED_WAITING_DELIVERY   = 2;
-const order_state_e_DELIVERED_WAITING_FEEDBACK  = 3;
+const order_state_e_UNDEF                           = 0;
+const order_state_e_IDLE_WAITING_OFFERS             = 1,
+const order_state_e_ACCEPTED_WAITING_SHOPPING_START = 2,
+const order_state_e_SHOPPING_WAITING_SHOPPING_END   = 3,
+const order_state_e_SHOPPING_ENDED_WAITING_DELIVERY = 4,
+const order_state_e_DELIVERED_WAITING_CONFIRMATION  = 5,
+const order_state_e_DELIVERY_CONFIRMED_WAITING_FEEDBACK  = 6,
+const order_state_e_DONE                            = 7,
+const order_state_e_CANCELLED_IN_SHOPPING           = 8,
+const order_state_e_CANCELLED_IN_SHOPPING_ENDED     = 9,
 
 const gender_e_UNDEF   = 0;
 const gender_e_MALE    = 1;

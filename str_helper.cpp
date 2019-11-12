@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12315 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12346 $ $Date:: 2019-11-12 #$ $Author: serge $
 
 #include "str_helper.h"             // self
 
@@ -65,9 +65,15 @@ const std::string & StrHelper::to_string( const order_state_e s )
     static const std::map< Type, std::string > m =
     {
         { Type:: TUPLE_VAL_STR( UNDEF ) },
-        { Type:: TUPLE_VAL_STR( IDLE_WAITING_ACCEPTANCE ) },
-        { Type:: TUPLE_VAL_STR( ACCEPTED_WAITING_DELIVERY ) },
-        { Type:: TUPLE_VAL_STR( DELIVERED_WAITING_FEEDBACK ) },
+        { Type:: TUPLE_VAL_STR( IDLE_WAITING_OFFERS ) },
+        { Type:: TUPLE_VAL_STR( ACCEPTED_WAITING_SHOPPING_START ) },
+        { Type:: TUPLE_VAL_STR( SHOPPING_WAITING_SHOPPING_END ) },
+        { Type:: TUPLE_VAL_STR( SHOPPING_ENDED_WAITING_DELIVERY ) },
+        { Type:: TUPLE_VAL_STR( DELIVERED_WAITING_CONFIRMATION ) },
+        { Type:: TUPLE_VAL_STR( DELIVERY_CONFIRMED_WAITING_FEEDBACK ) },
+        { Type:: TUPLE_VAL_STR( DONE ) },
+        { Type:: TUPLE_VAL_STR( CANCELLED_IN_SHOPPING ) },
+        { Type:: TUPLE_VAL_STR( CANCELLED_IN_SHOPPING_ENDED ) },
     };
 
     auto it = m.find( s );
