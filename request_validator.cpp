@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
+// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
 
 
 #include "request_validator.h"      // self
@@ -107,21 +107,21 @@ bool RequestValidator::validate( const Address & r )
     return true;
 }
 
-bool RequestValidator::validate( const AddRideRequest & r )
+bool RequestValidator::validate( const AddOfferWithStateRequest & r )
 {
     validate( r.ride );
 
     return generic_protocol::RequestValidator::validate( r );
 }
 
-bool RequestValidator::validate( const CancelRideRequest & r )
+bool RequestValidator::validate( const CancelOfferWithStateRequest & r )
 {
     validate( r.ride_id, "RIDE_ID" );
 
     return generic_protocol::RequestValidator::validate( r );
 }
 
-bool RequestValidator::validate( const GetRideRequest & r )
+bool RequestValidator::validate( const GetOfferWithStateRequest & r )
 {
     validate( r.ride_id, "RIDE_ID" );
 

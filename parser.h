@@ -19,13 +19,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12314 $ $Date:: 2019-10-31 #$ $Author: serge $
+// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL_PARSER_H
 #define LIB_LIEFERBAY_PROTOCOL_PARSER_H
 
 #include "enums.h"                  // request_type_e
-#include "protocol.h"     // AddRideRequest
+#include "protocol.h"     // AddOfferWithStateRequest
 
 namespace lieferbay_protocol {
 

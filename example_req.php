@@ -1,6 +1,6 @@
 <?php
 
-// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
+// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
 
 require_once 'lieferbay_protocol_web.php';
 
@@ -11,7 +11,7 @@ $session_id = "afafaf";
 {
     $ride_summary = new \lieferbay_protocol\Offer( \lieferbay_protocol\GeoPosition::withPlz( 50668 ), new \basic_objects\LocalTime( 2019, 05, 22, 17, 30, 0 ), 2.5 );
 
-    $req = new \lieferbay_protocol\AddRideRequest( $session_id, $ride_summary );
+    $req = new \lieferbay_protocol\AddOfferWithStateRequest( $session_id, $ride_summary );
 
     echo "req = " . $req->to_generic_request() . "\n";
 }
@@ -19,7 +19,7 @@ $session_id = "afafaf";
 {
     $ride_id    = 101;
 
-    $req = new \lieferbay_protocol\CancelRideRequest( $session_id, $ride_id );
+    $req = new \lieferbay_protocol\CancelOfferWithStateRequest( $session_id, $ride_id );
 
     echo "req = " . $req->to_generic_request() . "\n";
 }
@@ -27,7 +27,7 @@ $session_id = "afafaf";
 {
     $ride_id    = 101;
 
-    $req = new \lieferbay_protocol\GetRideRequest( $session_id, $ride_id );
+    $req = new \lieferbay_protocol\GetOfferWithStateRequest( $session_id, $ride_id );
 
     echo "req = " . $req->to_generic_request() . "\n";
 }

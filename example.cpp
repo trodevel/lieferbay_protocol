@@ -4,7 +4,7 @@
 
 #include "protocol.h"
 #include "request_parser.h"
-#include "response_gen.h"           // create_AddRideResponse
+#include "response_gen.h"           // create_AddOfferWithStateResponse
 #include "str_helper.h"             // StrHelper::to_string()
 #include "csv_response_encoder.h"   // CsvResponseEncoder::to_csv()
 
@@ -28,9 +28,9 @@ void test( const std::string & str )
     }
 }
 
-void test_AddRideResponse()
+void test_AddOfferWithStateResponse()
 {
-    auto * s = lieferbay_protocol::create_AddRideResponse(
+    auto * s = lieferbay_protocol::create_AddOfferWithStateResponse(
             123 );
 
     std::cout << lieferbay_protocol::CsvResponseEncoder::to_csv( * s ) << std::endl;
@@ -38,26 +38,26 @@ void test_AddRideResponse()
     delete s;
 }
 
-void test_CancelRideResponse()
+void test_CancelOfferWithStateResponse()
 {
-    auto s = lieferbay_protocol::create_CancelRideResponse();
+    auto s = lieferbay_protocol::create_CancelOfferWithStateResponse();
 
     std::cout << lieferbay_protocol::CsvResponseEncoder::to_csv( *s ) << std::endl;
 
     delete s;
 }
 
-void test_GetRideResponse()
+void test_GetOfferWithStateResponse()
 {
     lieferbay_protocol::Offer ride_summary;
 
     lieferbay_protocol::init_Offer( & ride_summary, { 50668, 0, 0 }, { 2019, 05, 22, 18, 0, 0 }, 2.5 );
 
-    lieferbay_protocol::Ride ride;
+    lieferbay_protocol::OfferWithState ride;
 
-    lieferbay_protocol::init_Ride( & ride, true, ride_summary, { 565656, 737373, 878787 }, 121212, lieferbay_protocol::ride_resolution_e::UNDEF );
+    lieferbay_protocol::init_OfferWithState( & ride, true, ride_summary, { 565656, 737373, 878787 }, 121212, lieferbay_protocol::offer_state_e::UNDEF );
 
-    auto s = lieferbay_protocol::create_GetRideResponse( ride );
+    auto s = lieferbay_protocol::create_GetOfferWithStateResponse( ride );
 
     std::cout << lieferbay_protocol::CsvResponseEncoder::to_csv( *s ) << std::endl;
 
@@ -212,15 +212,15 @@ void test_GetDashScreenBuyerResponse()
 {
     using namespace lieferbay_protocol;
 
-    std::vector<web::RideWithId>      rides    =
+    std::vector<web::OfferWithStateWithId>      rides    =
     {
-            { 121212, { false, { { 50668, 0, 0 }, { 2019, 5, 22, 17, 30, 0 }, 3.0 }, { 757575, 838383 }, 292929, lieferbay_protocol::ride_resolution_e::CANCELLED } },
-            { 232323, { false, { { 50667, 0, 0 }, { 2019, 5, 22, 19, 45, 0 }, 1.0 }, { 757575, 838383 }, 575757, lieferbay_protocol::ride_resolution_e::EXPIRED_OR_COMPLETED } },
-            { 343434, { true,  { { 50672, 0, 0 }, { 2019, 5, 22, 23, 10, 0 }, 2.5 }, { 757575, 838383 }, 848484, lieferbay_protocol::ride_resolution_e::UNDEF } },
-            { 454545, { true,  { { 50667, 0, 0 }, { 2019, 5, 23, 9, 0, 0 },   1.5 }, { 757575, 838383 }, 292929, lieferbay_protocol::ride_resolution_e::UNDEF } },
-            { 565656, { true,  { { 50667, 0, 0 }, { 2019, 5, 24, 9, 30, 0 },  1.0 }, { 757575, 838383 }, 0, lieferbay_protocol::ride_resolution_e::UNDEF } },
-            { 676767, { true,  { { 50667, 0, 0 }, { 2019, 5, 24, 9, 30, 0 },  1.2 }, { }, 272727, lieferbay_protocol::ride_resolution_e::UNDEF } },
-            { 787878, { true,  { { 50667, 0, 0 }, { 2019, 5, 24, 12, 0, 0 },  1.3 }, { }, 0, lieferbay_protocol::ride_resolution_e::UNDEF } },
+            { 121212, { false, { { 50668, 0, 0 }, { 2019, 5, 22, 17, 30, 0 }, 3.0 }, { 757575, 838383 }, 292929, lieferbay_protocol::offer_state_e::CANCELLED } },
+            { 232323, { false, { { 50667, 0, 0 }, { 2019, 5, 22, 19, 45, 0 }, 1.0 }, { 757575, 838383 }, 575757, lieferbay_protocol::offer_state_e::ACCEPTED } },
+            { 343434, { true,  { { 50672, 0, 0 }, { 2019, 5, 22, 23, 10, 0 }, 2.5 }, { 757575, 838383 }, 848484, lieferbay_protocol::offer_state_e::UNDEF } },
+            { 454545, { true,  { { 50667, 0, 0 }, { 2019, 5, 23, 9, 0, 0 },   1.5 }, { 757575, 838383 }, 292929, lieferbay_protocol::offer_state_e::UNDEF } },
+            { 565656, { true,  { { 50667, 0, 0 }, { 2019, 5, 24, 9, 30, 0 },  1.0 }, { 757575, 838383 }, 0, lieferbay_protocol::offer_state_e::UNDEF } },
+            { 676767, { true,  { { 50667, 0, 0 }, { 2019, 5, 24, 9, 30, 0 },  1.2 }, { }, 272727, lieferbay_protocol::offer_state_e::UNDEF } },
+            { 787878, { true,  { { 50667, 0, 0 }, { 2019, 5, 24, 12, 0, 0 },  1.3 }, { }, 0, lieferbay_protocol::offer_state_e::UNDEF } },
     };
 
     std::vector<web::AcceptedOrderBuyer>    orders   =
@@ -245,10 +245,10 @@ void test_GetDashScreenBuyerResponse()
 
 int main()
 {
-    test_AddRideResponse();
-    test_CancelRideResponse();
+    test_AddOfferWithStateResponse();
+    test_CancelOfferWithStateResponse();
 
-    test_GetRideResponse();
+    test_GetOfferWithStateResponse();
 
     test_AddOrderResponse();
     test_CancelOrderResponse();
@@ -286,15 +286,15 @@ int main()
     test( "CMD=AddOrderRequest&RIDE_ID=1&SHOPPING_LIST=1,1&PLZ=11111&COUNTRY=Germany&CITY=Cologne&STREET=&HOUSE_NUMBER=10&EAL=&SESSION_ID=afafaf" );
     test( "CMD=AddOrderRequest&RIDE_ID=1&SHOPPING_LIST=1,1&PLZ=11111&COUNTRY=Germany&CITY=Cologne&STREET=Oststr.&HOUSE_NUMBER=&EAL=&SESSION_ID=afafaf" );
 
-    test( "CMD=AddRideRequest&PLZ=&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
-    test( "CMD=AddRideRequest&PLZ=0&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
-    test( "CMD=AddRideRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
-    test( "CMD=AddRideRequest&PLZ=1&DELIVERY_TIME=&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
-    test( "CMD=AddRideRequest&PLZ=1&DELIVERY_TIME=0&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
-    test( "CMD=AddRideRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
-    test( "CMD=AddRideRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=&SESSION_ID=afafaf" );
-    test( "CMD=AddRideRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=0&SESSION_ID=afafaf" );
-    test( "CMD=AddRideRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferWithStateRequest&PLZ=&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferWithStateRequest&PLZ=0&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=0&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=0&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
 
     test( "CMD=CancelOrderRequest&ORDER_ID=&&SESSION_ID=afafaf" );
     test( "CMD=CancelOrderRequest&ORDER_ID=0&&SESSION_ID=afafaf" );
@@ -322,13 +322,13 @@ int main()
     test( "CMD=RateBuyerRequest&ORDER_ID=1&STARS=5&SESSION_ID=afafaf" );
     test( "CMD=RateBuyerRequest&ORDER_ID=1&STARS=6&SESSION_ID=afafaf" );
 
-    test( "CMD=CancelRideRequest&RIDE_ID=&&SESSION_ID=afafaf" );
-    test( "CMD=CancelRideRequest&RIDE_ID=0&&SESSION_ID=afafaf" );
-    test( "CMD=CancelRideRequest&RIDE_ID=1&&SESSION_ID=afafaf" );
+    test( "CMD=CancelOfferWithStateRequest&RIDE_ID=&&SESSION_ID=afafaf" );
+    test( "CMD=CancelOfferWithStateRequest&RIDE_ID=0&&SESSION_ID=afafaf" );
+    test( "CMD=CancelOfferWithStateRequest&RIDE_ID=1&&SESSION_ID=afafaf" );
 
-    test( "CMD=GetRideRequest&RIDE_ID=&&SESSION_ID=afafaf" );
-    test( "CMD=GetRideRequest&RIDE_ID=0&&SESSION_ID=afafaf" );
-    test( "CMD=GetRideRequest&RIDE_ID=1&&SESSION_ID=afafaf" );
+    test( "CMD=GetOfferWithStateRequest&RIDE_ID=&&SESSION_ID=afafaf" );
+    test( "CMD=GetOfferWithStateRequest&RIDE_ID=0&&SESSION_ID=afafaf" );
+    test( "CMD=GetOfferWithStateRequest&RIDE_ID=1&&SESSION_ID=afafaf" );
 
     test( "CMD=web/GetProductItemListRequest&SESSION_ID=afafaf" );
 

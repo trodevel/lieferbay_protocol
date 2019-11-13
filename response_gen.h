@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
+// $Revision: 12356 $ $Date:: 2019-11-13 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL_RESPONSE_GEN_H
 #define LIB_LIEFERBAY_PROTOCOL_RESPONSE_GEN_H
@@ -28,19 +28,19 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace lieferbay_protocol {
 
-inline AddRideResponse * create_AddRideResponse(
+inline AddOfferWithStateResponse * create_AddOfferWithStateResponse(
         id_t                            ride_id )
 {
-    auto * res = new AddRideResponse;
+    auto * res = new AddOfferWithStateResponse;
 
     res->ride_id    = ride_id;
 
     return res;
 }
 
-inline CancelRideResponse * create_CancelRideResponse()
+inline CancelOfferWithStateResponse * create_CancelOfferWithStateResponse()
 {
-    auto * res = new CancelRideResponse;
+    auto * res = new CancelOfferWithStateResponse;
 
     return res;
 }
@@ -71,27 +71,27 @@ inline Offer * init_Offer(
     return res;
 }
 
-inline Ride * init_Ride(
-        Ride           * res,
+inline OfferWithState * init_OfferWithState(
+        OfferWithState           * res,
         bool                            is_open,
         const Offer               & summary,
         const std::vector<id_t>         & pending_order_ids,
-        id_t                            accepted_order_id,
-        ride_resolution_e               resolution )
+        id_t                            order_id,
+        offer_state_e               resolution )
 {
     res->is_open            = is_open;
-    res->summary            = summary;
+    res->offer            = summary;
     res->pending_order_ids  = pending_order_ids;
-    res->accepted_order_id  = accepted_order_id;
+    res->order_id  = order_id;
     res->resolution         = resolution;
 
     return res;
 }
 
-inline GetRideResponse * create_GetRideResponse(
-        const Ride  & ride )
+inline GetOfferWithStateResponse * create_GetOfferWithStateResponse(
+        const OfferWithState  & ride )
 {
-    auto * res = new GetRideResponse;
+    auto * res = new GetOfferWithStateResponse;
 
     res->ride   = ride;
 
@@ -214,7 +214,7 @@ inline DashScreenUser * init_DashScreenUser(
 inline DashScreenBuyer * init_DashScreenBuyer(
         DashScreenBuyer  * res,
         const basic_objects::LocalTime          & current_time,
-        const std::vector<RideWithId>           & rides,
+        const std::vector<OfferWithStateWithId>           & rides,
         const std::vector<AcceptedOrderBuyer> & orders )
 {
     res->current_time   = current_time;

@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
+// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
 
 #include "str_helper.h"             // self
 
@@ -42,9 +42,9 @@ const std::string & StrHelper::to_string( const request_type_e s )
     static const std::map< Type, std::string > m =
     {
         { Type:: TUPLE_VAL_STR( UNDEF ) },
-        { Type:: TUPLE_VAL_STR( AddRideRequest ) },
-        { Type:: TUPLE_VAL_STR( CancelRideRequest ) },
-        { Type:: TUPLE_VAL_STR( GetRideRequest ) },
+        { Type:: TUPLE_VAL_STR( AddOfferWithStateRequest ) },
+        { Type:: TUPLE_VAL_STR( CancelOfferWithStateRequest ) },
+        { Type:: TUPLE_VAL_STR( GetOfferWithStateRequest ) },
         { Type:: TUPLE_VAL_STR( AddOrderRequest ) },
         { Type:: TUPLE_VAL_STR( CancelOrderRequest ) },
     };
@@ -126,7 +126,7 @@ std::ostream & StrHelper::write( std::ostream & os, const Offer & l )
     return os;
 }
 
-std::ostream & StrHelper::write( std::ostream & os, const AddRideRequest & l )
+std::ostream & StrHelper::write( std::ostream & os, const AddOfferWithStateRequest & l )
 {
     os << "ride { ";
     write( os, l.ride );
@@ -135,14 +135,14 @@ std::ostream & StrHelper::write( std::ostream & os, const AddRideRequest & l )
     return os;
 }
 
-std::ostream & StrHelper::write( std::ostream & os, const CancelRideRequest & l )
+std::ostream & StrHelper::write( std::ostream & os, const CancelOfferWithStateRequest & l )
 {
     os << "ride_id " << l.ride_id;
 
     return os;
 }
 
-std::ostream & StrHelper::write( std::ostream & os, const GetRideRequest & l )
+std::ostream & StrHelper::write( std::ostream & os, const GetOfferWithStateRequest & l )
 {
     os << "ride_id " << l.ride_id;
 

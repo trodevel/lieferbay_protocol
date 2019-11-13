@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
+// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
 
 #include "request_parser.h"         // self
 
@@ -49,15 +49,15 @@ generic_protocol::ForwardMessage* RequestParser::to_forward_message( const gener
 
     static const std::map<KeyType, PPMF> funcs =
     {
-        HANDLER_MAP_ENTRY( AddRideRequest ),
+        HANDLER_MAP_ENTRY( AddOfferWithStateRequest ),
         HANDLER_MAP_ENTRY( AddOrderRequest ),
         HANDLER_MAP_ENTRY( CancelOrderRequest ),
         HANDLER_MAP_ENTRY( AcceptOrderRequest ),
         HANDLER_MAP_ENTRY( DeclineOrderRequest ),
         HANDLER_MAP_ENTRY( MarkDeliveredOrderRequest ),
         HANDLER_MAP_ENTRY( RateBuyerRequest ),
-        HANDLER_MAP_ENTRY( CancelRideRequest ),
-        HANDLER_MAP_ENTRY( GetRideRequest ),
+        HANDLER_MAP_ENTRY( CancelOfferWithStateRequest ),
+        HANDLER_MAP_ENTRY( GetOfferWithStateRequest ),
     };
 
 #undef HANDLER_MAP_ENTRY
@@ -111,22 +111,22 @@ void RequestParser::to_ProductItem( ProductItem * res, const generic_request::Re
     get_value_or_throw_double( res->weight, "WEIGHT", r );
 }
 
-RequestParser::ForwardMessage * RequestParser::to_AddRideRequest( const generic_request::Request & r )
+RequestParser::ForwardMessage * RequestParser::to_AddOfferWithStateRequest( const generic_request::Request & r )
 {
-    auto * res = new AddRideRequest;
+    auto * res = new AddOfferWithStateRequest;
 
     generic_protocol::RequestParser::to_request( res, r );
 
-    to_Ride( & res->ride, r );
+    to_OfferWithState( & res->ride, r );
 
     RequestValidator::validate( * res );
 
     return res;
 }
 
-RequestParser::ForwardMessage * RequestParser::to_CancelRideRequest( const generic_request::Request & r )
+RequestParser::ForwardMessage * RequestParser::to_CancelOfferWithStateRequest( const generic_request::Request & r )
 {
-    auto res = new CancelRideRequest;
+    auto res = new CancelOfferWithStateRequest;
 
     generic_protocol::RequestParser::to_request( res, r );
 
@@ -137,9 +137,9 @@ RequestParser::ForwardMessage * RequestParser::to_CancelRideRequest( const gener
     return res;
 }
 
-RequestParser::ForwardMessage * RequestParser::to_GetRideRequest( const generic_request::Request & r )
+RequestParser::ForwardMessage * RequestParser::to_GetOfferWithStateRequest( const generic_request::Request & r )
 {
-    auto * res = new GetRideRequest;
+    auto * res = new GetOfferWithStateRequest;
 
     generic_protocol::RequestParser::to_request( res, r );
 
@@ -259,7 +259,7 @@ void RequestParser::to_GeoPosition( GeoPosition * res, const generic_request::Re
     res->longitude  = 0;    // currently not supported
 }
 
-void RequestParser::to_Ride( Offer * res, const generic_request::Request & r )
+void RequestParser::to_OfferWithState( Offer * res, const generic_request::Request & r )
 {
     to_GeoPosition( & res->position, r );
 

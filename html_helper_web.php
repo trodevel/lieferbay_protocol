@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12347 $ $Date:: 2019-11-12 #$ $Author: serge $
+// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
 
 namespace lieferbay_protocol\web;
 
@@ -166,17 +166,17 @@ function to_html_OfferWithBuyer_tabledata( & $obj )
             $obj->buyer_name ) );
 }
 
-function get_header_RideWithId()
+function get_header_OfferWithStateWithId()
 {
     return get_html_table_header_elems( array( 'RIDE ID' ) ) .
-    \lieferbay_protocol\get_header_Ride();
+    \lieferbay_protocol\get_header_OfferWithState();
 }
 
-function to_html_RideWithId_tabledata( & $obj )
+function to_html_OfferWithStateWithId_tabledata( & $obj )
 {
     return get_html_table_data_elems( array(
         $obj->ride_id ) ) .
-        \lieferbay_protocol\to_html_Ride_tabledata( $obj->ride );
+        \lieferbay_protocol\to_html_OfferWithState_tabledata( $obj->ride );
 }
 
 function get_header_AcceptedOrderUser()
@@ -224,7 +224,7 @@ function to_html_DashScreenUser( & $obj )
     {
         $num   = sizeof( $obj->rides );
 
-        $res = $res . '<h2>Offered Rides ( ' . $num . ' )</h2>';
+        $res = $res . '<h2>Offered OfferWithStates ( ' . $num . ' )</h2>';
 
         $body = '';
         for( $i = 0; $i < $num; $i++ )
@@ -268,16 +268,16 @@ function to_html_DashScreenBuyer( & $obj )
     {
         $num   = sizeof( $obj->rides );
 
-        $res = $res . '<h2>My Offered Rides and Shopping Requests ( ' . $num . ' )</h2>';
+        $res = $res . '<h2>My Offered OfferWithStates and Shopping Requests ( ' . $num . ' )</h2>';
 
         $body = '';
         for( $i = 0; $i < $num; $i++ )
         {
-            $body = $body . get_html_table_tr( to_html_RideWithId_tabledata( $obj->rides[$i] ) );
+            $body = $body . get_html_table_tr( to_html_OfferWithStateWithId_tabledata( $obj->rides[$i] ) );
         }
 
         $res = $res . get_html_table( NULL, NULL, NULL, 'border="1" cellspacing="1" cellpadding="3"',
-            get_html_table_tr( get_header_RideWithId() ) . $body );
+            get_html_table_tr( get_header_OfferWithStateWithId() ) . $body );
     }
 
     {

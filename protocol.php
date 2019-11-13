@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12349 $ $Date:: 2019-11-12 #$ $Author: serge $
+// $Revision: 12358 $ $Date:: 2019-11-13 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -134,6 +134,7 @@ class GeoPosition
 
 class Offer
 {
+    public      $order_id; // id_t
     public      $delivery_time; // basic_objects::LocalTimeRange
     public      $delivery_price;    // double
     public      $can_return;        // bool
@@ -160,17 +161,18 @@ class Offer
     }
 }
 
-const ride_resolution_e_UNDEF                   = 0;
-const ride_resolution_e_EXPIRED_OR_COMPLETED    = 1;
-const ride_resolution_e_CANCELLED               = 2;
+const offer_state_e_UNDEF                   = 0;
+const offer_state_e_PENDING                 = 1;
+const offer_state_e_ACCEPTED                = 2;
+const offer_state_e_DECLINED                = 3;
+const offer_state_e_CANCELLED               = 4;
 
-class Ride
+class OfferWithState
 {
     public  $is_open;           // bool
-    public  $summary;           // Offer
+    public  offer;              // Offer
     public  $pending_order_ids; // array<id_t>
-    public  $accepted_order_id; // id_t
-    public  $resolution;        // ride_resolution_e
+    public  $resolution;        // offer_state_e
 };
 
 const order_resolution_e_UNDEF                  = 0;
@@ -232,10 +234,15 @@ class Address
 
 class Order
 {
-    public  $is_open;           // bool
-    public  $ride_id;           // id_t
     public  $delivery_address;  // Address
     public  $shopping_list_id;  // id_t
+}
+
+class OrderWithState
+{
+    public  $is_open;           // bool
+    public  $ride_id;           // id_t
+    public  $order;             // Order
     public  $state;             // order_state_e
     public  $resolution;        // order_resolution_e
 }
@@ -244,7 +251,7 @@ class Order
  * REQUESTS
  **************************************************/
 
-class AddRideRequest extends Request
+class AddOfferWithStateRequest extends Request
 {
     public $ride;   // Offer
 
@@ -258,7 +265,7 @@ class AddRideRequest extends Request
     public function to_generic_request()
     {
         $res = array(
-            "CMD"       => "AddRideRequest"
+            "CMD"       => "AddOfferWithStateRequest"
             );
 
         return \generic_protocol\assemble_request( $res ) .
@@ -267,12 +274,12 @@ class AddRideRequest extends Request
     }
 }
 
-class AddRideResponse extends \generic_protocol\BackwardMessage
+class AddOfferWithStateResponse extends \generic_protocol\BackwardMessage
 {
     public        $ride_id;     // id_t
 }
 
-class CancelRideRequest extends Request
+class CancelOfferWithStateRequest extends Request
 {
     public $ride_id;   // id_t
 
@@ -286,7 +293,7 @@ class CancelRideRequest extends Request
     public function to_generic_request()
     {
         $res = array(
-            "CMD"       => "CancelRideRequest",
+            "CMD"       => "CancelOfferWithStateRequest",
             "RIDE_ID"   => $this->ride_id
             );
 
@@ -295,11 +302,11 @@ class CancelRideRequest extends Request
     }
 }
 
-class CancelRideResponse extends \generic_protocol\BackwardMessage
+class CancelOfferWithStateResponse extends \generic_protocol\BackwardMessage
 {
 }
 
-class GetRideRequest extends Request
+class GetOfferWithStateRequest extends Request
 {
     public $ride_id;   // id_t
 
@@ -313,7 +320,7 @@ class GetRideRequest extends Request
     public function to_generic_request()
     {
         $res = array(
-            "CMD"       => "GetRideRequest",
+            "CMD"       => "GetOfferWithStateRequest",
             "RIDE_ID"   => $this->ride_id
             );
 
@@ -322,9 +329,9 @@ class GetRideRequest extends Request
     }
 }
 
-class GetRideResponse extends \generic_protocol\BackwardMessage
+class GetOfferWithStateResponse extends \generic_protocol\BackwardMessage
 {
-    public $ride;   // Ride
+    public $ride;   // OfferWithState
 }
 
 class AddOrderRequest extends Request
