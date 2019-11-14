@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 #include <string>
 #include <sstream>
@@ -37,14 +37,14 @@ public:
     static const std::string & to_string( const order_resolution_e l );
     static std::ostream & write( std::ostream & os, const GeoPosition & l );
     static std::ostream & write( std::ostream & os, const Offer & l );
-    static std::ostream & write( std::ostream & os, const AddOfferWithStateRequest & l );
-    static std::ostream & write( std::ostream & os, const CancelOfferWithStateRequest & l );
+    static std::ostream & write( std::ostream & os, const AddOfferRequest & l );
+    static std::ostream & write( std::ostream & os, const CancelOfferRequest & l );
     static std::ostream & write( std::ostream & os, const GetOfferWithStateRequest & l );
     static std::ostream & write( std::ostream & os, const AddOrderRequest & l );
     static std::ostream & write( std::ostream & os, const CancelOrderRequest & l );
-    static std::ostream & write( std::ostream & os, const AcceptOrderRequest & l );
-    static std::ostream & write( std::ostream & os, const DeclineOrderRequest & l );
-    static std::ostream & write( std::ostream & os, const MarkDeliveredOrderRequest & l );
+    static std::ostream & write( std::ostream & os, const AcceptOfferRequest & l );
+    static std::ostream & write( std::ostream & os, const DeclineOfferRequest & l );
+    static std::ostream & write( std::ostream & os, const NotifyDeliveredRequest & l );
     static std::ostream & write( std::ostream & os, const RateBuyerRequest & l );
 
     template<class T>

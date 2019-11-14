@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12357 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
 #define LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
@@ -92,7 +92,6 @@ struct OfferWithState
 {
     bool                is_open;
     Offer               offer;
-    std::vector<id_t>   pending_order_ids;
     offer_state_e   resolution;
 };
 
@@ -140,56 +139,57 @@ struct Address
 struct Order
 {
     Address             delivery_address;
-    id_t                shopping_list_id;
+    ShoppingList        shopping_list;
+    basic_objects::LocalTimeRange wish_delivery_time;
+    double              wish_delivery_price;
 };
 
 struct OrderWithState
 {
     bool                is_open;
-    id_t                ride_id;
     Order               order;
     order_state_e       state;
     order_resolution_e  resolution;
+    std::vector<id_t>   pending_offer_ids;
+    id_t                accepted_offer_id;
 };
 
 /**************************************************
  * REQUESTS
  **************************************************/
 
-struct AddOfferWithStateRequest: public Request
+struct AddOfferRequest: public Request
 {
-    Offer     ride;
+    Offer           offer;
 };
 
-struct AddOfferWithStateResponse: public generic_protocol::BackwardMessage
+struct AddOfferResponse: public generic_protocol::BackwardMessage
 {
-    id_t            ride_id;
+    id_t            offer_id;
 };
 
-struct CancelOfferWithStateRequest: public Request
+struct CancelOfferRequest: public Request
 {
-    id_t            ride_id;
+    id_t            offer_id;
 };
 
-struct CancelOfferWithStateResponse: public generic_protocol::BackwardMessage
+struct CancelOfferResponse: public generic_protocol::BackwardMessage
 {
 };
 
 struct GetOfferWithStateRequest: public Request
 {
-    id_t            ride_id;
+    id_t            offer_id;
 };
 
 struct GetOfferWithStateResponse: public generic_protocol::BackwardMessage
 {
-    OfferWithState            ride;
+    OfferWithState  offer_with_state;
 };
 
 struct AddOrderRequest: public Request
 {
-    id_t            ride_id;
-    ShoppingList    shopping_list;
-    Address         delivery_address;
+    Order           order;
 };
 
 struct AddOrderResponse: public generic_protocol::BackwardMessage
@@ -206,30 +206,30 @@ struct CancelOrderResponse: public generic_protocol::BackwardMessage
 {
 };
 
-struct AcceptOrderRequest: public Request
+struct AcceptOfferRequest: public Request
 {
     id_t            order_id;
 };
 
-struct AcceptOrderResponse: public generic_protocol::BackwardMessage
+struct AcceptOfferResponse: public generic_protocol::BackwardMessage
 {
 };
 
-struct DeclineOrderRequest: public Request
-{
-    id_t            order_id;
-};
-
-struct DeclineOrderResponse: public generic_protocol::BackwardMessage
-{
-};
-
-struct MarkDeliveredOrderRequest: public Request
+struct DeclineOfferRequest: public Request
 {
     id_t            order_id;
 };
 
-struct MarkDeliveredOrderResponse: public generic_protocol::BackwardMessage
+struct DeclineOfferResponse: public generic_protocol::BackwardMessage
+{
+};
+
+struct NotifyDeliveredRequest: public Request
+{
+    id_t            order_id;
+};
+
+struct NotifyDeliveredResponse: public generic_protocol::BackwardMessage
 {
 };
 
@@ -276,15 +276,15 @@ struct ShoppingListWithTotals
 
 struct OfferWithBuyer
 {
-    id_t            ride_id;
-    Offer     ride;
+    id_t            offer_id;
+    Offer     offer_with_state;
     std::string     buyer_name;
 };
 
 struct OfferWithStateWithId
 {
-    id_t            ride_id;
-    OfferWithState            ride;
+    id_t            offer_id;
+    OfferWithState            offer_with_state;
 };
 
 struct ShoppingRequestInfo
@@ -319,7 +319,7 @@ struct DashScreenUser
 {
     basic_objects::LocalTime        current_time;
 
-    std::vector<OfferWithBuyer> rides;
+    std::vector<OfferWithBuyer> offer_with_states;
     std::vector<AcceptedOrderUser>      orders;
 };
 
@@ -327,7 +327,7 @@ struct DashScreenBuyer
 {
     basic_objects::LocalTime        current_time;
 
-    std::vector<OfferWithStateWithId>             rides;
+    std::vector<OfferWithStateWithId>             offer_with_states;
     std::vector<AcceptedOrderBuyer>   orders;
 };
 
@@ -346,7 +346,7 @@ struct GetProductItemListResponse: public generic_protocol::BackwardMessage
 
 struct GetShoppingRequestInfoRequest: public Request
 {
-    id_t            ride_id;
+    id_t            offer_id;
 };
 
 struct GetShoppingRequestInfoResponse: public generic_protocol::BackwardMessage

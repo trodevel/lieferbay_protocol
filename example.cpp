@@ -4,7 +4,7 @@
 
 #include "protocol.h"
 #include "request_parser.h"
-#include "response_gen.h"           // create_AddOfferWithStateResponse
+#include "response_gen.h"           // create_AddOfferResponse
 #include "str_helper.h"             // StrHelper::to_string()
 #include "csv_response_encoder.h"   // CsvResponseEncoder::to_csv()
 
@@ -28,9 +28,9 @@ void test( const std::string & str )
     }
 }
 
-void test_AddOfferWithStateResponse()
+void test_AddOfferResponse()
 {
-    auto * s = lieferbay_protocol::create_AddOfferWithStateResponse(
+    auto * s = lieferbay_protocol::create_AddOfferResponse(
             123 );
 
     std::cout << lieferbay_protocol::CsvResponseEncoder::to_csv( * s ) << std::endl;
@@ -38,9 +38,9 @@ void test_AddOfferWithStateResponse()
     delete s;
 }
 
-void test_CancelOfferWithStateResponse()
+void test_CancelOfferResponse()
 {
-    auto s = lieferbay_protocol::create_CancelOfferWithStateResponse();
+    auto s = lieferbay_protocol::create_CancelOfferResponse();
 
     std::cout << lieferbay_protocol::CsvResponseEncoder::to_csv( *s ) << std::endl;
 
@@ -49,15 +49,15 @@ void test_CancelOfferWithStateResponse()
 
 void test_GetOfferWithStateResponse()
 {
-    lieferbay_protocol::Offer ride_summary;
+    lieferbay_protocol::Offer offer_with_state_summary;
 
-    lieferbay_protocol::init_Offer( & ride_summary, { 50668, 0, 0 }, { 2019, 05, 22, 18, 0, 0 }, 2.5 );
+    lieferbay_protocol::init_Offer( & offer_with_state_summary, { 50668, 0, 0 }, { 2019, 05, 22, 18, 0, 0 }, 2.5 );
 
-    lieferbay_protocol::OfferWithState ride;
+    lieferbay_protocol::OfferWithState offer_with_state;
 
-    lieferbay_protocol::init_OfferWithState( & ride, true, ride_summary, { 565656, 737373, 878787 }, 121212, lieferbay_protocol::offer_state_e::UNDEF );
+    lieferbay_protocol::init_OfferWithState( & offer_with_state, true, offer_with_state_summary, { 565656, 737373, 878787 }, 121212, lieferbay_protocol::offer_state_e::UNDEF );
 
-    auto s = lieferbay_protocol::create_GetOfferWithStateResponse( ride );
+    auto s = lieferbay_protocol::create_GetOfferWithStateResponse( offer_with_state );
 
     std::cout << lieferbay_protocol::CsvResponseEncoder::to_csv( *s ) << std::endl;
 
@@ -82,27 +82,27 @@ void test_CancelOrderResponse()
     delete s;
 }
 
-void test_AcceptOrderResponse()
+void test_AcceptOfferResponse()
 {
-    auto s = lieferbay_protocol::create_AcceptOrderResponse();
+    auto s = lieferbay_protocol::create_AcceptOfferResponse();
 
     std::cout << lieferbay_protocol::CsvResponseEncoder::to_csv( *s ) << std::endl;
 
     delete s;
 }
 
-void test_DeclineOrderResponse()
+void test_DeclineOfferResponse()
 {
-    auto s = lieferbay_protocol::create_DeclineOrderResponse();
+    auto s = lieferbay_protocol::create_DeclineOfferResponse();
 
     std::cout << lieferbay_protocol::CsvResponseEncoder::to_csv( *s ) << std::endl;
 
     delete s;
 }
 
-void test_MarkDeliveredOrderResponse()
+void test_NotifyDeliveredResponse()
 {
-    auto s = lieferbay_protocol::create_MarkDeliveredOrderResponse();
+    auto s = lieferbay_protocol::create_NotifyDeliveredResponse();
 
     std::cout << lieferbay_protocol::CsvResponseEncoder::to_csv( *s ) << std::endl;
 
@@ -180,7 +180,7 @@ void test_GetDashScreenUserResponse()
 {
     using namespace lieferbay_protocol;
 
-    std::vector<web::OfferWithBuyer>      rides    =
+    std::vector<web::OfferWithBuyer>      offer_with_states    =
     {
             { 121212, { { 50668, 0, 0 }, { 2019, 5, 22, 17, 30, 0 }, 3.0 }, "Matthias Mayer" },
             { 232323, { { 50667, 0, 0 }, { 2019, 5, 22, 19, 45, 0 }, 1.0 }, "Lukas Himmelfarb" },
@@ -199,7 +199,7 @@ void test_GetDashScreenUserResponse()
 
     web::DashScreenUser c;
 
-    web::init_DashScreenUser( & c, { 2019, 5, 22, 17, 30, 0 }, rides, orders );
+    web::init_DashScreenUser( & c, { 2019, 5, 22, 17, 30, 0 }, offer_with_states, orders );
 
     auto s = web::create_GetDashScreenUserResponse( c );
 
@@ -212,7 +212,7 @@ void test_GetDashScreenBuyerResponse()
 {
     using namespace lieferbay_protocol;
 
-    std::vector<web::OfferWithStateWithId>      rides    =
+    std::vector<web::OfferWithStateWithId>      offer_with_states    =
     {
             { 121212, { false, { { 50668, 0, 0 }, { 2019, 5, 22, 17, 30, 0 }, 3.0 }, { 757575, 838383 }, 292929, lieferbay_protocol::offer_state_e::CANCELLED } },
             { 232323, { false, { { 50667, 0, 0 }, { 2019, 5, 22, 19, 45, 0 }, 1.0 }, { 757575, 838383 }, 575757, lieferbay_protocol::offer_state_e::ACCEPTED } },
@@ -234,7 +234,7 @@ void test_GetDashScreenBuyerResponse()
 
     web::DashScreenBuyer c;
 
-    web::init_DashScreenBuyer( & c, { 2019, 5, 22, 17, 30, 0 }, rides, orders );
+    web::init_DashScreenBuyer( & c, { 2019, 5, 22, 17, 30, 0 }, offer_with_states, orders );
 
     auto s = web::create_GetDashScreenBuyerResponse( c );
 
@@ -245,16 +245,16 @@ void test_GetDashScreenBuyerResponse()
 
 int main()
 {
-    test_AddOfferWithStateResponse();
-    test_CancelOfferWithStateResponse();
+    test_AddOfferResponse();
+    test_CancelOfferResponse();
 
     test_GetOfferWithStateResponse();
 
     test_AddOrderResponse();
     test_CancelOrderResponse();
-    test_AcceptOrderResponse();
-    test_DeclineOrderResponse();
-    test_MarkDeliveredOrderResponse();
+    test_AcceptOfferResponse();
+    test_DeclineOfferResponse();
+    test_NotifyDeliveredResponse();
     test_RateBuyerResponse();
     test_GetProductItemListResponse();
     test_GetShoppingRequestInfoResponse();
@@ -286,31 +286,31 @@ int main()
     test( "CMD=AddOrderRequest&RIDE_ID=1&SHOPPING_LIST=1,1&PLZ=11111&COUNTRY=Germany&CITY=Cologne&STREET=&HOUSE_NUMBER=10&EAL=&SESSION_ID=afafaf" );
     test( "CMD=AddOrderRequest&RIDE_ID=1&SHOPPING_LIST=1,1&PLZ=11111&COUNTRY=Germany&CITY=Cologne&STREET=Oststr.&HOUSE_NUMBER=&EAL=&SESSION_ID=afafaf" );
 
-    test( "CMD=AddOfferWithStateRequest&PLZ=&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
-    test( "CMD=AddOfferWithStateRequest&PLZ=0&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
-    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
-    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
-    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=0&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
-    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
-    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=&SESSION_ID=afafaf" );
-    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=0&SESSION_ID=afafaf" );
-    test( "CMD=AddOfferWithStateRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferRequest&PLZ=&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferRequest&PLZ=0&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferRequest&PLZ=1&DELIVERY_TIME=&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferRequest&PLZ=1&DELIVERY_TIME=0&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=0&SESSION_ID=afafaf" );
+    test( "CMD=AddOfferRequest&PLZ=1&DELIVERY_TIME=20190522173000&MAX_WEIGHT=1.5&SESSION_ID=afafaf" );
 
     test( "CMD=CancelOrderRequest&ORDER_ID=&&SESSION_ID=afafaf" );
     test( "CMD=CancelOrderRequest&ORDER_ID=0&&SESSION_ID=afafaf" );
     test( "CMD=CancelOrderRequest&ORDER_ID=1&&SESSION_ID=afafaf" );
 
-    test( "CMD=AcceptOrderRequest&ORDER_ID=&&SESSION_ID=afafaf" );
-    test( "CMD=AcceptOrderRequest&ORDER_ID=0&&SESSION_ID=afafaf" );
-    test( "CMD=AcceptOrderRequest&ORDER_ID=1&&SESSION_ID=afafaf" );
+    test( "CMD=AcceptOfferRequest&ORDER_ID=&&SESSION_ID=afafaf" );
+    test( "CMD=AcceptOfferRequest&ORDER_ID=0&&SESSION_ID=afafaf" );
+    test( "CMD=AcceptOfferRequest&ORDER_ID=1&&SESSION_ID=afafaf" );
 
-    test( "CMD=DeclineOrderRequest&ORDER_ID=&&SESSION_ID=afafaf" );
-    test( "CMD=DeclineOrderRequest&ORDER_ID=0&&SESSION_ID=afafaf" );
-    test( "CMD=DeclineOrderRequest&ORDER_ID=1&&SESSION_ID=afafaf" );
+    test( "CMD=DeclineOfferRequest&ORDER_ID=&&SESSION_ID=afafaf" );
+    test( "CMD=DeclineOfferRequest&ORDER_ID=0&&SESSION_ID=afafaf" );
+    test( "CMD=DeclineOfferRequest&ORDER_ID=1&&SESSION_ID=afafaf" );
 
-    test( "CMD=MarkDeliveredOrderRequest&ORDER_ID=&&SESSION_ID=afafaf" );
-    test( "CMD=MarkDeliveredOrderRequest&ORDER_ID=0&&SESSION_ID=afafaf" );
-    test( "CMD=MarkDeliveredOrderRequest&ORDER_ID=1&&SESSION_ID=afafaf" );
+    test( "CMD=NotifyDeliveredRequest&ORDER_ID=&&SESSION_ID=afafaf" );
+    test( "CMD=NotifyDeliveredRequest&ORDER_ID=0&&SESSION_ID=afafaf" );
+    test( "CMD=NotifyDeliveredRequest&ORDER_ID=1&&SESSION_ID=afafaf" );
 
     test( "CMD=RateBuyerRequest&ORDER_ID=&STARS=4&SESSION_ID=afafaf" );
     test( "CMD=RateBuyerRequest&ORDER_ID=0&STARS=4&SESSION_ID=afafaf" );
@@ -322,9 +322,9 @@ int main()
     test( "CMD=RateBuyerRequest&ORDER_ID=1&STARS=5&SESSION_ID=afafaf" );
     test( "CMD=RateBuyerRequest&ORDER_ID=1&STARS=6&SESSION_ID=afafaf" );
 
-    test( "CMD=CancelOfferWithStateRequest&RIDE_ID=&&SESSION_ID=afafaf" );
-    test( "CMD=CancelOfferWithStateRequest&RIDE_ID=0&&SESSION_ID=afafaf" );
-    test( "CMD=CancelOfferWithStateRequest&RIDE_ID=1&&SESSION_ID=afafaf" );
+    test( "CMD=CancelOfferRequest&RIDE_ID=&&SESSION_ID=afafaf" );
+    test( "CMD=CancelOfferRequest&RIDE_ID=0&&SESSION_ID=afafaf" );
+    test( "CMD=CancelOfferRequest&RIDE_ID=1&&SESSION_ID=afafaf" );
 
     test( "CMD=GetOfferWithStateRequest&RIDE_ID=&&SESSION_ID=afafaf" );
     test( "CMD=GetOfferWithStateRequest&RIDE_ID=0&&SESSION_ID=afafaf" );

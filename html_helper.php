@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12356 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -93,7 +93,7 @@ function to_html_OfferWithState_tabledata( & $obj )
         $obj->is_open ? "Y" : "N" ) ) .
         to_html_Offer_tabledata( $obj->summary ) .
         get_html_table_data_elems( array(
-            sizeof( $obj->pending_order_ids ) . ": " . \basic_objects\to_string_array( $obj->pending_order_ids ),
+            sizeof( $obj->pending_offer_ids ) . ": " . \basic_objects\to_string_array( $obj->pending_offer_ids ),
             $obj->order_id,
             to_string_offer_state_e( $obj->resolution ) . " (" . $obj->resolution . ")") );
 }
@@ -125,7 +125,7 @@ function to_html_Order_tabledata( & $obj )
 {
     return get_html_table_data_elems( array(
         $obj->is_open ? "Y" : "N",
-        $obj->ride_id ) ) .
+        $obj->offer_id ) ) .
         to_html_Address_tabledata( $obj->delivery_address ) .
         get_html_table_data_elems( array(
             $obj->shopping_list_id,
@@ -137,25 +137,25 @@ function to_html_Order_tabledata( & $obj )
  * RESPONSES
  **************************************************/
 
-function to_html_AddOfferWithStateResponse( & $obj )
+function to_html_AddOfferResponse( & $obj )
 {
     $res = get_html_table( NULL, NULL, NULL, 'border="1" cellspacing="1" cellpadding="3"',
         get_html_table_row_header( array( 'RIDE ID' ) ) .
-        get_html_table_row_data( array( $obj->ride_id ) ) );
+        get_html_table_row_data( array( $obj->offer_id ) ) );
 
     return $res;
 }
 
-function to_html_CancelOfferWithStateResponse( & $obj )
+function to_html_CancelOfferResponse( & $obj )
 {
-    $res = '<h3>CancelOfferWithStateResponse</h3>';
+    $res = '<h3>CancelOfferResponse</h3>';
 
     return $res;
 }
 
 function to_html_GetOfferWithStateResponse( & $obj )
 {
-    $body = get_html_table_tr( to_html_OfferWithState_tabledata( $obj->ride ) );
+    $body = get_html_table_tr( to_html_OfferWithState_tabledata( $obj->offer_with_state ) );
 
     $res = get_html_table( NULL, NULL, NULL, 'border="1" cellspacing="1" cellpadding="3"',
         get_html_table_tr( get_header_OfferWithState() ) . $body );
@@ -179,23 +179,23 @@ function to_html_CancelOrderResponse( & $obj )
     return $res;
 }
 
-function to_html_AcceptOrderResponse( & $obj )
+function to_html_AcceptOfferResponse( & $obj )
 {
-    $res = '<h3>AcceptOrderResponse</h3>';
+    $res = '<h3>AcceptOfferResponse</h3>';
 
     return $res;
 }
 
-function to_html_DeclineOrderResponse( & $obj )
+function to_html_DeclineOfferResponse( & $obj )
 {
-    $res = '<h3>DeclineOrderResponse</h3>';
+    $res = '<h3>DeclineOfferResponse</h3>';
 
     return $res;
 }
 
-function to_html_MarkDeliveredOrderResponse( & $obj )
+function to_html_NotifyDeliveredResponse( & $obj )
 {
-    $res = '<h3>MarkDeliveredOrderResponse</h3>';
+    $res = '<h3>NotifyDeliveredResponse</h3>';
 
     return $res;
 }
@@ -212,19 +212,19 @@ function to_html_RateBuyerResponse( & $obj )
 function to_html( $obj )
 {
     $handler_map = array(
-        'lieferbay_protocol\AddOfferWithStateRequest'         => 'to_html_not_impl',
-        'lieferbay_protocol\AddOfferWithStateResponse'        => 'to_html_AddOfferWithStateResponse',
-        'lieferbay_protocol\CancelOfferWithStateRequest'      => 'to_html_not_impl',
-        'lieferbay_protocol\CancelOfferWithStateResponse'     => 'to_html_CancelOfferWithStateResponse',
+        'lieferbay_protocol\AddOfferRequest'         => 'to_html_not_impl',
+        'lieferbay_protocol\AddOfferResponse'        => 'to_html_AddOfferResponse',
+        'lieferbay_protocol\CancelOfferRequest'      => 'to_html_not_impl',
+        'lieferbay_protocol\CancelOfferResponse'     => 'to_html_CancelOfferResponse',
         'lieferbay_protocol\GetOfferWithStateRequest'         => 'to_html_not_impl',
         'lieferbay_protocol\GetOfferWithStateResponse'        => 'to_html_GetOfferWithStateResponse',
         'lieferbay_protocol\AddOrderRequest'        => 'to_html_not_impl',
         'lieferbay_protocol\AddOrderResponse'       => 'to_html_AddOrderResponse',
         'lieferbay_protocol\CancelOrderRequest'     => 'to_html_not_impl',
         'lieferbay_protocol\CancelOrderResponse'    => 'to_html_CancelOrderResponse',
-        'lieferbay_protocol\AcceptOrderResponse'    => 'to_html_AcceptOrderResponse',
-        'lieferbay_protocol\DeclineOrderResponse'   => 'to_html_DeclineOrderResponse',
-        'lieferbay_protocol\MarkDeliveredOrderResponse'    => 'to_html_MarkDeliveredOrderResponse',
+        'lieferbay_protocol\AcceptOfferResponse'    => 'to_html_AcceptOfferResponse',
+        'lieferbay_protocol\DeclineOfferResponse'   => 'to_html_DeclineOfferResponse',
+        'lieferbay_protocol\NotifyDeliveredResponse'    => 'to_html_NotifyDeliveredResponse',
         'lieferbay_protocol\RateBuyerResponse'    => 'to_html_RateBuyerResponse',
     );
 

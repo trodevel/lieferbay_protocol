@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12366 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 namespace lieferbay_protocol\web;
 
@@ -90,8 +90,8 @@ function parse_OfferWithBuyer( & $csv_arr, & $offset )
 
     $res = new OfferWithBuyer;
 
-    $res->ride_id       = \basic_parser\parse_int( $csv_arr, $offset );
-    $res->ride          = \lieferbay_protocol\parse_Offer( $csv_arr, $offset );
+    $res->offer_id       = \basic_parser\parse_int( $csv_arr, $offset );
+    $res->offer_with_state          = \lieferbay_protocol\parse_Offer( $csv_arr, $offset );
     $res->buyer_name  = \basic_parser\parse_enc_string( $csv_arr, $offset );
 
     return $res;
@@ -103,8 +103,8 @@ function parse_OfferWithStateWithId( & $csv_arr, & $offset )
 
     $res = new OfferWithStateWithId;
 
-    $res->ride_id       = \basic_parser\parse_int( $csv_arr, $offset );
-    $res->ride          = \lieferbay_protocol\parse_OfferWithState( $csv_arr, $offset );
+    $res->offer_id       = \basic_parser\parse_int( $csv_arr, $offset );
+    $res->offer_with_state          = \lieferbay_protocol\parse_OfferWithState( $csv_arr, $offset );
 
     return $res;
 }
@@ -168,11 +168,11 @@ function parse_DashScreenUser( & $csv_arr, & $offset )
 
         //echo "size = $size\n";
 
-        $res->rides = array();
+        $res->offer_with_states = array();
 
         for( $i = 0; $i < $size; $i++ )
         {
-            array_push( $res->rides, parse_OfferWithBuyer( $csv_arr, $offset ) );
+            array_push( $res->offer_with_states, parse_OfferWithBuyer( $csv_arr, $offset ) );
         }
     }
 
@@ -205,11 +205,11 @@ function parse_DashScreenBuyer( & $csv_arr, & $offset )
 
         //echo "size = $size\n";
 
-        $res->rides = array();
+        $res->offer_with_states = array();
 
         for( $i = 0; $i < $size; $i++ )
         {
-            array_push( $res->rides, parse_OfferWithStateWithId( $csv_arr, $offset ) );
+            array_push( $res->offer_with_states, parse_OfferWithStateWithId( $csv_arr, $offset ) );
         }
     }
 

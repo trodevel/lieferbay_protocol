@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL_CSV_RESPONSE_ENCODER_H
 #define LIB_LIEFERBAY_PROTOCOL_CSV_RESPONSE_ENCODER_H
@@ -54,14 +54,14 @@ public:
     static std::ostream & write( std::ostream & os, const web::AcceptedOrderBuyer & r );
     static std::ostream & write( std::ostream & os, const web::DashScreenUser & r );
     static std::ostream & write( std::ostream & os, const web::DashScreenBuyer & r );
-    static std::string to_csv( const AddOfferWithStateResponse & r );
-    static std::string to_csv( const CancelOfferWithStateResponse & r );
+    static std::string to_csv( const AddOfferResponse & r );
+    static std::string to_csv( const CancelOfferResponse & r );
     static std::string to_csv( const GetOfferWithStateResponse & r );
     static std::string to_csv( const AddOrderResponse & r );
     static std::string to_csv( const CancelOrderResponse & r );
-    static std::string to_csv( const AcceptOrderResponse & r );
-    static std::string to_csv( const DeclineOrderResponse & r );
-    static std::string to_csv( const MarkDeliveredOrderResponse & r );
+    static std::string to_csv( const AcceptOfferResponse & r );
+    static std::string to_csv( const DeclineOfferResponse & r );
+    static std::string to_csv( const NotifyDeliveredResponse & r );
     static std::string to_csv( const RateBuyerResponse & r );
     static std::string to_csv( const generic_protocol::BackwardMessage & r );
     static std::string to_csv( const web::GetProductItemListResponse & r );

@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12356 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -92,7 +92,7 @@ function parse_OfferWithState( & $csv_arr, & $offset )
 
     $res->is_open           = \basic_parser\parse_int( $csv_arr, $offset );
     $res->summary           = parse_Offer( $csv_arr, $offset );
-    $res->pending_order_ids = \basic_parser\parse_VectorInt( $csv_arr, $offset );
+    $res->pending_offer_ids = \basic_parser\parse_VectorInt( $csv_arr, $offset );
     $res->order_id = \basic_parser\parse_int( $csv_arr, $offset );
     $res->resolution        = \basic_parser\parse_int( $csv_arr, $offset );
 
@@ -122,7 +122,7 @@ function parse_Order( & $csv_arr, & $offset )
     $res = new Order;
 
     $res->is_open           = \basic_parser\parse_int( $csv_arr, $offset );
-    $res->ride_id           = \basic_parser\parse_int( $csv_arr, $offset );
+    $res->offer_id           = \basic_parser\parse_int( $csv_arr, $offset );
     $res->delivery_address  = parse_Address( $csv_arr, $offset );
     $res->shopping_list_id  = \basic_parser\parse_int( $csv_arr, $offset );
     $res->state             = \basic_parser\parse_int( $csv_arr, $offset );
@@ -131,24 +131,24 @@ function parse_Order( & $csv_arr, & $offset )
     return $res;
 }
 
-function parse_AddOfferWithStateResponse( & $csv_arr )
+function parse_AddOfferResponse( & $csv_arr )
 {
-    // AddOfferWithStateResponse;123;
+    // AddOfferResponse;123;
 
     $offset = 1;
 
-    $res = new AddOfferWithStateResponse;
+    $res = new AddOfferResponse;
 
-    $res->ride_id       = \basic_parser\parse_int( $csv_arr, $offset );
+    $res->offer_id       = \basic_parser\parse_int( $csv_arr, $offset );
 
     return $res;
 }
 
-function parse_CancelOfferWithStateResponse( & $csv_arr )
+function parse_CancelOfferResponse( & $csv_arr )
 {
-    // CancelOfferWithStateResponse;
+    // CancelOfferResponse;
 
-    $res = new CancelOfferWithStateResponse;
+    $res = new CancelOfferResponse;
 
     return $res;
 }
@@ -161,7 +161,7 @@ function parse_GetOfferWithStateResponse( & $csv_arr )
 
     $res = new GetOfferWithStateResponse;
 
-    $res->ride  = parse_OfferWithState( $csv_arr, $offset );
+    $res->offer_with_state  = parse_OfferWithState( $csv_arr, $offset );
 
     return $res;
 }
@@ -188,29 +188,29 @@ function parse_CancelOrderResponse( & $csv_arr )
     return $res;
 }
 
-function parse_AcceptOrderResponse( & $csv_arr )
+function parse_AcceptOfferResponse( & $csv_arr )
 {
-    // AcceptOrderResponse;
+    // AcceptOfferResponse;
 
-    $res = new AcceptOrderResponse;
+    $res = new AcceptOfferResponse;
 
     return $res;
 }
 
-function parse_DeclineOrderResponse( & $csv_arr )
+function parse_DeclineOfferResponse( & $csv_arr )
 {
-    // DeclineOrderResponse;
+    // DeclineOfferResponse;
 
-    $res = new DeclineOrderResponse;
+    $res = new DeclineOfferResponse;
 
     return $res;
 }
 
-function parse_MarkDeliveredOrderResponse( & $csv_arr )
+function parse_NotifyDeliveredResponse( & $csv_arr )
 {
-    // MarkDeliveredOrderResponse;
+    // NotifyDeliveredResponse;
 
-    $res = new MarkDeliveredOrderResponse;
+    $res = new NotifyDeliveredResponse;
 
     return $res;
 }
@@ -235,14 +235,14 @@ protected static function parse_csv_array( $csv_arr )
     $type = $csv_arr[0][0];
 
     $func_map = array(
-        'AddOfferWithStateResponse'               => 'parse_AddOfferWithStateResponse',
-        'CancelOfferWithStateResponse'            => 'parse_CancelOfferWithStateResponse',
+        'AddOfferResponse'               => 'parse_AddOfferResponse',
+        'CancelOfferResponse'            => 'parse_CancelOfferResponse',
         'GetOfferWithStateResponse'               => 'parse_GetOfferWithStateResponse',
         'AddOrderResponse'              => 'parse_AddOrderResponse',
         'CancelOrderResponse'           => 'parse_CancelOrderResponse',
-        'AcceptOrderResponse'           => 'parse_AcceptOrderResponse',
-        'DeclineOrderResponse'          => 'parse_DeclineOrderResponse',
-        'MarkDeliveredOrderResponse'    => 'parse_MarkDeliveredOrderResponse',
+        'AcceptOfferResponse'           => 'parse_AcceptOfferResponse',
+        'DeclineOfferResponse'          => 'parse_DeclineOfferResponse',
+        'NotifyDeliveredResponse'    => 'parse_NotifyDeliveredResponse',
         'RateBuyerResponse'           => 'parse_RateBuyerResponse',
         );
 

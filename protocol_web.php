@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12366 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 namespace lieferbay_protocol\web;
 
@@ -57,15 +57,15 @@ class ShoppingListWithTotals
 
 class OfferWithBuyer
 {
-    public  $ride_id;           // id_t
-    public  $ride;              // Offer
+    public  $offer_id;           // id_t
+    public  $offer_with_state;              // Offer
     public  $buyer_name;      // string
 }
 
 class OfferWithStateWithId
 {
-    public  $ride_id;           // id_t
-    public  $ride;              // OfferWithState
+    public  $offer_id;           // id_t
+    public  $offer_with_state;              // OfferWithState
 }
 
 class ShoppingRequestInfo
@@ -100,7 +100,7 @@ class DashScreenUser
 {
     public  $current_time;      // basic_objects::LocalTime
 
-    public  $rides;             // array<OfferWithBuyer>
+    public  $offer_with_states;             // array<OfferWithBuyer>
     public  $orders;            // array<AcceptedOrderUser>
 }
 
@@ -108,7 +108,7 @@ class DashScreenBuyer
 {
     public  $current_time;      // basic_objects::LocalTime
 
-    public  $rides;             // array<OfferWithStateWithId>
+    public  $offer_with_states;             // array<OfferWithStateWithId>
     public  $orders;            // array<AcceptedOrderBuyer>
 }
 
@@ -141,20 +141,20 @@ class GetProductItemListResponse extends \generic_protocol\BackwardMessage
 
 class GetShoppingRequestInfoRequest extends \lieferbay_protocol\Request
 {
-    public  $ride_id;           // id_t
+    public  $offer_id;           // id_t
 
-    function __construct( $session_id, $ride_id )
+    function __construct( $session_id, $offer_id )
     {
         parent::__construct( $session_id );
 
-        $this->ride_id      = $ride_id;
+        $this->offer_id      = $offer_id;
     }
 
     public function to_generic_request()
     {
         $res = array(
             "CMD"       => "web/GetShoppingRequestInfoRequest",
-            "RIDE_ID"   => $this->ride_id
+            "RIDE_ID"   => $this->offer_id
         );
 
         return \generic_protocol\assemble_request( $res ) .

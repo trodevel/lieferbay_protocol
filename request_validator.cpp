@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 
 #include "request_validator.h"      // self
@@ -107,30 +107,30 @@ bool RequestValidator::validate( const Address & r )
     return true;
 }
 
-bool RequestValidator::validate( const AddOfferWithStateRequest & r )
+bool RequestValidator::validate( const AddOfferRequest & r )
 {
-    validate( r.ride );
+    validate( r.offer_with_state );
 
     return generic_protocol::RequestValidator::validate( r );
 }
 
-bool RequestValidator::validate( const CancelOfferWithStateRequest & r )
+bool RequestValidator::validate( const CancelOfferRequest & r )
 {
-    validate( r.ride_id, "RIDE_ID" );
+    validate( r.offer_id, "RIDE_ID" );
 
     return generic_protocol::RequestValidator::validate( r );
 }
 
 bool RequestValidator::validate( const GetOfferWithStateRequest & r )
 {
-    validate( r.ride_id, "RIDE_ID" );
+    validate( r.offer_id, "RIDE_ID" );
 
     return generic_protocol::RequestValidator::validate( r );
 }
 
 bool RequestValidator::validate( const AddOrderRequest & r )
 {
-    validate( r.ride_id, "RIDE_ID" );
+    validate( r.offer_id, "RIDE_ID" );
     validate( r.shopping_list );
     validate( r.delivery_address );
 
@@ -144,21 +144,21 @@ bool RequestValidator::validate( const CancelOrderRequest & r )
     return generic_protocol::RequestValidator::validate( r );
 }
 
-bool RequestValidator::validate( const AcceptOrderRequest & r )
+bool RequestValidator::validate( const AcceptOfferRequest & r )
 {
     validate( r.order_id, "ORDER_ID" );
 
     return generic_protocol::RequestValidator::validate( r );
 }
 
-bool RequestValidator::validate( const DeclineOrderRequest & r )
+bool RequestValidator::validate( const DeclineOfferRequest & r )
 {
     validate( r.order_id, "ORDER_ID" );
 
     return generic_protocol::RequestValidator::validate( r );
 }
 
-bool RequestValidator::validate( const MarkDeliveredOrderRequest & r )
+bool RequestValidator::validate( const NotifyDeliveredRequest & r )
 {
     validate( r.order_id, "ORDER_ID" );
 
@@ -182,7 +182,7 @@ bool RequestValidator::validate( const GetProductItemListRequest & r )
 
 bool RequestValidator::validate( const GetShoppingRequestInfoRequest & r )
 {
-    ::lieferbay_protocol::RequestValidator::validate( r.ride_id, "RIDE_ID" );
+    ::lieferbay_protocol::RequestValidator::validate( r.offer_id, "RIDE_ID" );
 
     return generic_protocol::RequestValidator::validate( r );
 }

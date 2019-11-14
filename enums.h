@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 #ifndef LIEFERBAY_PROTOCOL_ENUMS_H
 #define LIEFERBAY_PROTOCOL_ENUMS_H
@@ -29,14 +29,14 @@ namespace lieferbay_protocol {
 enum class request_type_e
 {
     UNDEF,
-    AddOfferWithStateRequest,
-    CancelOfferWithStateRequest,
+    AddOfferRequest,
+    CancelOfferRequest,
     GetOfferWithStateRequest,
     AddOrderRequest,
     CancelOrderRequest,
-    AcceptOrderRequest,
-    DeclineOrderRequest,
-    MarkDeliveredOrderRequest,
+    AcceptOfferRequest,
+    DeclineOfferRequest,
+    NotifyDeliveredRequest,
     RateBuyerRequest,
 };
 

@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 #include "str_helper.h"             // self
 
@@ -42,8 +42,8 @@ const std::string & StrHelper::to_string( const request_type_e s )
     static const std::map< Type, std::string > m =
     {
         { Type:: TUPLE_VAL_STR( UNDEF ) },
-        { Type:: TUPLE_VAL_STR( AddOfferWithStateRequest ) },
-        { Type:: TUPLE_VAL_STR( CancelOfferWithStateRequest ) },
+        { Type:: TUPLE_VAL_STR( AddOfferRequest ) },
+        { Type:: TUPLE_VAL_STR( CancelOfferRequest ) },
         { Type:: TUPLE_VAL_STR( GetOfferWithStateRequest ) },
         { Type:: TUPLE_VAL_STR( AddOrderRequest ) },
         { Type:: TUPLE_VAL_STR( CancelOrderRequest ) },
@@ -126,32 +126,32 @@ std::ostream & StrHelper::write( std::ostream & os, const Offer & l )
     return os;
 }
 
-std::ostream & StrHelper::write( std::ostream & os, const AddOfferWithStateRequest & l )
+std::ostream & StrHelper::write( std::ostream & os, const AddOfferRequest & l )
 {
-    os << "ride { ";
-    write( os, l.ride );
+    os << "offer_with_state { ";
+    write( os, l.offer_with_state );
     os <<  " }";
 
     return os;
 }
 
-std::ostream & StrHelper::write( std::ostream & os, const CancelOfferWithStateRequest & l )
+std::ostream & StrHelper::write( std::ostream & os, const CancelOfferRequest & l )
 {
-    os << "ride_id " << l.ride_id;
+    os << "offer_id " << l.offer_id;
 
     return os;
 }
 
 std::ostream & StrHelper::write( std::ostream & os, const GetOfferWithStateRequest & l )
 {
-    os << "ride_id " << l.ride_id;
+    os << "offer_id " << l.offer_id;
 
     return os;
 }
 
 std::ostream & StrHelper::write( std::ostream & os, const AddOrderRequest & l )
 {
-    os << "ride_id " << l.ride_id;
+    os << "offer_id " << l.offer_id;
     os << " shopping_list { ";
     os << " } ";
 
@@ -165,21 +165,21 @@ std::ostream & StrHelper::write( std::ostream & os, const CancelOrderRequest & l
     return os;
 }
 
-std::ostream & StrHelper::write( std::ostream & os, const AcceptOrderRequest & l )
+std::ostream & StrHelper::write( std::ostream & os, const AcceptOfferRequest & l )
 {
     os << "order_id " << l.order_id;
 
     return os;
 }
 
-std::ostream & StrHelper::write( std::ostream & os, const DeclineOrderRequest & l )
+std::ostream & StrHelper::write( std::ostream & os, const DeclineOfferRequest & l )
 {
     os << "order_id " << l.order_id;
 
     return os;
 }
 
-std::ostream & StrHelper::write( std::ostream & os, const MarkDeliveredOrderRequest & l )
+std::ostream & StrHelper::write( std::ostream & os, const NotifyDeliveredRequest & l )
 {
     os << "order_id " << l.order_id;
 
@@ -229,7 +229,7 @@ std::ostream & StrHelper::write( std::ostream & os, const GetProductItemListRequ
 
 std::ostream & StrHelper::write( std::ostream & os, const GetShoppingRequestInfoRequest & l )
 {
-    os << "ride_id " << l.ride_id;
+    os << "offer_id " << l.offer_id;
 
     return os;
 }

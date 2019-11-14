@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 #include "generic_request/request.h"        // generic_request::Request
 #include "basic_parser/malformed_request.h" // MalformedRequest
@@ -53,14 +53,14 @@ private:
 
     static request_type_e   detect_request_type( const generic_request::Request & r );
 
-    static ForwardMessage *             to_AddOfferWithStateRequest( const generic_request::Request & r );
-    static ForwardMessage *             to_CancelOfferWithStateRequest( const generic_request::Request & r );
+    static ForwardMessage *             to_AddOfferRequest( const generic_request::Request & r );
+    static ForwardMessage *             to_CancelOfferRequest( const generic_request::Request & r );
     static ForwardMessage *             to_GetOfferWithStateRequest( const generic_request::Request & r );
     static ForwardMessage *             to_AddOrderRequest( const generic_request::Request & r );
     static ForwardMessage *             to_CancelOrderRequest( const generic_request::Request & r );
-    static ForwardMessage *             to_AcceptOrderRequest( const generic_request::Request & r );
-    static ForwardMessage *             to_DeclineOrderRequest( const generic_request::Request & r );
-    static ForwardMessage *             to_MarkDeliveredOrderRequest( const generic_request::Request & r );
+    static ForwardMessage *             to_AcceptOfferRequest( const generic_request::Request & r );
+    static ForwardMessage *             to_DeclineOfferRequest( const generic_request::Request & r );
+    static ForwardMessage *             to_NotifyDeliveredRequest( const generic_request::Request & r );
     static ForwardMessage *             to_RateBuyerRequest( const generic_request::Request & r );
 };
 

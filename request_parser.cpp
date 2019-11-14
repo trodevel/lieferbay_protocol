@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 #include "request_parser.h"         // self
 
@@ -49,14 +49,14 @@ generic_protocol::ForwardMessage* RequestParser::to_forward_message( const gener
 
     static const std::map<KeyType, PPMF> funcs =
     {
-        HANDLER_MAP_ENTRY( AddOfferWithStateRequest ),
+        HANDLER_MAP_ENTRY( AddOfferRequest ),
         HANDLER_MAP_ENTRY( AddOrderRequest ),
         HANDLER_MAP_ENTRY( CancelOrderRequest ),
-        HANDLER_MAP_ENTRY( AcceptOrderRequest ),
-        HANDLER_MAP_ENTRY( DeclineOrderRequest ),
-        HANDLER_MAP_ENTRY( MarkDeliveredOrderRequest ),
+        HANDLER_MAP_ENTRY( AcceptOfferRequest ),
+        HANDLER_MAP_ENTRY( DeclineOfferRequest ),
+        HANDLER_MAP_ENTRY( NotifyDeliveredRequest ),
         HANDLER_MAP_ENTRY( RateBuyerRequest ),
-        HANDLER_MAP_ENTRY( CancelOfferWithStateRequest ),
+        HANDLER_MAP_ENTRY( CancelOfferRequest ),
         HANDLER_MAP_ENTRY( GetOfferWithStateRequest ),
     };
 
@@ -111,26 +111,26 @@ void RequestParser::to_ProductItem( ProductItem * res, const generic_request::Re
     get_value_or_throw_double( res->weight, "WEIGHT", r );
 }
 
-RequestParser::ForwardMessage * RequestParser::to_AddOfferWithStateRequest( const generic_request::Request & r )
+RequestParser::ForwardMessage * RequestParser::to_AddOfferRequest( const generic_request::Request & r )
 {
-    auto * res = new AddOfferWithStateRequest;
+    auto * res = new AddOfferRequest;
 
     generic_protocol::RequestParser::to_request( res, r );
 
-    to_OfferWithState( & res->ride, r );
+    to_OfferWithState( & res->offer_with_state, r );
 
     RequestValidator::validate( * res );
 
     return res;
 }
 
-RequestParser::ForwardMessage * RequestParser::to_CancelOfferWithStateRequest( const generic_request::Request & r )
+RequestParser::ForwardMessage * RequestParser::to_CancelOfferRequest( const generic_request::Request & r )
 {
-    auto res = new CancelOfferWithStateRequest;
+    auto res = new CancelOfferRequest;
 
     generic_protocol::RequestParser::to_request( res, r );
 
-    to_Id( & res->ride_id, "RIDE_ID", r );
+    to_Id( & res->offer_id, "RIDE_ID", r );
 
     RequestValidator::validate( * res );
 
@@ -143,7 +143,7 @@ RequestParser::ForwardMessage * RequestParser::to_GetOfferWithStateRequest( cons
 
     generic_protocol::RequestParser::to_request( res, r );
 
-    to_Id( & res->ride_id, "RIDE_ID", r );
+    to_Id( & res->offer_id, "RIDE_ID", r );
 
     RequestValidator::validate( * res );
 
@@ -156,7 +156,7 @@ RequestParser::ForwardMessage * RequestParser::to_AddOrderRequest( const generic
 
     generic_protocol::RequestParser::to_request( res, r );
 
-    to_Id( & res->ride_id, "RIDE_ID", r );
+    to_Id( & res->offer_id, "RIDE_ID", r );
 
     to_ShoppingList( & res->shopping_list, r );
     to_Address( & res->delivery_address, r );
@@ -179,9 +179,9 @@ RequestParser::ForwardMessage * RequestParser::to_CancelOrderRequest( const gene
     return res;
 }
 
-RequestParser::ForwardMessage * RequestParser::to_AcceptOrderRequest( const generic_request::Request & r )
+RequestParser::ForwardMessage * RequestParser::to_AcceptOfferRequest( const generic_request::Request & r )
 {
-    auto * res = new AcceptOrderRequest;
+    auto * res = new AcceptOfferRequest;
 
     generic_protocol::RequestParser::to_request( res, r );
 
@@ -192,9 +192,9 @@ RequestParser::ForwardMessage * RequestParser::to_AcceptOrderRequest( const gene
     return res;
 }
 
-RequestParser::ForwardMessage * RequestParser::to_DeclineOrderRequest( const generic_request::Request & r )
+RequestParser::ForwardMessage * RequestParser::to_DeclineOfferRequest( const generic_request::Request & r )
 {
-    auto * res = new DeclineOrderRequest;
+    auto * res = new DeclineOfferRequest;
 
     generic_protocol::RequestParser::to_request( res, r );
 
@@ -205,9 +205,9 @@ RequestParser::ForwardMessage * RequestParser::to_DeclineOrderRequest( const gen
     return res;
 }
 
-RequestParser::ForwardMessage * RequestParser::to_MarkDeliveredOrderRequest( const generic_request::Request & r )
+RequestParser::ForwardMessage * RequestParser::to_NotifyDeliveredRequest( const generic_request::Request & r )
 {
-    auto * res = new MarkDeliveredOrderRequest;
+    auto * res = new NotifyDeliveredRequest;
 
     generic_protocol::RequestParser::to_request( res, r );
 
@@ -345,7 +345,7 @@ RequestParser::ForwardMessage * RequestParser::to_GetShoppingRequestInfoRequest(
 
     generic_protocol::RequestParser::to_request( res, r );
 
-    ::lieferbay_protocol::RequestParser::to_Id( & res->ride_id, "RIDE_ID", r );
+    ::lieferbay_protocol::RequestParser::to_Id( & res->offer_id, "RIDE_ID", r );
 
     RequestValidator::validate( * res );
 

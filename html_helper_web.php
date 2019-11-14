@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12366 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 namespace lieferbay_protocol\web;
 
@@ -160,8 +160,8 @@ function get_header_OfferWithBuyer()
 function to_html_OfferWithBuyer_tabledata( & $obj )
 {
     return get_html_table_data_elems( array(
-        $obj->ride_id ) ) .
-        \lieferbay_protocol\to_html_Offer_tabledata( $obj->ride ) .
+        $obj->offer_id ) ) .
+        \lieferbay_protocol\to_html_Offer_tabledata( $obj->offer_with_state ) .
         get_html_table_data_elems( array(
             $obj->buyer_name ) );
 }
@@ -175,8 +175,8 @@ function get_header_OfferWithStateWithId()
 function to_html_OfferWithStateWithId_tabledata( & $obj )
 {
     return get_html_table_data_elems( array(
-        $obj->ride_id ) ) .
-        \lieferbay_protocol\to_html_OfferWithState_tabledata( $obj->ride );
+        $obj->offer_id ) ) .
+        \lieferbay_protocol\to_html_OfferWithState_tabledata( $obj->offer_with_state );
 }
 
 function get_header_AcceptedOrderUser()
@@ -222,14 +222,14 @@ function to_html_DashScreenUser( & $obj )
     $res = '<h3>Dash Screen User ( current time ' . \basic_objects\to_string_LocalTime( $obj->current_time ) . ' )</h3>';
 
     {
-        $num   = sizeof( $obj->rides );
+        $num   = sizeof( $obj->offer_with_states );
 
         $res = $res . '<h2>Offered OfferWithStates ( ' . $num . ' )</h2>';
 
         $body = '';
         for( $i = 0; $i < $num; $i++ )
         {
-            $body = $body . get_html_table_tr( to_html_OfferWithBuyer_tabledata( $obj->rides[$i] ) );
+            $body = $body . get_html_table_tr( to_html_OfferWithBuyer_tabledata( $obj->offer_with_states[$i] ) );
         }
 
         $res = $res . get_html_table( NULL, NULL, NULL, 'border="1" cellspacing="1" cellpadding="3"',
@@ -266,14 +266,14 @@ function to_html_DashScreenBuyer( & $obj )
     $res = '<h3>Dash Screen Buyer ( current time ' . \basic_objects\to_string_LocalTime( $obj->current_time ) . ' )</h3>';
 
     {
-        $num   = sizeof( $obj->rides );
+        $num   = sizeof( $obj->offer_with_states );
 
         $res = $res . '<h2>My Offered OfferWithStates and Shopping Requests ( ' . $num . ' )</h2>';
 
         $body = '';
         for( $i = 0; $i < $num; $i++ )
         {
-            $body = $body . get_html_table_tr( to_html_OfferWithStateWithId_tabledata( $obj->rides[$i] ) );
+            $body = $body . get_html_table_tr( to_html_OfferWithStateWithId_tabledata( $obj->offer_with_states[$i] ) );
         }
 
         $res = $res . get_html_table( NULL, NULL, NULL, 'border="1" cellspacing="1" cellpadding="3"',

@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12358 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -171,7 +171,7 @@ class OfferWithState
 {
     public  $is_open;           // bool
     public  offer;              // Offer
-    public  $pending_order_ids; // array<id_t>
+    public  $pending_offer_ids; // array<id_t>
     public  $resolution;        // offer_state_e
 };
 
@@ -241,7 +241,7 @@ class Order
 class OrderWithState
 {
     public  $is_open;           // bool
-    public  $ride_id;           // id_t
+    public  $offer_id;           // id_t
     public  $order;             // Order
     public  $state;             // order_state_e
     public  $resolution;        // order_resolution_e
@@ -251,50 +251,50 @@ class OrderWithState
  * REQUESTS
  **************************************************/
 
-class AddOfferWithStateRequest extends Request
+class AddOfferRequest extends Request
 {
-    public $ride;   // Offer
+    public $offer_with_state;   // Offer
 
-    function __construct( $session_id, $ride )
+    function __construct( $session_id, $offer_with_state )
     {
         parent::__construct( $session_id );
 
-        $this->ride             = $ride;
+        $this->offer_with_state             = $offer_with_state;
     }
 
     public function to_generic_request()
     {
         $res = array(
-            "CMD"       => "AddOfferWithStateRequest"
+            "CMD"       => "AddOfferRequest"
             );
 
         return \generic_protocol\assemble_request( $res ) .
-            $this->ride->to_generic_request() .
+            $this->offer_with_state->to_generic_request() .
             parent::to_generic_request();
     }
 }
 
-class AddOfferWithStateResponse extends \generic_protocol\BackwardMessage
+class AddOfferResponse extends \generic_protocol\BackwardMessage
 {
-    public        $ride_id;     // id_t
+    public        $offer_id;     // id_t
 }
 
-class CancelOfferWithStateRequest extends Request
+class CancelOfferRequest extends Request
 {
-    public $ride_id;   // id_t
+    public $offer_id;   // id_t
 
-    function __construct( $session_id, $ride_id )
+    function __construct( $session_id, $offer_id )
     {
         parent::__construct( $session_id );
 
-        $this->ride_id          = $ride_id;
+        $this->offer_id          = $offer_id;
     }
 
     public function to_generic_request()
     {
         $res = array(
-            "CMD"       => "CancelOfferWithStateRequest",
-            "RIDE_ID"   => $this->ride_id
+            "CMD"       => "CancelOfferRequest",
+            "RIDE_ID"   => $this->offer_id
             );
 
         return \generic_protocol\assemble_request( $res ) .
@@ -302,26 +302,26 @@ class CancelOfferWithStateRequest extends Request
     }
 }
 
-class CancelOfferWithStateResponse extends \generic_protocol\BackwardMessage
+class CancelOfferResponse extends \generic_protocol\BackwardMessage
 {
 }
 
 class GetOfferWithStateRequest extends Request
 {
-    public $ride_id;   // id_t
+    public $offer_id;   // id_t
 
-    function __construct( $session_id, $ride_id )
+    function __construct( $session_id, $offer_id )
     {
         parent::__construct( $session_id );
 
-        $this->ride_id          = $ride_id;
+        $this->offer_id          = $offer_id;
     }
 
     public function to_generic_request()
     {
         $res = array(
             "CMD"       => "GetOfferWithStateRequest",
-            "RIDE_ID"   => $this->ride_id
+            "RIDE_ID"   => $this->offer_id
             );
 
         return \generic_protocol\assemble_request( $res ) .
@@ -331,20 +331,20 @@ class GetOfferWithStateRequest extends Request
 
 class GetOfferWithStateResponse extends \generic_protocol\BackwardMessage
 {
-    public $ride;   // OfferWithState
+    public $offer_with_state;   // OfferWithState
 }
 
 class AddOrderRequest extends Request
 {
-    public $ride_id;        // id_t
+    public $offer_id;        // id_t
     public $shopping_list;  // ShoppingList
     public $delivery_address;   // Address
 
-    function __construct( $session_id, $ride_id, $shopping_list, $delivery_address )
+    function __construct( $session_id, $offer_id, $shopping_list, $delivery_address )
     {
         parent::__construct( $session_id );
 
-        $this->ride_id          = $ride_id;
+        $this->offer_id          = $offer_id;
         $this->shopping_list    = $shopping_list;
         $this->delivery_address = $delivery_address;
     }
@@ -353,7 +353,7 @@ class AddOrderRequest extends Request
     {
         $res = array(
             "CMD"       => "AddOrderRequest",
-            "RIDE_ID"   => $this->ride_id
+            "RIDE_ID"   => $this->offer_id
             );
 
         return \generic_protocol\assemble_request( $res ) .
@@ -395,7 +395,7 @@ class CancelOrderResponse extends \generic_protocol\BackwardMessage
 {
 }
 
-class AcceptOrderRequest extends Request
+class AcceptOfferRequest extends Request
 {
     public $order_id;   // id_t
 
@@ -409,7 +409,7 @@ class AcceptOrderRequest extends Request
     public function to_generic_request()
     {
         $res = array(
-            "CMD"       => "AcceptOrderRequest",
+            "CMD"       => "AcceptOfferRequest",
             "ORDER_ID"  => $this->order_id
         );
 
@@ -418,11 +418,11 @@ class AcceptOrderRequest extends Request
     }
 }
 
-class AcceptOrderResponse extends \generic_protocol\BackwardMessage
+class AcceptOfferResponse extends \generic_protocol\BackwardMessage
 {
 }
 
-class DeclineOrderRequest extends Request
+class DeclineOfferRequest extends Request
 {
     public $order_id;   // id_t
 
@@ -436,7 +436,7 @@ class DeclineOrderRequest extends Request
     public function to_generic_request()
     {
         $res = array(
-            "CMD"       => "DeclineOrderRequest",
+            "CMD"       => "DeclineOfferRequest",
             "ORDER_ID"  => $this->order_id
         );
 
@@ -445,11 +445,11 @@ class DeclineOrderRequest extends Request
     }
 }
 
-class DeclineOrderResponse extends \generic_protocol\BackwardMessage
+class DeclineOfferResponse extends \generic_protocol\BackwardMessage
 {
 }
 
-class MarkDeliveredOrderRequest extends Request
+class NotifyDeliveredRequest extends Request
 {
     public $order_id;   // id_t
 
@@ -463,7 +463,7 @@ class MarkDeliveredOrderRequest extends Request
     public function to_generic_request()
     {
         $res = array(
-            "CMD"       => "MarkDeliveredOrderRequest",
+            "CMD"       => "NotifyDeliveredRequest",
             "ORDER_ID"  => $this->order_id
         );
 
@@ -472,7 +472,7 @@ class MarkDeliveredOrderRequest extends Request
     }
 }
 
-class MarkDeliveredOrderResponse extends \generic_protocol\BackwardMessage
+class NotifyDeliveredResponse extends \generic_protocol\BackwardMessage
 {
 }
 

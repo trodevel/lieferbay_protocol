@@ -1,6 +1,6 @@
 <?php
 
-// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 require_once 'lieferbay_protocol_web.php';
 
@@ -9,31 +9,31 @@ echo "OK\n";
 $session_id = "afafaf";
 
 {
-    $ride_summary = new \lieferbay_protocol\Offer( \lieferbay_protocol\GeoPosition::withPlz( 50668 ), new \basic_objects\LocalTime( 2019, 05, 22, 17, 30, 0 ), 2.5 );
+    $offer_with_state_summary = new \lieferbay_protocol\Offer( \lieferbay_protocol\GeoPosition::withPlz( 50668 ), new \basic_objects\LocalTime( 2019, 05, 22, 17, 30, 0 ), 2.5 );
 
-    $req = new \lieferbay_protocol\AddOfferWithStateRequest( $session_id, $ride_summary );
-
-    echo "req = " . $req->to_generic_request() . "\n";
-}
-
-{
-    $ride_id    = 101;
-
-    $req = new \lieferbay_protocol\CancelOfferWithStateRequest( $session_id, $ride_id );
+    $req = new \lieferbay_protocol\AddOfferRequest( $session_id, $offer_with_state_summary );
 
     echo "req = " . $req->to_generic_request() . "\n";
 }
 
 {
-    $ride_id    = 101;
+    $offer_id    = 101;
 
-    $req = new \lieferbay_protocol\GetOfferWithStateRequest( $session_id, $ride_id );
+    $req = new \lieferbay_protocol\CancelOfferRequest( $session_id, $offer_id );
 
     echo "req = " . $req->to_generic_request() . "\n";
 }
 
 {
-    $ride_id        = 101;
+    $offer_id    = 101;
+
+    $req = new \lieferbay_protocol\GetOfferWithStateRequest( $session_id, $offer_id );
+
+    echo "req = " . $req->to_generic_request() . "\n";
+}
+
+{
+    $offer_id        = 101;
 
     $items = array();
 
@@ -45,48 +45,48 @@ $session_id = "afafaf";
 
     $delivery_address = new \lieferbay_protocol\Address( 50668, "Germany", "Köln", "Eigelstein", "10", "" );
 
-    $req = new \lieferbay_protocol\AddOrderRequest( $session_id, $ride_id, $shopping_list, $delivery_address );
+    $req = new \lieferbay_protocol\AddOrderRequest( $session_id, $offer_id, $shopping_list, $delivery_address );
 
     echo "req = " . $req->to_generic_request() . "\n";
 }
 
 {
-    $ride_id        = 101;
+    $offer_id        = 101;
 
-    $req = new \lieferbay_protocol\CancelOrderRequest( $session_id, $ride_id );
-
-    echo "req = " . $req->to_generic_request() . "\n";
-}
-
-{
-    $ride_id        = 101;
-
-    $req = new \lieferbay_protocol\AcceptOrderRequest( $session_id, $ride_id );
+    $req = new \lieferbay_protocol\CancelOrderRequest( $session_id, $offer_id );
 
     echo "req = " . $req->to_generic_request() . "\n";
 }
 
 {
-    $ride_id        = 101;
+    $offer_id        = 101;
 
-    $req = new \lieferbay_protocol\DeclineOrderRequest( $session_id, $ride_id );
-
-    echo "req = " . $req->to_generic_request() . "\n";
-}
-
-{
-    $ride_id        = 101;
-
-    $req = new \lieferbay_protocol\MarkDeliveredOrderRequest( $session_id, $ride_id );
+    $req = new \lieferbay_protocol\AcceptOfferRequest( $session_id, $offer_id );
 
     echo "req = " . $req->to_generic_request() . "\n";
 }
 
 {
-    $ride_id        = 101;
+    $offer_id        = 101;
+
+    $req = new \lieferbay_protocol\DeclineOfferRequest( $session_id, $offer_id );
+
+    echo "req = " . $req->to_generic_request() . "\n";
+}
+
+{
+    $offer_id        = 101;
+
+    $req = new \lieferbay_protocol\NotifyDeliveredRequest( $session_id, $offer_id );
+
+    echo "req = " . $req->to_generic_request() . "\n";
+}
+
+{
+    $offer_id        = 101;
     $stars          = 4;
 
-    $req = new \lieferbay_protocol\RateBuyerRequest( $session_id, $ride_id, $stars );
+    $req = new \lieferbay_protocol\RateBuyerRequest( $session_id, $offer_id, $stars );
 
     echo "req = " . $req->to_generic_request() . "\n";
 }
@@ -102,9 +102,9 @@ $session_id = "afafaf";
 }
 
 {
-    $ride_id    = 101;
+    $offer_id    = 101;
 
-    $req = new \lieferbay_protocol\web\GetShoppingRequestInfoRequest( $session_id, $ride_id );
+    $req = new \lieferbay_protocol\web\GetShoppingRequestInfoRequest( $session_id, $offer_id );
 
     echo "req = " . $req->to_generic_request() . "\n";
 }

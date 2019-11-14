@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12354 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 #include "protocol.h"    // Request...
 
@@ -36,14 +36,14 @@ public:
     static bool validate( const GeoPosition & r );
     static bool validate( const Offer & r );
     static bool validate( const Address & r );
-    static bool validate( const AddOfferWithStateRequest & r );
-    static bool validate( const CancelOfferWithStateRequest & r );
+    static bool validate( const AddOfferRequest & r );
+    static bool validate( const CancelOfferRequest & r );
     static bool validate( const GetOfferWithStateRequest & r );
     static bool validate( const AddOrderRequest & r );
     static bool validate( const CancelOrderRequest & r );
-    static bool validate( const AcceptOrderRequest & r );
-    static bool validate( const DeclineOrderRequest & r );
-    static bool validate( const MarkDeliveredOrderRequest & r );
+    static bool validate( const AcceptOfferRequest & r );
+    static bool validate( const DeclineOfferRequest & r );
+    static bool validate( const NotifyDeliveredRequest & r );
     static bool validate( const RateBuyerRequest & r );
 };
 
