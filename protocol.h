@@ -56,6 +56,8 @@ struct ShoppingItem
 {
     id_t            product_item_id;
     uint32_t        amount;
+    bool            is_mandatory;
+    bool            should_accept_expensive_alternative;
 };
 
 struct ShoppingList
