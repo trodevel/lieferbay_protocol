@@ -52,21 +52,20 @@ WAITING_OFFERS__ACCEPT_OFFER            [ label="AcceptOffer"                   
 WAITING_OFFERS__CALL_DECLINE_OTHER_OFFERS [ label="decline other offers"            shape = sdl_call ]
 WAITING_OFFERS__CANCEL_ORDER            [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
 WAITING_OFFERS__RESOL_1                 [ label="resolution := CANCELLED_BY_USER"   shape = sdl_task ]
-WAITING_OFFERS__ADD_OFFER               [ label="AddOffer\nModifyOffer\nDeleteOffer" shape = sdl_input_from_right fillcolor=cyan ]
+WAITING_OFFERS__ADD_OFFER               [ label="AddOffer\nModifyOffer\nCancelOffer" shape = sdl_input_from_right fillcolor=cyan ]
 WAITING_OFFERS__END                     [ label = ""                                shape = sdl_stop  style=solid ]
 
-ACCEPTED_WAITING_SHOPPING_START__SHOPPING_STARTED [ label="ShoppingStarted"                   shape = sdl_input_from_right fillcolor=cyan ]
+ACCEPTED_WAITING_SHOPPING_START__SHOPPING_STARTED [ label="Notify\nShoppingStarted"           shape = sdl_input_from_right fillcolor=cyan ]
 ACCEPTED_WAITING_SHOPPING_START__CANCEL_ORDER     [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
 ACCEPTED_WAITING_SHOPPING_START__RESOL_1          [ label="resolution := CANCELLED_BY_USER"   shape = sdl_task ]
-ACCEPTED_WAITING_SHOPPING_START__CANCEL_RIDE      [ label="CancelRide"                        shape = sdl_input_from_right fillcolor=cyan ]
+ACCEPTED_WAITING_SHOPPING_START__SHOPPING_FAILED  [ label="Notify\nShoppingFailed"            shape = sdl_input_from_right fillcolor=cyan ]
 ACCEPTED_WAITING_SHOPPING_START__END              [ label = ""                                shape = sdl_stop  style=solid ]
 
-SHOPPING_WAITING_SHOPPING_END__SHOPPING_ENDED     [ label="ShoppingEnded"                     shape = sdl_input_from_right fillcolor=cyan ]
-SHOPPING_WAITING_SHOPPING_END__CANCEL_RIDE        [ label="CancelRide"                        shape = sdl_input_from_right fillcolor=cyan ]
-SHOPPING_WAITING_SHOPPING_END__CANNOT_COMPLETE    [ label="CannotComplete"                    shape = sdl_input_from_right fillcolor=cyan ]
+SHOPPING_WAITING_SHOPPING_END__SHOPPING_ENDED     [ label="Notify\nShoppingEnded"             shape = sdl_input_from_right fillcolor=cyan ]
+SHOPPING_WAITING_SHOPPING_END__SHOPPING_FAILED    [ label="Notify\nShoppingFailed"            shape = sdl_input_from_right fillcolor=cyan ]
 SHOPPING_WAITING_SHOPPING_END__CANCEL_ORDER       [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
 
-SHOPPING_ENDED_WAITING_DELIVERY__DELIVERED        [ label="Delivered"                         shape = sdl_input_from_right fillcolor=cyan ]
+SHOPPING_ENDED_WAITING_DELIVERY__DELIVERED        [ label="Notify\nDelivered"                 shape = sdl_input_from_right fillcolor=cyan ]
 SHOPPING_ENDED_WAITING_DELIVERY__CANCEL_ORDER     [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
 
 DELIVERED_WAITING_CONFIRMATION__CONFIRM           [ label="ConfirmDelivery"                   shape = sdl_input_from_left  fillcolor=green ]
@@ -88,11 +87,10 @@ WAITING_OFFERS -> WAITING_OFFERS__ADD_OFFER      -> WAITING_OFFERS
 
 ACCEPTED_WAITING_SHOPPING_START -> ACCEPTED_WAITING_SHOPPING_START__SHOPPING_STARTED -> SHOPPING_WAITING_SHOPPING_END
 ACCEPTED_WAITING_SHOPPING_START -> ACCEPTED_WAITING_SHOPPING_START__CANCEL_ORDER     -> ACCEPTED_WAITING_SHOPPING_START__RESOL_1 -> ACCEPTED_WAITING_SHOPPING_START__END
-ACCEPTED_WAITING_SHOPPING_START -> ACCEPTED_WAITING_SHOPPING_START__CANCEL_RIDE      -> WAITING_OFFERS
+ACCEPTED_WAITING_SHOPPING_START -> ACCEPTED_WAITING_SHOPPING_START__SHOPPING_FAILED      -> WAITING_OFFERS
 
 SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__SHOPPING_ENDED  -> SHOPPING_ENDED_WAITING_DELIVERY
-SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__CANCEL_RIDE     -> WAITING_OFFERS
-SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__CANNOT_COMPLETE -> WAITING_OFFERS
+SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__SHOPPING_FAILED -> WAITING_OFFERS
 SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__CANCEL_ORDER    -> CANCELLED_IN_SHOPPING
 
 SHOPPING_ENDED_WAITING_DELIVERY -> SHOPPING_ENDED_WAITING_DELIVERY__DELIVERED      -> DELIVERED_WAITING_CONFIRMATION

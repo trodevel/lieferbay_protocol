@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
+// $Revision: 12384 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -137,23 +137,23 @@ class Offer
     public      $order_id; // id_t
     public      $delivery_time; // basic_objects::LocalTimeRange
     public      $delivery_price;    // double
-    public      $can_return;        // bool
-    public      $return_price;      // double
+    public      $can_accept_cancellation;        // bool
+    public      $cancellation_price;      // double
 
-    function __construct( $delivery_time, $delivery_price, $can_return, $return_price )
+    function __construct( $delivery_time, $delivery_price, $can_accept_cancellation, $cancellation_price )
     {
         $this->delivery_time    = $delivery_time;
         $this->delivery_price   = $delivery_price;
-        $this->can_return       = $can_return;
-        $this->return_price     = $return_price;
+        $this->can_accept_cancellation       = $can_accept_cancellation;
+        $this->cancellation_price     = $cancellation_price;
     }
 
     public function to_generic_request()
     {
         $res = array(
             "DELIVERY_PRICE"    => $this->delivery_price,
-            "CAN_RETURN"        => $this->can_return,
-            "RETURN_PRICE"      => $this->return_price
+            "CAN_RETURN"        => $this->can_accept_cancellation,
+            "RETURN_PRICE"      => $this->cancellation_price
             );
 
         return \generic_protocol\assemble_request( $res ) .

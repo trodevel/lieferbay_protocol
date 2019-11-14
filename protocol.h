@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
+// $Revision: 12384 $ $Date:: 2019-11-14 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
 #define LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
@@ -75,8 +75,8 @@ struct Offer
     id_t            order_id;
     basic_objects::LocalTimeRange delivery_time;
     double          delivery_price;
-    bool            can_return;
-    double          return_price;
+    bool            can_accept_cancellation;
+    double          cancellation_price;
 };
 
 enum class offer_state_e
@@ -92,7 +92,7 @@ struct OfferWithState
 {
     bool                is_open;
     Offer               offer;
-    offer_state_e   resolution;
+    offer_state_e       state;
 };
 
 enum class order_resolution_e
@@ -141,6 +141,7 @@ struct Order
     Address             delivery_address;
     ShoppingList        shopping_list;
     basic_objects::LocalTimeRange wish_delivery_time;
+    bool                is_time_fixed;
     double              wish_delivery_price;
 };
 
@@ -224,12 +225,57 @@ struct DeclineOfferResponse: public generic_protocol::BackwardMessage
 {
 };
 
+struct NotifyShoppingStartedRequest: public Request
+{
+    id_t            order_id;
+};
+
+struct NotifyShoppingStartedResponse: public generic_protocol::BackwardMessage
+{
+};
+
+struct NotifyShoppingEndedRequest: public Request
+{
+    id_t            order_id;
+};
+
+struct NotifyShoppingEndedResponse: public generic_protocol::BackwardMessage
+{
+};
+
+struct NotifyShoppingFailedRequest: public Request
+{
+    id_t            order_id;
+};
+
+struct NotifyShoppingFailedResponse: public generic_protocol::BackwardMessage
+{
+};
+
 struct NotifyDeliveredRequest: public Request
 {
     id_t            order_id;
 };
 
 struct NotifyDeliveredResponse: public generic_protocol::BackwardMessage
+{
+};
+
+struct ConfirmDeliveryRequest: public Request
+{
+    id_t            order_id;
+};
+
+struct ConfirmDeliveryResponse: public generic_protocol::BackwardMessage
+{
+};
+
+struct ComplainRequest: public Request
+{
+    id_t            order_id;
+};
+
+struct ComplainResponse: public generic_protocol::BackwardMessage
 {
 };
 
@@ -240,6 +286,16 @@ struct RateBuyerRequest: public Request
 };
 
 struct RateBuyerResponse: public generic_protocol::BackwardMessage
+{
+};
+
+struct RateUserRequest: public Request
+{
+    id_t            order_id;
+    uint32_t        stars;
+};
+
+struct RateUserResponse: public generic_protocol::BackwardMessage
 {
 };
 
