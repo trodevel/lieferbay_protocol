@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12366 $ $Date:: 2019-11-14 #$ $Author: serge $
+// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
 
 namespace lieferbay_protocol\web;
 
@@ -150,33 +150,33 @@ function to_html_GetShoppingListWithTotalsResponse( & $obj )
     return $res;
 }
 
-function get_header_OfferWithBuyer()
+function get_header_RideWithBuyer()
 {
     return get_html_table_header_elems( array( 'RIDE ID' ) ) .
-        \lieferbay_protocol\get_header_Offer() .
+        \lieferbay_protocol\get_header_Ride() .
         get_html_table_header_elems( array( 'SHOPPER NAME' ) );
 }
 
-function to_html_OfferWithBuyer_tabledata( & $obj )
+function to_html_RideWithBuyer_tabledata( & $obj )
 {
     return get_html_table_data_elems( array(
-        $obj->offer_id ) ) .
-        \lieferbay_protocol\to_html_Offer_tabledata( $obj->offer_with_state ) .
+        $obj->ride_id ) ) .
+        \lieferbay_protocol\to_html_Ride_tabledata( $obj->ride ) .
         get_html_table_data_elems( array(
             $obj->buyer_name ) );
 }
 
-function get_header_OfferWithStateWithId()
+function get_header_RideWithStateWithId()
 {
     return get_html_table_header_elems( array( 'RIDE ID' ) ) .
-    \lieferbay_protocol\get_header_OfferWithState();
+    \lieferbay_protocol\get_header_RideWithState();
 }
 
-function to_html_OfferWithStateWithId_tabledata( & $obj )
+function to_html_RideWithStateWithId_tabledata( & $obj )
 {
     return get_html_table_data_elems( array(
-        $obj->offer_id ) ) .
-        \lieferbay_protocol\to_html_OfferWithState_tabledata( $obj->offer_with_state );
+        $obj->ride_id ) ) .
+        \lieferbay_protocol\to_html_RideWithState_tabledata( $obj->ride );
 }
 
 function get_header_AcceptedOrderUser()
@@ -222,18 +222,18 @@ function to_html_DashScreenUser( & $obj )
     $res = '<h3>Dash Screen User ( current time ' . \basic_objects\to_string_LocalTime( $obj->current_time ) . ' )</h3>';
 
     {
-        $num   = sizeof( $obj->offer_with_states );
+        $num   = sizeof( $obj->rides );
 
-        $res = $res . '<h2>Offered OfferWithStates ( ' . $num . ' )</h2>';
+        $res = $res . '<h2>Offered RideWithStates ( ' . $num . ' )</h2>';
 
         $body = '';
         for( $i = 0; $i < $num; $i++ )
         {
-            $body = $body . get_html_table_tr( to_html_OfferWithBuyer_tabledata( $obj->offer_with_states[$i] ) );
+            $body = $body . get_html_table_tr( to_html_RideWithBuyer_tabledata( $obj->rides[$i] ) );
         }
 
         $res = $res . get_html_table( NULL, NULL, NULL, 'border="1" cellspacing="1" cellpadding="3"',
-                get_html_table_tr( get_header_OfferWithBuyer() ) . $body );
+                get_html_table_tr( get_header_RideWithBuyer() ) . $body );
     }
 
     {
@@ -266,18 +266,18 @@ function to_html_DashScreenBuyer( & $obj )
     $res = '<h3>Dash Screen Buyer ( current time ' . \basic_objects\to_string_LocalTime( $obj->current_time ) . ' )</h3>';
 
     {
-        $num   = sizeof( $obj->offer_with_states );
+        $num   = sizeof( $obj->rides );
 
-        $res = $res . '<h2>My Offered OfferWithStates and Shopping Requests ( ' . $num . ' )</h2>';
+        $res = $res . '<h2>My Offered RideWithStates and Shopping Requests ( ' . $num . ' )</h2>';
 
         $body = '';
         for( $i = 0; $i < $num; $i++ )
         {
-            $body = $body . get_html_table_tr( to_html_OfferWithStateWithId_tabledata( $obj->offer_with_states[$i] ) );
+            $body = $body . get_html_table_tr( to_html_RideWithStateWithId_tabledata( $obj->rides[$i] ) );
         }
 
         $res = $res . get_html_table( NULL, NULL, NULL, 'border="1" cellspacing="1" cellpadding="3"',
-            get_html_table_tr( get_header_OfferWithStateWithId() ) . $body );
+            get_html_table_tr( get_header_RideWithStateWithId() ) . $body );
     }
 
     {

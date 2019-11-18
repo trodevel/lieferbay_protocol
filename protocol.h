@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12387 $ $Date:: 2019-11-16 #$ $Author: serge $
+// $Revision: 12393 $ $Date:: 2019-11-18 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
 #define LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
@@ -72,36 +72,31 @@ struct GeoPosition
     double          longitude;
 };
 
-struct RideSummary
+struct Ride
 {
-    GeoPosition         position;
-    basic_objects::LocalTime delivery_time;
-    double              max_weight;
-};
-
-struct Offer
-{
-    id_t            order_id;
+    GeoPosition     position;
     basic_objects::LocalTimeRange delivery_time;
+    double          max_weight;
     double          delivery_price;
     bool            can_accept_cancellation;
     double          cancellation_price;
 };
 
-enum class offer_state_e
+enum class ride_resolution_e
 {
     UNDEF                       = 0,
-    PENDING                     = 1,
-    ACCEPTED                    = 2,
-    DECLINED                    = 3,
-    CANCELLED                   = 4,
+    EXPIRED_OR_COMPLETED        = 1,
+    CANCELLED                   = 2,
 };
 
-struct OfferWithState
+struct RideWithState
 {
     bool                is_open;
-    Offer               offer;
-    offer_state_e       state;
+    Ride                summary;
+    std::vector<id_t>   pending_order_ids;
+    std::vector<id_t>   declined_order_ids;
+    id_t                accepted_order_id;
+    ride_resolution_e   resolution;
 };
 
 enum class order_resolution_e
@@ -116,8 +111,8 @@ enum class order_resolution_e
 
 enum class order_state_e
 {
-    UNDEF                           = 0,
-    IDLE_WAITING_OFFERS             = 1,
+    UNDEF                       = 0,
+    IDLE_WAITING_ACCEPTANCE     = 1,
     ACCEPTED_WAITING_SHOPPING_START = 2,
     SHOPPING_WAITING_SHOPPING_END   = 3,
     SHOPPING_ENDED_WAITING_DELIVERY = 4,
@@ -147,6 +142,7 @@ struct Address
 
 struct Order
 {
+    id_t                ride_id;
     Address             delivery_address;
     ShoppingList        shopping_list;
     basic_objects::LocalTimeRange wish_delivery_time;
@@ -160,41 +156,39 @@ struct OrderWithState
     Order               order;
     order_state_e       state;
     order_resolution_e  resolution;
-    std::vector<id_t>   pending_offer_ids;
-    id_t                accepted_offer_id;
 };
 
 /**************************************************
  * REQUESTS
  **************************************************/
 
-struct AddOfferRequest: public Request
+struct AddRideRequest: public Request
 {
-    Offer           offer;
+    Ride            ride;
 };
 
-struct AddOfferResponse: public generic_protocol::BackwardMessage
+struct AddRideResponse: public generic_protocol::BackwardMessage
 {
-    id_t            offer_id;
+    id_t            ride_id;
 };
 
-struct CancelOfferRequest: public Request
+struct CancelRideRequest: public Request
 {
-    id_t            offer_id;
+    id_t            ride_id;
 };
 
-struct CancelOfferResponse: public generic_protocol::BackwardMessage
+struct CancelRideResponse: public generic_protocol::BackwardMessage
 {
 };
 
-struct GetOfferWithStateRequest: public Request
+struct GetRideWithStateRequest: public Request
 {
-    id_t            offer_id;
+    id_t            ride_id;
 };
 
-struct GetOfferWithStateResponse: public generic_protocol::BackwardMessage
+struct GetRideWithStateResponse: public generic_protocol::BackwardMessage
 {
-    OfferWithState  offer_with_state;
+    RideWithState   ride;
 };
 
 struct AddOrderRequest: public Request
@@ -216,21 +210,21 @@ struct CancelOrderResponse: public generic_protocol::BackwardMessage
 {
 };
 
-struct AcceptOfferRequest: public Request
+struct AcceptOrderRequest: public Request
 {
     id_t            order_id;
 };
 
-struct AcceptOfferResponse: public generic_protocol::BackwardMessage
+struct AcceptOrderResponse: public generic_protocol::BackwardMessage
 {
 };
 
-struct DeclineOfferRequest: public Request
+struct DeclineOrderRequest: public Request
 {
     id_t            order_id;
 };
 
-struct DeclineOfferResponse: public generic_protocol::BackwardMessage
+struct DeclineOrderResponse: public generic_protocol::BackwardMessage
 {
 };
 

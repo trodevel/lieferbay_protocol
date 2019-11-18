@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
+// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL_CSV_RESPONSE_ENCODER_H
 #define LIB_LIEFERBAY_PROTOCOL_CSV_RESPONSE_ENCODER_H
@@ -36,31 +36,31 @@ public:
     static std::ostream & write( std::ostream & os, const ShoppingItem & r );
     static std::ostream & write( std::ostream & os, const ShoppingList & r );
     static std::ostream & write( std::ostream & os, const GeoPosition & r );
-    static std::ostream & write( std::ostream & os, const Offer & r );
-    static std::ostream & write( std::ostream & os, const OfferWithState & r );
+    static std::ostream & write( std::ostream & os, const Ride & r );
+    static std::ostream & write( std::ostream & os, const RideWithState & r );
     static std::ostream & write( std::ostream & os, const Address & r );
     static std::ostream & write( std::ostream & os, const Order & r );
     static std::ostream & write( std::ostream & os, order_state_e r );
     static std::ostream & write( std::ostream & os, order_resolution_e r );
-    static std::ostream & write( std::ostream & os, offer_state_e r );
+    static std::ostream & write( std::ostream & os, ride_resolution_e r );
     static std::ostream & write( std::ostream & os, const web::ProductItemWithId & r );
     static std::ostream & write( std::ostream & os, const web::ShoppingItemWithProduct & r );
     static std::ostream & write( std::ostream & os, const web::ShoppingListWithProduct & r );
     static std::ostream & write( std::ostream & os, const web::ShoppingListWithTotals & r );
-    static std::ostream & write( std::ostream & os, const web::OfferWithBuyer & r );
-    static std::ostream & write( std::ostream & os, const web::OfferWithStateWithId & r );
+    static std::ostream & write( std::ostream & os, const web::RideWithBuyer & r );
+    static std::ostream & write( std::ostream & os, const web::RideWithStateWithId & r );
     static std::ostream & write( std::ostream & os, const web::ShoppingRequestInfo & r );
     static std::ostream & write( std::ostream & os, const web::AcceptedOrderUser & r );
     static std::ostream & write( std::ostream & os, const web::AcceptedOrderBuyer & r );
     static std::ostream & write( std::ostream & os, const web::DashScreenUser & r );
     static std::ostream & write( std::ostream & os, const web::DashScreenBuyer & r );
-    static std::string to_csv( const AddOfferResponse & r );
-    static std::string to_csv( const CancelOfferResponse & r );
-    static std::string to_csv( const GetOfferWithStateResponse & r );
+    static std::string to_csv( const AddRideResponse & r );
+    static std::string to_csv( const CancelRideResponse & r );
+    static std::string to_csv( const GetRideWithStateResponse & r );
     static std::string to_csv( const AddOrderResponse & r );
     static std::string to_csv( const CancelOrderResponse & r );
-    static std::string to_csv( const AcceptOfferResponse & r );
-    static std::string to_csv( const DeclineOfferResponse & r );
+    static std::string to_csv( const AcceptOrderResponse & r );
+    static std::string to_csv( const DeclineOrderResponse & r );
     static std::string to_csv( const NotifyDeliveredResponse & r );
     static std::string to_csv( const RateBuyerResponse & r );
     static std::string to_csv( const generic_protocol::BackwardMessage & r );

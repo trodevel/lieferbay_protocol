@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
+// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
 
 #include "csv_response_encoder.h"       // self
 
@@ -40,9 +40,9 @@ namespace lieferbay_protocol {
 
 std::string CsvResponseEncoder::to_csv( const generic_protocol::BackwardMessage & r )
 {
-    if( typeid( r ) == typeid( CancelOfferResponse ) )
+    if( typeid( r ) == typeid( CancelRideResponse ) )
     {
-        return to_csv( static_cast<const CancelOfferResponse&>( r ) );
+        return to_csv( static_cast<const CancelRideResponse&>( r ) );
     }
     else if( typeid( r ) == typeid( AddOrderResponse ) )
     {
@@ -52,13 +52,13 @@ std::string CsvResponseEncoder::to_csv( const generic_protocol::BackwardMessage 
     {
         return to_csv( static_cast<const CancelOrderResponse&>( r ) );
     }
-    else if( typeid( r ) == typeid( AcceptOfferResponse ) )
+    else if( typeid( r ) == typeid( AcceptOrderResponse ) )
     {
-        return to_csv( static_cast<const AcceptOfferResponse&>( r ) );
+        return to_csv( static_cast<const AcceptOrderResponse&>( r ) );
     }
-    else if( typeid( r ) == typeid( DeclineOfferResponse ) )
+    else if( typeid( r ) == typeid( DeclineOrderResponse ) )
     {
-        return to_csv( static_cast<const DeclineOfferResponse&>( r ) );
+        return to_csv( static_cast<const DeclineOrderResponse&>( r ) );
     }
     else if( typeid( r ) == typeid( NotifyDeliveredResponse ) )
     {
@@ -68,13 +68,13 @@ std::string CsvResponseEncoder::to_csv( const generic_protocol::BackwardMessage 
     {
         return to_csv( static_cast<const RateBuyerResponse&>( r ) );
     }
-    else if( typeid( r ) == typeid( AddOfferResponse ) )
+    else if( typeid( r ) == typeid( AddRideResponse ) )
     {
-        return to_csv( static_cast<const AddOfferResponse&>( r ) );
+        return to_csv( static_cast<const AddRideResponse&>( r ) );
     }
-    else if( typeid( r ) == typeid( GetOfferWithStateResponse ) )
+    else if( typeid( r ) == typeid( GetRideWithStateResponse ) )
     {
-        return to_csv( static_cast<const GetOfferWithStateResponse&>( r ) );
+        return to_csv( static_cast<const GetRideWithStateResponse&>( r ) );
     }
     else if( typeid( r ) == typeid( web::GetShoppingRequestInfoResponse ) )
     {
@@ -106,7 +106,7 @@ std::ostream & CsvResponseEncoder::write( std::ostream & os, const Order & r )
 {
     utils::CsvHelper::write( os, static_cast<unsigned>( r.is_open ) );
 
-    utils::CsvHelper::write( os, r.offer_id );
+    utils::CsvHelper::write( os, r.ride_id );
 
     write( os, r.delivery_address );
 
@@ -204,9 +204,9 @@ std::ostream & CsvResponseEncoder::write( std::ostream & os, const web::DashScre
 
     utils::CsvHelper::write_user_array<false>(
                 os,
-                r.offer_with_states.begin(),
-                r.offer_with_states.end(),
-                [](std::ostream & os, const web::OfferWithBuyer & r ) { CsvResponseEncoder::write( os, r ); } );
+                r.rides.begin(),
+                r.rides.end(),
+                [](std::ostream & os, const web::RideWithBuyer & r ) { CsvResponseEncoder::write( os, r ); } );
 
     utils::CsvHelper::write_user_array<false>(
                 os,
@@ -223,9 +223,9 @@ std::ostream & CsvResponseEncoder::write( std::ostream & os, const web::DashScre
 
     utils::CsvHelper::write_user_array<false>(
                 os,
-                r.offer_with_states.begin(),
-                r.offer_with_states.end(),
-                [](std::ostream & os, const web::OfferWithStateWithId & r ) { CsvResponseEncoder::write( os, r ); } );
+                r.rides.begin(),
+                r.rides.end(),
+                [](std::ostream & os, const web::RideWithStateWithId & r ) { CsvResponseEncoder::write( os, r ); } );
 
     utils::CsvHelper::write_user_array<false>(
                 os,
@@ -268,7 +268,7 @@ std::ostream & CsvResponseEncoder::write( std::ostream & os, const GeoPosition &
     return os;
 }
 
-std::ostream & CsvResponseEncoder::write( std::ostream & os, const Offer & r )
+std::ostream & CsvResponseEncoder::write( std::ostream & os, const Ride & r )
 {
     write( os, r.position );
     basic_objects::CsvHelper::write( os, r.delivery_time );
@@ -277,22 +277,22 @@ std::ostream & CsvResponseEncoder::write( std::ostream & os, const Offer & r )
     return os;
 }
 
-std::ostream & CsvResponseEncoder::write( std::ostream & os, offer_state_e r )
+std::ostream & CsvResponseEncoder::write( std::ostream & os, ride_resolution_e r )
 {
     utils::CsvHelper::write( os, static_cast<unsigned>( r ) );
 
     return os;
 }
 
-std::ostream & CsvResponseEncoder::write( std::ostream & os, const OfferWithState & r )
+std::ostream & CsvResponseEncoder::write( std::ostream & os, const RideWithState & r )
 {
     utils::CsvHelper::write( os, static_cast<unsigned>( r.is_open ) );
 
-    write( os, r.offer );
+    write( os, r.summary );
 
-    utils::CsvHelper::write_array( os, r.pending_offer_ids.begin(), r.pending_offer_ids.end() );
+    utils::CsvHelper::write_array( os, r.pending_order_ids.begin(), r.pending_order_ids.end() );
 
-    utils::CsvHelper::write( os, r.order_id );
+    utils::CsvHelper::write( os, r.accepted_order_id );
 
     write( os, r.resolution );
 
@@ -323,11 +323,11 @@ std::ostream & CsvResponseEncoder::write( std::ostream & os, const Address & r )
     return os;
 }
 
-std::ostream & CsvResponseEncoder::write( std::ostream & os, const web::OfferWithBuyer & r )
+std::ostream & CsvResponseEncoder::write( std::ostream & os, const web::RideWithBuyer & r )
 {
-    utils::CsvHelper::write( os, r.offer_id );
+    utils::CsvHelper::write( os, r.ride_id );
 
-    write( os, r.offer_with_state );
+    write( os, r.ride );
 
     utils::CsvHelper::write( os, utils::nonascii_hex_codec::encode( r.buyer_name ) );
 
@@ -342,11 +342,11 @@ std::ostream & CsvResponseEncoder::write( std::ostream & os, const web::Shopping
     return os;
 }
 
-std::ostream & CsvResponseEncoder::write( std::ostream & os, const web::OfferWithStateWithId & r )
+std::ostream & CsvResponseEncoder::write( std::ostream & os, const web::RideWithStateWithId & r )
 {
-    utils::CsvHelper::write( os, r.offer_id );
+    utils::CsvHelper::write( os, r.ride_id );
 
-    write( os, r.offer_with_state );
+    write( os, r.ride );
 
     return os;
 }
@@ -363,23 +363,23 @@ std::ostream & CsvResponseEncoder::write( std::ostream & os, const web::Shopping
     return os;
 }
 
-std::string CsvResponseEncoder::to_csv( const AddOfferResponse & r )
+std::string CsvResponseEncoder::to_csv( const AddRideResponse & r )
 {
-    return utils::CsvHelper::to_csv( "AddOfferResponse", r.offer_id );
+    return utils::CsvHelper::to_csv( "AddRideResponse", r.ride_id );
 }
 
-std::string CsvResponseEncoder::to_csv( const CancelOfferResponse & r )
+std::string CsvResponseEncoder::to_csv( const CancelRideResponse & r )
 {
-    return utils::CsvHelper::to_csv( "CancelOfferResponse" );
+    return utils::CsvHelper::to_csv( "CancelRideResponse" );
 }
 
-std::string CsvResponseEncoder::to_csv( const GetOfferWithStateResponse & r )
+std::string CsvResponseEncoder::to_csv( const GetRideWithStateResponse & r )
 {
     std::ostringstream os;
 
-    utils::CsvHelper::write( os, "GetOfferWithStateResponse" ) ;
+    utils::CsvHelper::write( os, "GetRideWithStateResponse" ) ;
 
-    write( os, r.offer_with_state );
+    write( os, r.ride );
 
     return os.str();
 }
@@ -394,14 +394,14 @@ std::string CsvResponseEncoder::to_csv( const CancelOrderResponse & r )
     return utils::CsvHelper::to_csv( "CancelOrderResponse" );
 }
 
-std::string CsvResponseEncoder::to_csv( const AcceptOfferResponse & r )
+std::string CsvResponseEncoder::to_csv( const AcceptOrderResponse & r )
 {
-    return utils::CsvHelper::to_csv( "AcceptOfferResponse" );
+    return utils::CsvHelper::to_csv( "AcceptOrderResponse" );
 }
 
-std::string CsvResponseEncoder::to_csv( const DeclineOfferResponse & r )
+std::string CsvResponseEncoder::to_csv( const DeclineOrderResponse & r )
 {
-    return utils::CsvHelper::to_csv( "DeclineOfferResponse" );
+    return utils::CsvHelper::to_csv( "DeclineOrderResponse" );
 }
 
 std::string CsvResponseEncoder::to_csv( const NotifyDeliveredResponse & r )

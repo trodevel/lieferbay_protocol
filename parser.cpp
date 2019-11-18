@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
+// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
 
 #include "parser.h"                 // self
 
@@ -51,13 +51,13 @@ request_type_e Parser::to_request_type( const std::string & s )
     typedef std::map< KeyType, Type > Map;
     static const Map m =
     {
-        make_inverse_pair( Type:: TUPLE_VAL_STR( AddOfferRequest ) ),
-        make_inverse_pair( Type:: TUPLE_VAL_STR( CancelOfferRequest ) ),
-        make_inverse_pair( Type:: TUPLE_VAL_STR( GetOfferWithStateRequest ) ),
+        make_inverse_pair( Type:: TUPLE_VAL_STR( AddRideRequest ) ),
+        make_inverse_pair( Type:: TUPLE_VAL_STR( CancelRideRequest ) ),
+        make_inverse_pair( Type:: TUPLE_VAL_STR( GetRideWithStateRequest ) ),
         make_inverse_pair( Type:: TUPLE_VAL_STR( AddOrderRequest ) ),
         make_inverse_pair( Type:: TUPLE_VAL_STR( CancelOrderRequest ) ),
-        make_inverse_pair( Type:: TUPLE_VAL_STR( AcceptOfferRequest ) ),
-        make_inverse_pair( Type:: TUPLE_VAL_STR( DeclineOfferRequest ) ),
+        make_inverse_pair( Type:: TUPLE_VAL_STR( AcceptOrderRequest ) ),
+        make_inverse_pair( Type:: TUPLE_VAL_STR( DeclineOrderRequest ) ),
         make_inverse_pair( Type:: TUPLE_VAL_STR( NotifyDeliveredRequest ) ),
         make_inverse_pair( Type:: TUPLE_VAL_STR( RateBuyerRequest ) ),
     };

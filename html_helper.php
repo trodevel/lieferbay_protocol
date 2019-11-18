@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
+// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -66,12 +66,12 @@ function to_html_ShoppingItem_tabledata( & $obj )
         $obj->amount ) );
 }
 
-function get_header_Offer()
+function get_header_Ride()
 {
     return get_html_table_header_elems( array( 'POSITION', 'DELIVERY TIME', 'MAX_WEIGHT' ) );
 }
 
-function to_html_Offer_tabledata( & $obj )
+function to_html_Ride_tabledata( & $obj )
 {
     return get_html_table_data_elems( array(
         to_string_GeoPosition( $obj->position ),
@@ -79,23 +79,23 @@ function to_html_Offer_tabledata( & $obj )
         $obj->max_weight ) );
 }
 
-function get_header_OfferWithState()
+function get_header_RideWithState()
 {
     return get_html_table_header_elems( array( 'IS OPEN' ) ) .
-        get_header_Offer() .
+        get_header_Ride() .
         get_html_table_header_elems( array( 'PENDING ORDER IDS', 'ACCEPTED ORDER ID', 'RESOLUTION' ) );
 
 }
 
-function to_html_OfferWithState_tabledata( & $obj )
+function to_html_RideWithState_tabledata( & $obj )
 {
     return get_html_table_data_elems( array(
         $obj->is_open ? "Y" : "N" ) ) .
-        to_html_Offer_tabledata( $obj->summary ) .
+        to_html_Ride_tabledata( $obj->summary ) .
         get_html_table_data_elems( array(
-            sizeof( $obj->pending_offer_ids ) . ": " . \basic_objects\to_string_array( $obj->pending_offer_ids ),
-            $obj->order_id,
-            to_string_offer_state_e( $obj->resolution ) . " (" . $obj->resolution . ")") );
+            sizeof( $obj->pending_order_ids ) . ": " . \basic_objects\to_string_array( $obj->pending_order_ids ),
+            $obj->accepted_order_id,
+            to_string_ride_resolution_e( $obj->resolution ) . " (" . $obj->resolution . ")") );
 }
 
 function get_header_Address()
@@ -125,7 +125,7 @@ function to_html_Order_tabledata( & $obj )
 {
     return get_html_table_data_elems( array(
         $obj->is_open ? "Y" : "N",
-        $obj->offer_id ) ) .
+        $obj->ride_id ) ) .
         to_html_Address_tabledata( $obj->delivery_address ) .
         get_html_table_data_elems( array(
             $obj->shopping_list_id,
@@ -137,28 +137,28 @@ function to_html_Order_tabledata( & $obj )
  * RESPONSES
  **************************************************/
 
-function to_html_AddOfferResponse( & $obj )
+function to_html_AddRideResponse( & $obj )
 {
     $res = get_html_table( NULL, NULL, NULL, 'border="1" cellspacing="1" cellpadding="3"',
         get_html_table_row_header( array( 'RIDE ID' ) ) .
-        get_html_table_row_data( array( $obj->offer_id ) ) );
+        get_html_table_row_data( array( $obj->ride_id ) ) );
 
     return $res;
 }
 
-function to_html_CancelOfferResponse( & $obj )
+function to_html_CancelRideResponse( & $obj )
 {
-    $res = '<h3>CancelOfferResponse</h3>';
+    $res = '<h3>CancelRideResponse</h3>';
 
     return $res;
 }
 
-function to_html_GetOfferWithStateResponse( & $obj )
+function to_html_GetRideWithStateResponse( & $obj )
 {
-    $body = get_html_table_tr( to_html_OfferWithState_tabledata( $obj->offer_with_state ) );
+    $body = get_html_table_tr( to_html_RideWithState_tabledata( $obj->ride ) );
 
     $res = get_html_table( NULL, NULL, NULL, 'border="1" cellspacing="1" cellpadding="3"',
-        get_html_table_tr( get_header_OfferWithState() ) . $body );
+        get_html_table_tr( get_header_RideWithState() ) . $body );
 
     return $res;
 }
@@ -179,16 +179,16 @@ function to_html_CancelOrderResponse( & $obj )
     return $res;
 }
 
-function to_html_AcceptOfferResponse( & $obj )
+function to_html_AcceptOrderResponse( & $obj )
 {
-    $res = '<h3>AcceptOfferResponse</h3>';
+    $res = '<h3>AcceptOrderResponse</h3>';
 
     return $res;
 }
 
-function to_html_DeclineOfferResponse( & $obj )
+function to_html_DeclineOrderResponse( & $obj )
 {
-    $res = '<h3>DeclineOfferResponse</h3>';
+    $res = '<h3>DeclineOrderResponse</h3>';
 
     return $res;
 }
@@ -212,18 +212,18 @@ function to_html_RateBuyerResponse( & $obj )
 function to_html( $obj )
 {
     $handler_map = array(
-        'lieferbay_protocol\AddOfferRequest'         => 'to_html_not_impl',
-        'lieferbay_protocol\AddOfferResponse'        => 'to_html_AddOfferResponse',
-        'lieferbay_protocol\CancelOfferRequest'      => 'to_html_not_impl',
-        'lieferbay_protocol\CancelOfferResponse'     => 'to_html_CancelOfferResponse',
-        'lieferbay_protocol\GetOfferWithStateRequest'         => 'to_html_not_impl',
-        'lieferbay_protocol\GetOfferWithStateResponse'        => 'to_html_GetOfferWithStateResponse',
+        'lieferbay_protocol\AddRideRequest'         => 'to_html_not_impl',
+        'lieferbay_protocol\AddRideResponse'        => 'to_html_AddRideResponse',
+        'lieferbay_protocol\CancelRideRequest'      => 'to_html_not_impl',
+        'lieferbay_protocol\CancelRideResponse'     => 'to_html_CancelRideResponse',
+        'lieferbay_protocol\GetRideWithStateRequest'         => 'to_html_not_impl',
+        'lieferbay_protocol\GetRideWithStateResponse'        => 'to_html_GetRideWithStateResponse',
         'lieferbay_protocol\AddOrderRequest'        => 'to_html_not_impl',
         'lieferbay_protocol\AddOrderResponse'       => 'to_html_AddOrderResponse',
         'lieferbay_protocol\CancelOrderRequest'     => 'to_html_not_impl',
         'lieferbay_protocol\CancelOrderResponse'    => 'to_html_CancelOrderResponse',
-        'lieferbay_protocol\AcceptOfferResponse'    => 'to_html_AcceptOfferResponse',
-        'lieferbay_protocol\DeclineOfferResponse'   => 'to_html_DeclineOfferResponse',
+        'lieferbay_protocol\AcceptOrderResponse'    => 'to_html_AcceptOrderResponse',
+        'lieferbay_protocol\DeclineOrderResponse'   => 'to_html_DeclineOrderResponse',
         'lieferbay_protocol\NotifyDeliveredResponse'    => 'to_html_NotifyDeliveredResponse',
         'lieferbay_protocol\RateBuyerResponse'    => 'to_html_RateBuyerResponse',
     );

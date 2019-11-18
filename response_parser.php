@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
+// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -71,7 +71,7 @@ function parse_GeoPosition( & $csv_arr, & $offset )
     return $res;
 }
 
-function parse_Offer( & $csv_arr, & $offset )
+function parse_Ride( & $csv_arr, & $offset )
 {
     // 50668;0;0;20190522173000;3.5
 
@@ -79,21 +79,21 @@ function parse_Offer( & $csv_arr, & $offset )
     $delivery_time  = \basic_objects\parse_LocalTime( $csv_arr, $offset );
     $max_weigth     = \basic_parser\parse_float( $csv_arr, $offset );
 
-    $res = new Offer( $position, $delivery_time, $max_weigth );
+    $res = new Ride( $position, $delivery_time, $max_weigth );
 
     return $res;
 }
 
-function parse_OfferWithState( & $csv_arr, & $offset )
+function parse_RideWithState( & $csv_arr, & $offset )
 {
     // 1;50668;0;0;20190522180000;2.5;3;565656;737373;878787;121212;0;
 
-    $res = new OfferWithState;
+    $res = new RideWithState;
 
     $res->is_open           = \basic_parser\parse_int( $csv_arr, $offset );
-    $res->summary           = parse_Offer( $csv_arr, $offset );
-    $res->pending_offer_ids = \basic_parser\parse_VectorInt( $csv_arr, $offset );
-    $res->order_id = \basic_parser\parse_int( $csv_arr, $offset );
+    $res->summary           = parse_Ride( $csv_arr, $offset );
+    $res->pending_order_ids = \basic_parser\parse_VectorInt( $csv_arr, $offset );
+    $res->accepted_order_id = \basic_parser\parse_int( $csv_arr, $offset );
     $res->resolution        = \basic_parser\parse_int( $csv_arr, $offset );
 
     return $res;
@@ -122,7 +122,7 @@ function parse_Order( & $csv_arr, & $offset )
     $res = new Order;
 
     $res->is_open           = \basic_parser\parse_int( $csv_arr, $offset );
-    $res->offer_id           = \basic_parser\parse_int( $csv_arr, $offset );
+    $res->ride_id           = \basic_parser\parse_int( $csv_arr, $offset );
     $res->delivery_address  = parse_Address( $csv_arr, $offset );
     $res->shopping_list_id  = \basic_parser\parse_int( $csv_arr, $offset );
     $res->state             = \basic_parser\parse_int( $csv_arr, $offset );
@@ -131,37 +131,37 @@ function parse_Order( & $csv_arr, & $offset )
     return $res;
 }
 
-function parse_AddOfferResponse( & $csv_arr )
+function parse_AddRideResponse( & $csv_arr )
 {
-    // AddOfferResponse;123;
+    // AddRideResponse;123;
 
     $offset = 1;
 
-    $res = new AddOfferResponse;
+    $res = new AddRideResponse;
 
-    $res->offer_id       = \basic_parser\parse_int( $csv_arr, $offset );
+    $res->ride_id       = \basic_parser\parse_int( $csv_arr, $offset );
 
     return $res;
 }
 
-function parse_CancelOfferResponse( & $csv_arr )
+function parse_CancelRideResponse( & $csv_arr )
 {
-    // CancelOfferResponse;
+    // CancelRideResponse;
 
-    $res = new CancelOfferResponse;
+    $res = new CancelRideResponse;
 
     return $res;
 }
 
-function parse_GetOfferWithStateResponse( & $csv_arr )
+function parse_GetRideWithStateResponse( & $csv_arr )
 {
-    // GetOfferWithStateResponse;50668;0;0;20190522180000;2;
+    // GetRideWithStateResponse;50668;0;0;20190522180000;2;
 
     $offset = 1;
 
-    $res = new GetOfferWithStateResponse;
+    $res = new GetRideWithStateResponse;
 
-    $res->offer_with_state  = parse_OfferWithState( $csv_arr, $offset );
+    $res->ride  = parse_RideWithState( $csv_arr, $offset );
 
     return $res;
 }
@@ -188,20 +188,20 @@ function parse_CancelOrderResponse( & $csv_arr )
     return $res;
 }
 
-function parse_AcceptOfferResponse( & $csv_arr )
+function parse_AcceptOrderResponse( & $csv_arr )
 {
-    // AcceptOfferResponse;
+    // AcceptOrderResponse;
 
-    $res = new AcceptOfferResponse;
+    $res = new AcceptOrderResponse;
 
     return $res;
 }
 
-function parse_DeclineOfferResponse( & $csv_arr )
+function parse_DeclineOrderResponse( & $csv_arr )
 {
-    // DeclineOfferResponse;
+    // DeclineOrderResponse;
 
-    $res = new DeclineOfferResponse;
+    $res = new DeclineOrderResponse;
 
     return $res;
 }
@@ -235,13 +235,13 @@ protected static function parse_csv_array( $csv_arr )
     $type = $csv_arr[0][0];
 
     $func_map = array(
-        'AddOfferResponse'               => 'parse_AddOfferResponse',
-        'CancelOfferResponse'            => 'parse_CancelOfferResponse',
-        'GetOfferWithStateResponse'               => 'parse_GetOfferWithStateResponse',
+        'AddRideResponse'               => 'parse_AddRideResponse',
+        'CancelRideResponse'            => 'parse_CancelRideResponse',
+        'GetRideWithStateResponse'               => 'parse_GetRideWithStateResponse',
         'AddOrderResponse'              => 'parse_AddOrderResponse',
         'CancelOrderResponse'           => 'parse_CancelOrderResponse',
-        'AcceptOfferResponse'           => 'parse_AcceptOfferResponse',
-        'DeclineOfferResponse'          => 'parse_DeclineOfferResponse',
+        'AcceptOrderResponse'           => 'parse_AcceptOrderResponse',
+        'DeclineOrderResponse'          => 'parse_DeclineOrderResponse',
         'NotifyDeliveredResponse'    => 'parse_NotifyDeliveredResponse',
         'RateBuyerResponse'           => 'parse_RateBuyerResponse',
         );

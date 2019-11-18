@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12386 $ $Date:: 2019-11-16 #$ $Author: serge $
+// $Revision: 12391 $ $Date:: 2019-11-18 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL__PROTOCOL_WEB_H
 #define LIB_LIEFERBAY_PROTOCOL__PROTOCOL_WEB_H
@@ -59,17 +59,17 @@ struct ShoppingListWithTotals
     double          weight;
 };
 
-struct OfferWithBuyer
+struct RideWithBuyer
 {
-    id_t            offer_id;
-    Offer     offer_with_state;
+    id_t            ride_id;
+    Ride            ride;
     std::string     buyer_name;
 };
 
-struct OfferWithStateWithId
+struct RideWithStateWithId
 {
-    id_t            offer_id;
-    OfferWithState            offer_with_state;
+    id_t            ride_id;
+    RideWithState   ride;
 };
 
 struct ShoppingRequestInfo
@@ -104,16 +104,16 @@ struct DashScreenUser
 {
     basic_objects::LocalTime        current_time;
 
-    std::vector<OfferWithBuyer> offer_with_states;
-    std::vector<AcceptedOrderUser>      orders;
+    std::vector<RideWithBuyer>      rides;
+    std::vector<AcceptedOrderUser>  orders;
 };
 
 struct DashScreenBuyer
 {
     basic_objects::LocalTime        current_time;
 
-    std::vector<OfferWithStateWithId>             offer_with_states;
-    std::vector<AcceptedOrderBuyer>   orders;
+    std::vector<RideWithStateWithId>             rides;
+    std::vector<AcceptedOrderBuyer> orders;
 };
 
 /**************************************************
@@ -131,7 +131,7 @@ struct GetProductItemListResponse: public generic_protocol::BackwardMessage
 
 struct GetShoppingRequestInfoRequest: public Request
 {
-    id_t            offer_id;
+    id_t            ride_id;
 };
 
 struct GetShoppingRequestInfoResponse: public generic_protocol::BackwardMessage

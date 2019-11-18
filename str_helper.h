@@ -19,13 +19,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
+// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
 
 #include <string>
 #include <sstream>
 
 #include "enums.h"                  // request_type_e
-#include "protocol.h"     // order_state_e
+#include "protocol.h"               // order_state_e
 
 namespace lieferbay_protocol {
 
@@ -36,14 +36,14 @@ public:
     static const std::string & to_string( const order_state_e l );
     static const std::string & to_string( const order_resolution_e l );
     static std::ostream & write( std::ostream & os, const GeoPosition & l );
-    static std::ostream & write( std::ostream & os, const Offer & l );
-    static std::ostream & write( std::ostream & os, const AddOfferRequest & l );
-    static std::ostream & write( std::ostream & os, const CancelOfferRequest & l );
-    static std::ostream & write( std::ostream & os, const GetOfferWithStateRequest & l );
+    static std::ostream & write( std::ostream & os, const Ride & l );
+    static std::ostream & write( std::ostream & os, const AddRideRequest & l );
+    static std::ostream & write( std::ostream & os, const CancelRideRequest & l );
+    static std::ostream & write( std::ostream & os, const GetRideWithStateRequest & l );
     static std::ostream & write( std::ostream & os, const AddOrderRequest & l );
     static std::ostream & write( std::ostream & os, const CancelOrderRequest & l );
-    static std::ostream & write( std::ostream & os, const AcceptOfferRequest & l );
-    static std::ostream & write( std::ostream & os, const DeclineOfferRequest & l );
+    static std::ostream & write( std::ostream & os, const AcceptOrderRequest & l );
+    static std::ostream & write( std::ostream & os, const DeclineOrderRequest & l );
     static std::ostream & write( std::ostream & os, const NotifyDeliveredRequest & l );
     static std::ostream & write( std::ostream & os, const RateBuyerRequest & l );
 

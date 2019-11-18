@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12371 $ $Date:: 2019-11-14 #$ $Author: serge $
+// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
 
 #include "generic_request/request.h"        // generic_request::Request
 #include "basic_parser/malformed_request.h" // MalformedRequest
@@ -45,7 +45,7 @@ public:
     static void                         to_ShoppingItem( ShoppingItem * res, const generic_request::Request & r );
     static void                         to_ShoppingList( ShoppingList * res, const generic_request::Request & r );
     static void                         to_GeoPosition( GeoPosition * res, const generic_request::Request & r );
-    static void                         to_OfferWithState( Offer * res, const generic_request::Request & r );
+    static void                         to_RideWithState( Ride * res, const generic_request::Request & r );
     static void                         to_Address( Address * res, const generic_request::Request & r );
     //static void                         to_Order( Order * res, const generic_request::Request & r );
 
@@ -53,13 +53,13 @@ private:
 
     static request_type_e   detect_request_type( const generic_request::Request & r );
 
-    static ForwardMessage *             to_AddOfferRequest( const generic_request::Request & r );
-    static ForwardMessage *             to_CancelOfferRequest( const generic_request::Request & r );
-    static ForwardMessage *             to_GetOfferWithStateRequest( const generic_request::Request & r );
+    static ForwardMessage *             to_AddRideRequest( const generic_request::Request & r );
+    static ForwardMessage *             to_CancelRideRequest( const generic_request::Request & r );
+    static ForwardMessage *             to_GetRideWithStateRequest( const generic_request::Request & r );
     static ForwardMessage *             to_AddOrderRequest( const generic_request::Request & r );
     static ForwardMessage *             to_CancelOrderRequest( const generic_request::Request & r );
-    static ForwardMessage *             to_AcceptOfferRequest( const generic_request::Request & r );
-    static ForwardMessage *             to_DeclineOfferRequest( const generic_request::Request & r );
+    static ForwardMessage *             to_AcceptOrderRequest( const generic_request::Request & r );
+    static ForwardMessage *             to_DeclineOrderRequest( const generic_request::Request & r );
     static ForwardMessage *             to_NotifyDeliveredRequest( const generic_request::Request & r );
     static ForwardMessage *             to_RateBuyerRequest( const generic_request::Request & r );
 };

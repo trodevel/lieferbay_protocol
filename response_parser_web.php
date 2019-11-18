@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12366 $ $Date:: 2019-11-14 #$ $Author: serge $
+// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
 
 namespace lieferbay_protocol\web;
 
@@ -84,27 +84,27 @@ function parse_ShoppingListWithTotals( & $csv_arr, & $offset )
     return $res;
 }
 
-function parse_OfferWithBuyer( & $csv_arr, & $offset )
+function parse_RideWithBuyer( & $csv_arr, & $offset )
 {
     // 232323;50668;0;0;20190522173000;3.5;Johann=20Meyer;
 
-    $res = new OfferWithBuyer;
+    $res = new RideWithBuyer;
 
-    $res->offer_id       = \basic_parser\parse_int( $csv_arr, $offset );
-    $res->offer_with_state          = \lieferbay_protocol\parse_Offer( $csv_arr, $offset );
+    $res->ride_id       = \basic_parser\parse_int( $csv_arr, $offset );
+    $res->ride          = \lieferbay_protocol\parse_Ride( $csv_arr, $offset );
     $res->buyer_name  = \basic_parser\parse_enc_string( $csv_arr, $offset );
 
     return $res;
 }
 
-function parse_OfferWithStateWithId( & $csv_arr, & $offset )
+function parse_RideWithStateWithId( & $csv_arr, & $offset )
 {
     // 232323;50668;0;0;20190522173000;3.5;1;
 
-    $res = new OfferWithStateWithId;
+    $res = new RideWithStateWithId;
 
-    $res->offer_id       = \basic_parser\parse_int( $csv_arr, $offset );
-    $res->offer_with_state          = \lieferbay_protocol\parse_OfferWithState( $csv_arr, $offset );
+    $res->ride_id       = \basic_parser\parse_int( $csv_arr, $offset );
+    $res->ride          = \lieferbay_protocol\parse_RideWithState( $csv_arr, $offset );
 
     return $res;
 }
@@ -168,11 +168,11 @@ function parse_DashScreenUser( & $csv_arr, & $offset )
 
         //echo "size = $size\n";
 
-        $res->offer_with_states = array();
+        $res->rides = array();
 
         for( $i = 0; $i < $size; $i++ )
         {
-            array_push( $res->offer_with_states, parse_OfferWithBuyer( $csv_arr, $offset ) );
+            array_push( $res->rides, parse_RideWithBuyer( $csv_arr, $offset ) );
         }
     }
 
@@ -205,11 +205,11 @@ function parse_DashScreenBuyer( & $csv_arr, & $offset )
 
         //echo "size = $size\n";
 
-        $res->offer_with_states = array();
+        $res->rides = array();
 
         for( $i = 0; $i < $size; $i++ )
         {
-            array_push( $res->offer_with_states, parse_OfferWithStateWithId( $csv_arr, $offset ) );
+            array_push( $res->rides, parse_RideWithStateWithId( $csv_arr, $offset ) );
         }
     }
 

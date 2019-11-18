@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12353 $ $Date:: 2019-11-13 #$ $Author: serge $
+// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -34,14 +34,12 @@ function to_string_GeoPosition( & $obj )
     return $res;
 }
 
-function to_string_offer_state_e( $val )
+function to_string_ride_resolution_e( $val )
 {
     $map = array(
-        offer_state_e_UNDEF                     => 'UNDEF',
-        offer_state_e_PENDING                   => 'PENDING',
-        offer_state_e_ACCEPTED                  => 'ACCEPTED',
-        offer_state_e_DECLINED                  => 'DECLINED',
-        offer_state_e_CANCELLED                 => 'CANCELLED',
+        ride_resolution_e_UNDEF                     => 'UNDEF',
+        ride_resolution_e_EXPIRED_OR_COMPLETED      => 'EXPIRED_OR_COMPLETED',
+        ride_resolution_e_CANCELLED                 => 'CANCELLED',
     );
 
     if( array_key_exists( $val, $map ) )
@@ -56,7 +54,7 @@ function to_string_order_state_e( $val )
 {
     $map = array(
         order_state_e_UNDEF                         => 'UNDEF',
-        order_state_e_IDLE_WAITING_OFFERS                   => 'IDLE_WAITING_OFFERS',
+        order_state_e_IDLE_WAITING_ACCEPTANCE       => 'IDLE_WAITING_ACCEPTANCE',
         order_state_e_ACCEPTED_WAITING_SHOPPING_START       => 'ACCEPTED_WAITING_SHOPPING_START',
         order_state_e_SHOPPING_WAITING_SHOPPING_END         => 'SHOPPING_WAITING_SHOPPING_END',
         order_state_e_SHOPPING_ENDED_WAITING_DELIVERY       => 'SHOPPING_ENDED_WAITING_DELIVERY',
@@ -65,7 +63,6 @@ function to_string_order_state_e( $val )
         order_state_e_DONE                          => 'DONE',
         order_state_e_CANCELLED_IN_SHOPPING         => 'CANCELLED_IN_SHOPPING',
         order_state_e_CANCELLED_IN_SHOPPING_ENDED   => 'CANCELLED_IN_SHOPPING_ENDED',
-        
     );
 
     if( array_key_exists( $val, $map ) )
