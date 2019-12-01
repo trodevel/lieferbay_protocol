@@ -71,14 +71,16 @@ ACCEPTED_WAITING_SHOPPING_START__SEND_CANCEL_ORDER    [ label="CancelOrderR"    
 #ACCEPTED_WAITING_SHOPPING_START__SEND_CANCEL_ORDER_2  [ label="CancelOrderR"                  shape = sdl_output_to_right ]
 ACCEPTED_WAITING_SHOPPING_START__RESOL_1          [ label="resolution := RIDE_CANCELLED"      shape = sdl_task ]
 ACCEPTED_WAITING_SHOPPING_START__RESOL_2          [ label="resolution := CANCELLED_BY_USER"   shape = sdl_task ]
-ACCEPTED_WAITING_SHOPPING_START__RESOL_3          [ label="resolution := SHOPPING_FAILED"     shape = sdl_task ]
+ACCEPTED_WAITING_SHOPPING_START__RESOL_3          [ label="resolution := SHOP_CLOSED, OTHER"     shape = sdl_task ]
 ACCEPTED_WAITING_SHOPPING_START__END              [ label = ""                                shape = sdl_stop  style=solid ]
 
 
 SHOPPING_WAITING_SHOPPING_END__SHOPPING_ENDED     [ label="Notify\nShoppingEnded"             shape = sdl_input_from_right fillcolor=cyan ]
 SHOPPING_WAITING_SHOPPING_END__SHOPPING_FAILED    [ label="Notify\nShoppingFailed"            shape = sdl_input_from_right fillcolor=cyan ]
+SHOPPING_WAITING_SHOPPING_END__CANCEL_RIDE        [ label="CancelRide"                        shape = sdl_input_from_right fillcolor=cyan ]
 SHOPPING_WAITING_SHOPPING_END__CANCEL_ORDER       [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
-SHOPPING_WAITING_SHOPPING_END__RESOL_3            [ label="resolution := SHOPPING_FAILED"     shape = sdl_task ]
+SHOPPING_WAITING_SHOPPING_END__RESOL_1            [ label="resolution := RIDE_CANCELLED"      shape = sdl_task ]
+SHOPPING_WAITING_SHOPPING_END__RESOL_3            [ label="resolution := MISSING_ITEM,\nSHOP_CLOSED, OTHER"     shape = sdl_task ]
 SHOPPING_WAITING_SHOPPING_END__END                [ label = ""                                shape = sdl_stop  style=solid ]
 
 SHOPPING_ENDED_WAITING_DELIVERY__DELIVERED        [ label="Notify\nDelivered"                 shape = sdl_input_from_right fillcolor=cyan ]
@@ -111,6 +113,7 @@ ACCEPTED_WAITING_SHOPPING_START -> ACCEPTED_WAITING_SHOPPING_START__SHOPPING_STA
 ACCEPTED_WAITING_SHOPPING_START -> ACCEPTED_WAITING_SHOPPING_START__SHOPPING_FAILED  -> ACCEPTED_WAITING_SHOPPING_START__RESOL_3 -> ACCEPTED_WAITING_SHOPPING_START__END
 
 SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__SHOPPING_ENDED  -> SHOPPING_ENDED_WAITING_DELIVERY
+SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__CANCEL_RIDE     -> SHOPPING_WAITING_SHOPPING_END__RESOL_1 -> SHOPPING_WAITING_SHOPPING_END__END
 SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__SHOPPING_FAILED -> SHOPPING_WAITING_SHOPPING_END__RESOL_3 -> SHOPPING_WAITING_SHOPPING_END__END
 SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__CANCEL_ORDER    -> CANCELLED_IN_SHOPPING
 
