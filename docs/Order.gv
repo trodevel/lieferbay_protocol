@@ -42,7 +42,8 @@ CANCELLED_IN_SHOPPING           [ label = "CANCELLED_IN_\nSHOPPING"             
 SHOPPING_ENDED_WAITING_DELIVERY [ label = "SHOPPING_ENDED /\nWAITING_DELIVERY"    shape = sdl_state fillcolor=yellow ]
 CANCELLED_IN_SHOPPING_ENDED     [ label = "CANCELLED_IN_\nSHOPPING_ENDED"         shape = sdl_state fillcolor=yellow ]
 DELIVERED_WAITING_CONFIRMATION  [ label = "DELIVERED /\nWAITING_CONFIRMATION"     shape = sdl_state fillcolor=yellow ]
-DELIVERY_CONFIRMED_WAITING_FEEDBACK      [ label = "DELIVERY_CONFIRMED /\nWAITING_FEEDBACK"         shape = sdl_state fillcolor=yellow ]
+DELIVERY_CONFIRMED_WAITING_CHECK [ label = "DELIVERY_CONFIRMED /\nWAITING_CHECK"   shape = sdl_state fillcolor=yellow ]
+CHECKED_WAITING_FEEDBACK        [ label = "CHECKED /\nWAITING_FEEDBACK"           shape = sdl_state fillcolor=yellow ]
 END                             [ label = ""                              shape = sdl_stop  style=solid ]
 DONE                            [ label = "DONE"                                  shape = sdl_state fillcolor=yellow ]
 
@@ -50,13 +51,13 @@ DONE                            [ label = "DONE"                                
 # actions
 
 WAITING_ACCEPTANCE__ACCEPT_ORDER            [ label="AcceptOrder"                       shape = sdl_input_from_right fillcolor=cyan ]
-WAITING_ACCEPTANCE__SEND_ACCEPT_ORDER       [ label="AcceptOrderR"                      shape = sdl_output_to_right ]
+WAITING_ACCEPTANCE__SEND_ACCEPT_ORDER       [ label="AcceptOrderR"                      shape = sdl_output_to_right  color=gray fontcolor=gray ]
 WAITING_ACCEPTANCE__DECLINE_ORDER           [ label="DeclineOrder"                      shape = sdl_input_from_right fillcolor=cyan ]
-WAITING_ACCEPTANCE__SEND_DECLINE_ORDER      [ label="DeclineOrderR"                     shape = sdl_output_to_right ]
+WAITING_ACCEPTANCE__SEND_DECLINE_ORDER      [ label="DeclineOrderR"                     shape = sdl_output_to_right  color=gray fontcolor=gray ]
 WAITING_ACCEPTANCE__CANCEL_ORDER            [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
-WAITING_ACCEPTANCE__SEND_CANCEL_ORDER       [ label="CancelOrderR"                      shape = sdl_output_to_left ]
+WAITING_ACCEPTANCE__SEND_CANCEL_ORDER       [ label="CancelOrderR"                      shape = sdl_output_to_left   color=gray fontcolor=gray ]
 WAITING_ACCEPTANCE__CANCEL_RIDE             [ label="CancelRide"                        shape = sdl_input_from_right fillcolor=cyan ]
-WAITING_ACCEPTANCE__SEND_CANCEL_RIDE        [ label="CancelRideR"                       shape = sdl_output_to_right ]
+WAITING_ACCEPTANCE__SEND_CANCEL_RIDE        [ label="CancelRideR"                       shape = sdl_output_to_right  color=gray fontcolor=gray ]
 WAITING_ACCEPTANCE__RESOL_1                 [ label="resolution := CANCELLED_BY_USER"   shape = sdl_task ]
 WAITING_ACCEPTANCE__RESOL_2                 [ label="resolution := DECLINED_BY_BUYER" shape = sdl_task ]
 WAITING_ACCEPTANCE__RESOL_3                 [ label="resolution := RIDE_CANCELLED"      shape = sdl_task ]
@@ -64,14 +65,14 @@ WAITING_ACCEPTANCE__RESOL_3                 [ label="resolution := RIDE_CANCELLE
 ACCEPTED_WAITING_SHOPPING_START__SHOPPING_STARTED [ label="Notify\nShoppingStarted"           shape = sdl_input_from_right fillcolor=cyan ]
 ACCEPTED_WAITING_SHOPPING_START__SHOPPING_FAILED  [ label="Notify\nShoppingFailed"            shape = sdl_input_from_right fillcolor=cyan ]
 ACCEPTED_WAITING_SHOPPING_START__CANCEL_RIDE      [ label="CancelRide"                        shape = sdl_input_from_right fillcolor=cyan ]
-ACCEPTED_WAITING_SHOPPING_START__SEND_CANCEL_RIDE [ label="CancelRideR"                       shape = sdl_output_to_right ]
+ACCEPTED_WAITING_SHOPPING_START__SEND_CANCEL_RIDE [ label="CancelRideR"                       shape = sdl_output_to_right color=gray fontcolor=gray ]
 ACCEPTED_WAITING_SHOPPING_START__CANCEL_ORDER     [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
-ACCEPTED_WAITING_SHOPPING_START__SEND_CANCEL_ORDER    [ label="CancelOrderR"                  shape = sdl_output_to_left ]
+ACCEPTED_WAITING_SHOPPING_START__SEND_CANCEL_ORDER    [ label="CancelOrderR"                  shape = sdl_output_to_left color=gray fontcolor=gray ]
 #ACCEPTED_WAITING_SHOPPING_START__CANCEL_ORDER_2   [ label="CancelOrder"                       shape = sdl_input_from_right fillcolor=cyan ]
 #ACCEPTED_WAITING_SHOPPING_START__SEND_CANCEL_ORDER_2  [ label="CancelOrderR"                  shape = sdl_output_to_right ]
 ACCEPTED_WAITING_SHOPPING_START__RESOL_1          [ label="resolution := RIDE_CANCELLED"      shape = sdl_task ]
 ACCEPTED_WAITING_SHOPPING_START__RESOL_2          [ label="resolution := CANCELLED_BY_USER"   shape = sdl_task ]
-ACCEPTED_WAITING_SHOPPING_START__RESOL_3          [ label="resolution := SHOP_CLOSED, OTHER"     shape = sdl_task ]
+ACCEPTED_WAITING_SHOPPING_START__RESOL_3          [ label="resolution := SHOPPING_FAILED\nreason := SHOP_CLOSED, OTHER"     shape = sdl_task ]
 ACCEPTED_WAITING_SHOPPING_START__END              [ label = ""                                shape = sdl_stop  style=solid ]
 
 
@@ -80,21 +81,21 @@ SHOPPING_WAITING_SHOPPING_END__SHOPPING_FAILED    [ label="Notify\nShoppingFaile
 SHOPPING_WAITING_SHOPPING_END__CANCEL_RIDE        [ label="CancelRide"                        shape = sdl_input_from_right fillcolor=cyan ]
 SHOPPING_WAITING_SHOPPING_END__CANCEL_ORDER       [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
 SHOPPING_WAITING_SHOPPING_END__RESOL_1            [ label="resolution := RIDE_CANCELLED"      shape = sdl_task ]
-SHOPPING_WAITING_SHOPPING_END__RESOL_3            [ label="resolution := MISSING_ITEM,\nSHOP_CLOSED, OTHER"     shape = sdl_task ]
+SHOPPING_WAITING_SHOPPING_END__RESOL_3            [ label="resolution := SHOPPING_FAILED\nreason := MISSING_ITEM,\nSHOP_CLOSED, OTHER"     shape = sdl_task ]
 SHOPPING_WAITING_SHOPPING_END__END                [ label = ""                                shape = sdl_stop  style=solid ]
 
 SHOPPING_ENDED_WAITING_DELIVERY__DELIVERED        [ label="Notify\nDelivered"                 shape = sdl_input_from_right fillcolor=cyan ]
 SHOPPING_ENDED_WAITING_DELIVERY__CANCEL_ORDER     [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
-SHOPPING_ENDED_WAITING_DELIVERY__SEND_DELIVERED   [ label="Notify\nDeliveredR"                shape = sdl_output_to_right ]
+SHOPPING_ENDED_WAITING_DELIVERY__SEND_DELIVERED   [ label="Notify\nDeliveredR"                shape = sdl_output_to_right  color=gray fontcolor=gray ]
 
 DELIVERED_WAITING_CONFIRMATION__CONFIRM           [ label="ConfirmDelivery"                   shape = sdl_input_from_left  fillcolor=green ]
-DELIVERED_WAITING_CONFIRMATION__COMPLAIN          [ label="Complain"                          shape = sdl_input_from_left  fillcolor=green ]
 
-DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATE_BUYER    [ label="RateBuyer"                        shape = sdl_input_from_left  fillcolor=green ]
-DELIVERY_CONFIRMED_WAITING_FEEDBACK__SEND_RATE_BUYER    [ label="RateBuyerR"                  shape = sdl_output_to_left ]
-DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATE_USER     [ label="RateUser"                         shape = sdl_input_from_right fillcolor=cyan ]
-DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATING_COMPLETE [ label="rating\ncomplete?"              shape = diamond peripheries=1]
-DELIVERY_CONFIRMED_WAITING_FEEDBACK__RESOL_1         [ label="resolution := DELIVERED"        shape = sdl_task ]
+CHECKED_WAITING_FEEDBACK__COMPLAIN          [ label="Complain"                          shape = sdl_input_from_left  fillcolor=green ]
+CHECKED_WAITING_FEEDBACK__RATE_BUYER    [ label="RateBuyer"                        shape = sdl_input_from_left  fillcolor=green ]
+CHECKED_WAITING_FEEDBACK__SEND_RATE_BUYER    [ label="RateBuyerR"                  shape = sdl_output_to_left   color=gray fontcolor=gray ]
+CHECKED_WAITING_FEEDBACK__RATE_USER     [ label="RateUser"                         shape = sdl_input_from_right fillcolor=cyan ]
+CHECKED_WAITING_FEEDBACK__RATING_COMPLETE [ label="rating\ncomplete?"              shape = diamond peripheries=1]
+CHECKED_WAITING_FEEDBACK__RESOL_1         [ label="resolution := DELIVERED"        shape = sdl_task ]
 
 ######################################################
 # transitions
@@ -120,13 +121,14 @@ SHOPPING_WAITING_SHOPPING_END -> SHOPPING_WAITING_SHOPPING_END__CANCEL_ORDER    
 SHOPPING_ENDED_WAITING_DELIVERY -> SHOPPING_ENDED_WAITING_DELIVERY__DELIVERED      -> SHOPPING_ENDED_WAITING_DELIVERY__SEND_DELIVERED -> DELIVERED_WAITING_CONFIRMATION
 SHOPPING_ENDED_WAITING_DELIVERY -> SHOPPING_ENDED_WAITING_DELIVERY__CANCEL_ORDER   -> CANCELLED_IN_SHOPPING_ENDED
 
-DELIVERED_WAITING_CONFIRMATION -> DELIVERED_WAITING_CONFIRMATION__CONFIRM  -> DELIVERY_CONFIRMED_WAITING_FEEDBACK
-DELIVERED_WAITING_CONFIRMATION -> DELIVERED_WAITING_CONFIRMATION__COMPLAIN -> DELIVERY_CONFIRMED_WAITING_FEEDBACK
+DELIVERED_WAITING_CONFIRMATION -> DELIVERED_WAITING_CONFIRMATION__CONFIRM  -> DELIVERY_CONFIRMED_WAITING_CHECK
 
-DELIVERY_CONFIRMED_WAITING_FEEDBACK -> DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATE_BUYER -> DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATING_COMPLETE
-DELIVERY_CONFIRMED_WAITING_FEEDBACK -> DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATE_USER  -> DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATING_COMPLETE
-                                                                                          DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATING_COMPLETE -> DELIVERY_CONFIRMED_WAITING_FEEDBACK__RESOL_1 [ label="Y" ]
-                                                                                                                                                  DELIVERY_CONFIRMED_WAITING_FEEDBACK__RESOL_1 -> DONE
-                                                                                          DELIVERY_CONFIRMED_WAITING_FEEDBACK__RATING_COMPLETE -> DELIVERY_CONFIRMED_WAITING_FEEDBACK          [ label="N" ]
+DELIVERY_CONFIRMED_WAITING_CHECK -> CHECKED_WAITING_FEEDBACK__COMPLAIN -> CHECKED_WAITING_FEEDBACK
+
+CHECKED_WAITING_FEEDBACK -> CHECKED_WAITING_FEEDBACK__RATE_BUYER -> CHECKED_WAITING_FEEDBACK__RATING_COMPLETE
+CHECKED_WAITING_FEEDBACK -> CHECKED_WAITING_FEEDBACK__RATE_USER  -> CHECKED_WAITING_FEEDBACK__RATING_COMPLETE
+                                                                                          CHECKED_WAITING_FEEDBACK__RATING_COMPLETE -> CHECKED_WAITING_FEEDBACK__RESOL_1 [ label="Y" ]
+                                                                                                                                                  CHECKED_WAITING_FEEDBACK__RESOL_1 -> DONE
+                                                                                          CHECKED_WAITING_FEEDBACK__RATING_COMPLETE -> CHECKED_WAITING_FEEDBACK          [ label="N" ]
 
 }
