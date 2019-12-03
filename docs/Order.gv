@@ -90,12 +90,13 @@ SHOPPING_ENDED_WAITING_DELIVERY__SEND_DELIVERED   [ label="Notify\nDeliveredR"  
 
 DELIVERED_WAITING_CONFIRMATION__CONFIRM           [ label="ConfirmDelivery"                   shape = sdl_input_from_left  fillcolor=green ]
 
-CHECKED_WAITING_FEEDBACK__COMPLAIN          [ label="Complain"                          shape = sdl_input_from_left  fillcolor=green ]
+DELIVERY_CONFIRMED_WAITING_CHECK__CHECK           [ label="NotifyChecked\n(completeness,\nextra item, overpricing)"   shape = sdl_input_from_left  fillcolor=green ]
+DELIVERY_CONFIRMED_WAITING_CHECK__RESOL_1         [ label="resolution := DELIVERED\nDELIVERED_WITH_ISSUES"        shape = sdl_task ]
+
 CHECKED_WAITING_FEEDBACK__RATE_BUYER    [ label="RateBuyer"                        shape = sdl_input_from_left  fillcolor=green ]
 CHECKED_WAITING_FEEDBACK__SEND_RATE_BUYER    [ label="RateBuyerR"                  shape = sdl_output_to_left   color=gray fontcolor=gray ]
 CHECKED_WAITING_FEEDBACK__RATE_USER     [ label="RateUser"                         shape = sdl_input_from_right fillcolor=cyan ]
 CHECKED_WAITING_FEEDBACK__RATING_COMPLETE [ label="rating\ncomplete?"              shape = diamond peripheries=1]
-CHECKED_WAITING_FEEDBACK__RESOL_1         [ label="resolution := DELIVERED"        shape = sdl_task ]
 
 ######################################################
 # transitions
@@ -123,12 +124,11 @@ SHOPPING_ENDED_WAITING_DELIVERY -> SHOPPING_ENDED_WAITING_DELIVERY__CANCEL_ORDER
 
 DELIVERED_WAITING_CONFIRMATION -> DELIVERED_WAITING_CONFIRMATION__CONFIRM  -> DELIVERY_CONFIRMED_WAITING_CHECK
 
-DELIVERY_CONFIRMED_WAITING_CHECK -> CHECKED_WAITING_FEEDBACK__COMPLAIN -> CHECKED_WAITING_FEEDBACK
+DELIVERY_CONFIRMED_WAITING_CHECK -> DELIVERY_CONFIRMED_WAITING_CHECK__CHECK -> DELIVERY_CONFIRMED_WAITING_CHECK__RESOL_1 -> CHECKED_WAITING_FEEDBACK
 
 CHECKED_WAITING_FEEDBACK -> CHECKED_WAITING_FEEDBACK__RATE_BUYER -> CHECKED_WAITING_FEEDBACK__RATING_COMPLETE
 CHECKED_WAITING_FEEDBACK -> CHECKED_WAITING_FEEDBACK__RATE_USER  -> CHECKED_WAITING_FEEDBACK__RATING_COMPLETE
-                                                                                          CHECKED_WAITING_FEEDBACK__RATING_COMPLETE -> CHECKED_WAITING_FEEDBACK__RESOL_1 [ label="Y" ]
-                                                                                                                                                  CHECKED_WAITING_FEEDBACK__RESOL_1 -> DONE
+                                                                                          CHECKED_WAITING_FEEDBACK__RATING_COMPLETE -> DONE [ label="Y" ]
                                                                                           CHECKED_WAITING_FEEDBACK__RATING_COMPLETE -> CHECKED_WAITING_FEEDBACK          [ label="N" ]
 
 }
