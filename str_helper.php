@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
+// $Revision: 12419 $ $Date:: 2019-12-04 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -59,7 +59,8 @@ function to_string_order_state_e( $val )
         order_state_e_SHOPPING_WAITING_SHOPPING_END         => 'SHOPPING_WAITING_SHOPPING_END',
         order_state_e_SHOPPING_ENDED_WAITING_DELIVERY       => 'SHOPPING_ENDED_WAITING_DELIVERY',
         order_state_e_DELIVERED_WAITING_CONFIRMATION        => 'DELIVERED_WAITING_CONFIRMATION',
-        order_state_e_DELIVERY_CONFIRMED_WAITING_FEEDBACK   => 'DELIVERY_CONFIRMED_WAITING_FEEDBACK',
+        order_state_e_DELIVERY_CONFIRMED_WAITING_CHECK   => 'DELIVERY_CONFIRMED_WAITING_CHECK',
+        order_state_e_CHECKED_WAITING_FEEDBACK          => 'CHECKED_WAITING_FEEDBACK',
         order_state_e_DONE                          => 'DONE',
         order_state_e_CANCELLED_IN_SHOPPING         => 'CANCELLED_IN_SHOPPING',
         order_state_e_CANCELLED_IN_SHOPPING_ENDED   => 'CANCELLED_IN_SHOPPING_ENDED',
@@ -78,9 +79,9 @@ function to_string_order_resolution_e( $val )
     $map = array(
         order_resolution_e_UNDEF                    => 'UNDEF',
         order_resolution_e_DELIVERED                => 'DELIVERED',
-        order_resolution_e_DECLINED_BY_SHOPPER      => 'DECLINED_BY_SHOPPER',
+        order_resolution_e_DECLINED_BY_BUYER      => 'DECLINED_BY_BUYER',
         order_resolution_e_RIDE_CANCELLED           => 'RIDE_CANCELLED',
-        order_resolution_e_CANCELLED_BY_SHOPPER     => 'CANCELLED_BY_SHOPPER',
+        order_resolution_e_SHOPPING_FAILED     => 'SHOPPING_FAILED',
         order_resolution_e_CANCELLED_BY_USER        => 'CANCELLED_BY_USER',
     );
 

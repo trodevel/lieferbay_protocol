@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
+// $Revision: 12415 $ $Date:: 2019-12-04 #$ $Author: serge $
 
 namespace lieferbay_protocol\web;
 
@@ -154,7 +154,7 @@ function get_header_RideWithBuyer()
 {
     return get_html_table_header_elems( array( 'RIDE ID' ) ) .
         \lieferbay_protocol\get_header_Ride() .
-        get_html_table_header_elems( array( 'SHOPPER NAME' ) );
+        get_html_table_header_elems( array( 'BUYER NAME' ) );
 }
 
 function to_html_RideWithBuyer_tabledata( & $obj )
@@ -183,7 +183,7 @@ function get_header_AcceptedOrderUser()
 {
     return get_html_table_header_elems( array( 'ORDER ID', 'DELIVERY TIME' ) ) .
     \lieferbay_protocol\get_header_Order() .
-    get_html_table_header_elems( array( 'SUM', 'SHOPPER NAME' ) );
+    get_html_table_header_elems( array( 'SUM', 'BUYER NAME' ) );
 }
 
 function to_html_AcceptedOrderUser_tabledata( & $obj )

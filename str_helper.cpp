@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12394 $ $Date:: 2019-11-18 #$ $Author: serge $
+// $Revision: 12419 $ $Date:: 2019-12-04 #$ $Author: serge $
 
 #include "str_helper.h"             // self
 
@@ -70,7 +70,8 @@ const std::string & StrHelper::to_string( const order_state_e s )
         { Type:: TUPLE_VAL_STR( SHOPPING_WAITING_SHOPPING_END ) },
         { Type:: TUPLE_VAL_STR( SHOPPING_ENDED_WAITING_DELIVERY ) },
         { Type:: TUPLE_VAL_STR( DELIVERED_WAITING_CONFIRMATION ) },
-        { Type:: TUPLE_VAL_STR( DELIVERY_CONFIRMED_WAITING_FEEDBACK ) },
+        { Type:: TUPLE_VAL_STR( DELIVERY_CONFIRMED_WAITING_CHECK ) },
+        { Type:: TUPLE_VAL_STR( CHECKED_WAITING_FEEDBACK ) },
         { Type:: TUPLE_VAL_STR( DONE ) },
         { Type:: TUPLE_VAL_STR( CANCELLED_IN_SHOPPING ) },
         { Type:: TUPLE_VAL_STR( CANCELLED_IN_SHOPPING_ENDED ) },
@@ -93,9 +94,9 @@ const std::string & StrHelper::to_string( const order_resolution_e s )
     {
         { Type:: TUPLE_VAL_STR( UNDEF ) },
         { Type:: TUPLE_VAL_STR( DELIVERED ) },
-        { Type:: TUPLE_VAL_STR( DECLINED_BY_SHOPPER ) },
+        { Type:: TUPLE_VAL_STR( DECLINED_BY_BUYER ) },
         { Type:: TUPLE_VAL_STR( RIDE_CANCELLED ) },
-        { Type:: TUPLE_VAL_STR( CANCELLED_BY_SHOPPER ) },
+        { Type:: TUPLE_VAL_STR( SHOPPING_FAILED ) },
         { Type:: TUPLE_VAL_STR( CANCELLED_BY_USER ) },
     };
 

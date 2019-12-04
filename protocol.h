@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12393 $ $Date:: 2019-11-18 #$ $Author: serge $
+// $Revision: 12419 $ $Date:: 2019-12-04 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
 #define LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
@@ -103,24 +103,35 @@ enum class order_resolution_e
 {
     UNDEF                       = 0,
     DELIVERED                   = 1,
-    DECLINED_BY_SHOPPER         = 2,
-    RIDE_CANCELLED              = 3,
-    CANCELLED_BY_SHOPPER        = 4,
-    CANCELLED_BY_USER           = 5,
+    DELIVERED_WITH_ISSUES       = 2,
+    DECLINED_BY_BUYER           = 3,
+    RIDE_CANCELLED              = 4,
+    SHOPPING_FAILED             = 5,
+    CANCELLED_BY_USER           = 6,
+};
+
+enum class failure_reason_e
+{
+    UNDEF                       = 0,
+    MISSING_ITEM                = 1,
+    SHOP_CLOSED                 = 2,
+    TIME_SHORTAGE               = 3,
+    OTHER                       = 4,
 };
 
 enum class order_state_e
 {
-    UNDEF                       = 0,
-    IDLE_WAITING_ACCEPTANCE     = 1,
+    UNDEF                           = 0,
+    IDLE_WAITING_ACCEPTANCE         = 1,
     ACCEPTED_WAITING_SHOPPING_START = 2,
     SHOPPING_WAITING_SHOPPING_END   = 3,
     SHOPPING_ENDED_WAITING_DELIVERY = 4,
     DELIVERED_WAITING_CONFIRMATION  = 5,
-    DELIVERY_CONFIRMED_WAITING_FEEDBACK  = 6,
-    DONE                            = 7,
-    CANCELLED_IN_SHOPPING           = 8,
-    CANCELLED_IN_SHOPPING_ENDED     = 9,
+    DELIVERY_CONFIRMED_WAITING_CHECK  = 6,
+    CHECKED_WAITING_FEEDBACK        = 7,
+    DONE                            = 8,
+    CANCELLED_IN_SHOPPING           = 9,
+    CANCELLED_IN_SHOPPING_ENDED     = 10,
 };
 
 enum class gender_e
