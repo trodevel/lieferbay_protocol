@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12419 $ $Date:: 2019-12-04 #$ $Author: serge $
+// $Revision: 12423 $ $Date:: 2019-12-04 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
 #define LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
@@ -167,6 +167,7 @@ struct OrderWithState
     Order               order;
     order_state_e       state;
     order_resolution_e  resolution;
+    failure_reason_e    reason;
 };
 
 /**************************************************
@@ -259,7 +260,10 @@ struct NotifyShoppingEndedResponse: public generic_protocol::BackwardMessage
 
 struct NotifyShoppingFailedRequest: public Request
 {
-    id_t            order_id;
+    id_t                order_id;
+    failure_reason_e    reason;
+    std::vector<id_t>   missing_items;
+    std::string         comment;
 };
 
 struct NotifyShoppingFailedResponse: public generic_protocol::BackwardMessage
@@ -278,18 +282,27 @@ struct NotifyDeliveredResponse: public generic_protocol::BackwardMessage
 struct ConfirmDeliveryRequest: public Request
 {
     id_t            order_id;
+    uint32_t        secret_code;
 };
 
 struct ConfirmDeliveryResponse: public generic_protocol::BackwardMessage
 {
 };
 
-struct ComplainRequest: public Request
+struct NotifyCheckedRequest: public Request
 {
-    id_t            order_id;
+    id_t                order_id;
+    bool                has_missing_items;
+    std::vector<id_t>   missing_items;
+    bool                has_broken_items;
+    std::vector<id_t>   broken_items;
+    bool                has_overpriced_items;
+    std::vector<id_t>   broken_items;
+    bool                has_extra_items;
+    std::string         extra_items;
 };
 
-struct ComplainResponse: public generic_protocol::BackwardMessage
+struct NotifyCheckedResponse: public generic_protocol::BackwardMessage
 {
 };
 
