@@ -78,7 +78,7 @@ ACCEPTED_WAITING_SHOPPING_START__CALL_UNLOCK_MONEY [ label="unlock money"       
 ACCEPTED_WAITING_SHOPPING_START__END              [ label = ""                                shape = sdl_stop  style=solid ]
 
 
-SHOPPING_WAITING_SHOPPING_END__SHOPPING_ENDED     [ label="Notify\nShoppingEnded"             shape = sdl_input_from_right fillcolor=cyan ]
+SHOPPING_WAITING_SHOPPING_END__SHOPPING_ENDED     [ label="Notify\nShoppingEnded\n(price in receipt)" shape = sdl_input_from_right fillcolor=cyan ]
 SHOPPING_WAITING_SHOPPING_END__SHOPPING_FAILED    [ label="Notify\nShoppingFailed"            shape = sdl_input_from_right fillcolor=cyan ]
 SHOPPING_WAITING_SHOPPING_END__CANCEL_RIDE        [ label="CancelRide"                        shape = sdl_input_from_right fillcolor=cyan ]
 SHOPPING_WAITING_SHOPPING_END__CANCEL_ORDER       [ label="CancelOrder"                       shape = sdl_input_from_left  fillcolor=green ]
