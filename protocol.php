@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12419 $ $Date:: 2019-12-04 #$ $Author: serge $
+// $Revision: 12433 $ $Date:: 2019-12-05 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -50,18 +50,24 @@ class ProductItem
 
 class ShoppingItem
 {
-    public          $product_item_id;  // id_t
-    public          $amount;           // int
+    public          $product_item_id;   // id_t
+    public          $amount;            // int
+    public          $is_mandatory;      // bool
+    public          $should_accept_expensive_alternative;   // bool
 
-    function __construct( $product_item_id, $amount )
+    function __construct( $product_item_id, $amount, $is_mandatory, $should_accept_expensive_alternative )
     {
         $this->product_item_id  = $product_item_id;
         $this->amount           = $amount;
+        $this->is_mandatory     = $is_mandatory;
+        $this->should_accept_expensive_alternative  = $should_accept_expensive_alternative;
     }
 
     public function to_generic_request()
     {
-        $res = $this->product_item_id . "," . $this->amount;
+        $res = $this->product_item_id . "," . $this->amount .
+            $this->is_mandatory . "," .
+            $this->should_accept_expensive_alternative;
 
         return $res;
     }
@@ -137,9 +143,9 @@ class Ride
     public      $position;      // GeoPosition
     public      $delivery_time; // basic_objects::LocalTime
     public      $max_weight;    // double
-    public      $delivery_price;    // double
-    public      $can_accept_cancellation;        // bool
-    public      $cancellation_price;      // double
+    public      $delivery_price;            // double
+    public      $can_accept_cancellation;   // bool
+    public      $cancellation_price;        // double
 
     function __construct( $position, $delivery_time, $max_weight, $delivery_price, $can_accept_cancellation, $cancellation_price )
     {
@@ -147,8 +153,8 @@ class Ride
         $this->delivery_time    = $delivery_time;
         $this->max_weight       = $max_weight;
         $this->delivery_price   = $delivery_price;
-        $this->can_accept_cancellation       = $can_accept_cancellation;
-        $this->cancellation_price     = $cancellation_price;
+        $this->can_accept_cancellation  = $can_accept_cancellation;
+        $this->cancellation_price       = $cancellation_price;
     }
 
     public function to_generic_request()
@@ -175,17 +181,24 @@ class RideWithState
     public  $is_open;           // bool
     public  $summary;           // Ride
     public  $pending_order_ids; // array<id_t>
+    public  $declined_order_ids;    //  array<id_t>
     public  $accepted_order_id; // id_t
     public  $resolution;        // ride_resolution_e
 };
 
 const order_resolution_e_UNDEF                  = 0;
 const order_resolution_e_DELIVERED              = 1;
-const order_resolution_e_DECLINED_BY_BUYER    = 2;
-const order_resolution_e_RIDE_CANCELLED         = 3;
-const order_resolution_e_SHOPPING_FAILED   = 4;
-const order_resolution_e_CANCELLED_BY_USER      = 5;
+const order_resolution_e_DELIVERED_WITH_ISSUES  = 2;
+const order_resolution_e_DECLINED_BY_BUYER      = 3;
+const order_resolution_e_RIDE_CANCELLED         = 4;
+const order_resolution_e_SHOPPING_FAILED        = 5;
+const order_resolution_e_CANCELLED_BY_USER      = 6;
 
+const failure_reason_e_UNDEF                    = 0;
+const failure_reason_e_MISSING_ITEM             = 1;
+const failure_reason_e_SHOP_CLOSED              = 2;
+const failure_reason_e_TIME_SHORTAGE            = 3;
+const failure_reason_e_OTHER                    = 4;
 
 const order_state_e_UNDEF                           = 0;
 const order_state_e_IDLE_WAITING_ACCEPTANCE         = 1;

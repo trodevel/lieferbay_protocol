@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12423 $ $Date:: 2019-12-04 #$ $Author: serge $
+// $Revision: 12434 $ $Date:: 2019-12-05 #$ $Author: serge $
 
 #ifndef LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
 #define LIB_LIEFERBAY_PROTOCOL__PROTOCOL_H
@@ -155,7 +155,7 @@ struct Order
 {
     id_t                ride_id;
     Address             delivery_address;
-    ShoppingList        shopping_list;
+    id_t                shopping_list_id;
     basic_objects::LocalTimeRange wish_delivery_time;
     bool                is_time_fixed;
     double              wish_delivery_price;
@@ -173,6 +173,35 @@ struct OrderWithState
 /**************************************************
  * REQUESTS
  **************************************************/
+
+struct AddShoppingListRequest: public Request
+{
+    ShoppingList    shopping_list;
+};
+
+struct AddShoppingListResponse: public generic_protocol::BackwardMessage
+{
+    id_t            shopping_list_id;
+};
+
+struct DeleteShoppingListRequest: public Request
+{
+    id_t            shopping_list_id;
+};
+
+struct DeleteShoppingListResponse: public generic_protocol::BackwardMessage
+{
+};
+
+struct GetShoppingListRequest: public Request
+{
+    id_t            shopping_list_id;
+};
+
+struct GetShoppingListResponse: public generic_protocol::BackwardMessage
+{
+    ShoppingList    shopping_list;
+};
 
 struct AddRideRequest: public Request
 {
@@ -252,6 +281,7 @@ struct NotifyShoppingStartedResponse: public generic_protocol::BackwardMessage
 struct NotifyShoppingEndedRequest: public Request
 {
     id_t            order_id;
+    double          price_in_receipt;
 };
 
 struct NotifyShoppingEndedResponse: public generic_protocol::BackwardMessage
