@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 12433 $ $Date:: 2019-12-05 #$ $Author: serge $
+// $Revision: 12437 $ $Date:: 2019-12-07 #$ $Author: serge $
 
 namespace lieferbay_protocol;
 
@@ -269,6 +269,36 @@ class OrderWithState
 /**************************************************
  * REQUESTS
  **************************************************/
+
+class AddShoppingListRequest extends Request
+{
+    ShoppingList    shopping_list;
+};
+
+class AddShoppingListResponse extends \generic_protocol\BackwardMessage
+{
+    id_t            shopping_list_id;
+};
+
+class DeleteShoppingListRequest extends Request
+{
+    id_t            shopping_list_id;
+};
+
+class DeleteShoppingListResponse extends \generic_protocol\BackwardMessage
+{
+};
+
+class GetShoppingListRequest extends Request
+{
+    id_t            shopping_list_id;
+};
+
+class GetShoppingListResponse extends \generic_protocol\BackwardMessage
+{
+    ShoppingList    shopping_list;
+};
+
 
 class AddRideRequest extends Request
 {
