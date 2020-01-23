@@ -1,0 +1,384 @@
+############################################################
+#
+# Lieferbay Protocol
+#
+# Copyright (C) 2020 Sergey Kolevatov
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+# $Revision: 12688 $ $Date:: 2020-01-23 #$ $Author: serge $
+
+############################################################
+
+protocol lieferbay
+
+use basic_objects
+
+base_msg Request: generic_protocol::Request
+
+base_msg_end
+
+#**************************************************
+#* OBJECTS
+#**************************************************
+
+obj ProductItem
+
+    string      name
+    string      unit
+    double      price
+    double      weight
+
+obj_end
+
+obj ShoppingItem
+
+    uint32     product_item_id
+    uint32     amount
+    bool       is_mandatory
+    bool       should_accept_expensive_alternative
+
+obj_end
+
+obj ShoppingList
+
+    array<o ShoppingItem>   items
+
+obj_end
+
+obj GeoPosition
+
+    uint32      plz
+    double      latitude
+    double      longitude
+
+obj_end
+
+obj Ride
+
+    o GeoPosition   position
+    o basic_objects::LocalTimeRange delivery_time
+    double          max_weight
+    double          delivery_price
+    bool            can_accept_cancellation
+    double          cancellation_price
+
+obj_end
+
+enum ride_resolution_e
+
+    UNDEF                       = 0
+    EXPIRED_OR_COMPLETED        = 1
+    CANCELLED                   = 2
+
+enum_end
+
+obj RideWithState
+
+    bool                is_open
+    o Ride              summary
+    array<uint32>       pending_order_ids
+    array<uint32>       declined_order_ids
+    uint32              accepted_order_id
+    e ride_resolution_e resolution
+
+obj_end
+
+enum order_resolution_e
+
+    UNDEF                       = 0
+    DELIVERED                   = 1
+    DELIVERED_WITH_ISSUES       = 2
+    DECLINED_BY_BUYER           = 3
+    RIDE_CANCELLED              = 4
+    SHOPPING_FAILED             = 5
+    CANCELLED_BY_USER           = 6
+
+enum_end
+
+enum failure_reason_e
+
+    UNDEF                       = 0
+    MISSING_ITEM                = 1
+    SHOP_CLOSED                 = 2
+    TIME_SHORTAGE               = 3
+    OTHER                       = 4
+
+enum_end
+
+enum order_state_e
+
+    UNDEF                           = 0
+    IDLE_WAITING_ACCEPTANCE         = 1
+    ACCEPTED_WAITING_SHOPPING_START = 2
+    SHOPPING_WAITING_SHOPPING_END   = 3
+    SHOPPING_ENDED_WAITING_DELIVERY = 4
+    DELIVERED_WAITING_CONFIRMATION  = 5
+    DELIVERY_CONFIRMED_WAITING_CHECK  = 6
+    CHECKED_WAITING_FEEDBACK        = 7
+    DONE                            = 8
+    CANCELLED_IN_SHOPPING           = 9
+    CANCELLED_IN_SHOPPING_ENDED     = 10
+
+enum_end
+
+enum gender_e
+
+    UNDEF   = 0
+    MALE    = 1
+    FEMALE  = 2
+
+enum_end
+
+obj Address
+
+    uint32    plz
+    string country
+    string city
+    string street
+    string house_number
+    string extra_address_line
+
+obj_end
+
+obj Order
+
+    uint32              ride_id
+    o Address           delivery_address
+    uint32              shopping_list_id
+    o basic_objects::LocalTimeRange wish_delivery_time
+    bool                is_time_fixed
+    double              wish_delivery_price
+
+obj_end
+
+obj OrderWithState
+
+    bool                is_open
+    o Order             order
+    e order_state_e     state
+    e order_resolution_e  resolution
+    e failure_reason_e  reason
+
+obj_end
+
+#**************************************************
+#* REQUESTS
+#**************************************************
+
+msg AddShoppingListRequest: Request
+
+    o ShoppingList    shopping_list
+
+msg_end
+
+msg AddShoppingListResponse: generic_protocol::BackwardMessage
+
+    uint32            shopping_list_id
+
+msg_end
+
+msg DeleteShoppingListRequest: Request
+
+    uint32            shopping_list_id
+
+msg_end
+
+msg DeleteShoppingListResponse: generic_protocol::BackwardMessage
+
+msg_end
+
+msg GetShoppingListRequest: Request
+
+    uint32            shopping_list_id
+
+msg_end
+
+msg GetShoppingListResponse: generic_protocol::BackwardMessage
+
+    o ShoppingList    shopping_list
+
+msg_end
+
+msg AddRideRequest: Request
+
+    o Ride            ride
+
+msg_end
+
+msg AddRideResponse: generic_protocol::BackwardMessage
+
+    uint32            ride_id
+
+msg_end
+
+msg CancelRideRequest: Request
+
+    uint32            ride_id
+
+msg_end
+
+msg CancelRideResponse: generic_protocol::BackwardMessage
+
+msg_end
+
+msg GetRideWithStateRequest: Request
+
+    uint32            ride_id
+
+msg_end
+
+msg GetRideWithStateResponse: generic_protocol::BackwardMessage
+
+    o RideWithState   ride
+
+msg_end
+
+msg AddOrderRequest: Request
+
+    o Order           order
+
+msg_end
+
+msg AddOrderResponse: generic_protocol::BackwardMessage
+
+    uint32            order_id
+
+msg_end
+
+msg CancelOrderRequest: Request
+
+    uint32            order_id
+
+msg_end
+
+msg CancelOrderResponse: generic_protocol::BackwardMessage
+
+msg_end
+
+msg AcceptOrderRequest: Request
+
+    uint32            order_id
+
+msg_end
+
+msg AcceptOrderResponse: generic_protocol::BackwardMessage
+
+msg_end
+
+msg DeclineOrderRequest: Request
+
+    uint32            order_id
+
+msg_end
+
+msg DeclineOrderResponse: generic_protocol::BackwardMessage
+
+msg_end
+
+msg NotifyShoppingStartedRequest: Request
+
+    uint32            order_id
+
+msg_end
+
+msg NotifyShoppingStartedResponse: generic_protocol::BackwardMessage
+
+msg_end
+
+msg NotifyShoppingEndedRequest: Request
+
+    uint32            order_id
+    double            price_in_receipt
+
+msg_end
+
+msg NotifyShoppingEndedResponse: generic_protocol::BackwardMessage
+
+msg_end
+
+msg NotifyShoppingFailedRequest: Request
+
+    uint32                order_id
+    e failure_reason_e    reason
+    array<uint32>         missing_items
+    string                comment
+
+msg_end
+
+msg NotifyShoppingFailedResponse: generic_protocol::BackwardMessage
+
+msg_end
+
+msg NotifyDeliveredRequest: Request
+
+    uint32            order_id
+
+msg_end
+
+msg NotifyDeliveredResponse: generic_protocol::BackwardMessage
+
+msg_end
+
+msg ConfirmDeliveryRequest: Request
+
+    uint32        order_id
+    uint32        secret_code
+
+msg_end
+
+msg ConfirmDeliveryResponse: generic_protocol::BackwardMessage
+
+msg_end
+
+msg NotifyCheckedRequest: Request
+
+    uint32              order_id
+    bool                has_missing_items
+    array<uint32>       missing_items
+    bool                has_broken_items
+    array<uint32>       broken_items
+    bool                has_overpriced_items
+    array<uint32>       broken_items
+    bool                has_extra_items
+    string              extra_items
+
+msg_end
+
+msg NotifyCheckedResponse: generic_protocol::BackwardMessage
+
+msg_end
+
+msg RateBuyerRequest: Request
+
+    uint32            order_id
+    uint32            stars
+
+msg_end
+
+msg RateBuyerResponse: generic_protocol::BackwardMessage
+
+msg_end
+
+msg RateUserRequest: Request
+
+    uint32            order_id
+    uint32            stars
+
+msg_end
+
+msg RateUserResponse: generic_protocol::BackwardMessage
+
+msg_end
