@@ -18,11 +18,13 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-# $Revision: 12688 $ $Date:: 2020-01-23 #$ $Author: serge $
+# $Revision: 12706 $ $Date:: 2020-02-05 #$ $Author: serge $
 
 ############################################################
 
 protocol lieferbay
+
+base generic_protocol
 
 use basic_objects
 
@@ -351,7 +353,7 @@ msg NotifyCheckedRequest: Request
     bool                has_broken_items
     array<uint32>       broken_items
     bool                has_overpriced_items
-    array<uint32>       broken_items
+    array<uint32>       overpriced_items
     bool                has_extra_items
     string              extra_items
 
