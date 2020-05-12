@@ -18,7 +18,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-# $Revision: 12706 $ $Date:: 2020-02-05 #$ $Author: serge $
+# $Revision: 13018 $ $Date:: 2020-05-12 #$ $Author: serge $
 
 ############################################################
 
@@ -36,19 +36,31 @@ base_msg_end
 #* OBJECTS
 #**************************************************
 
+obj Id
+    uint32     v : (0,)
+obj_end
+
+obj Price
+    double     v : [0,)
+obj_end
+
+obj Weight
+    double     v : [0,)
+obj_end
+
 obj ProductItem
 
     string      name
     string      unit
-    double      price
-    double      weight
+    o Price     price
+    o Weight    weight
 
 obj_end
 
 obj ShoppingItem
 
-    uint32     product_item_id
-    uint32     amount
+    o Id       product_item_id
+    uint32     amount : [1,)
     bool       is_mandatory
     bool       should_accept_expensive_alternative
 
@@ -72,10 +84,10 @@ obj Ride
 
     o GeoPosition   position
     o basic_objects::LocalTimeRange delivery_time
-    double          max_weight
-    double          delivery_price
+    o Weight        max_weight
+    o Price         delivery_price
     bool            can_accept_cancellation
-    double          cancellation_price
+    o Price         cancellation_price
 
 obj_end
 
@@ -91,9 +103,9 @@ obj RideWithState
 
     bool                is_open
     o Ride              summary
-    array<uint32>       pending_order_ids
-    array<uint32>       declined_order_ids
-    uint32              accepted_order_id
+    array<o Id>         pending_order_ids
+    array<o Id>         declined_order_ids
+    o Id                accepted_order_id
     e ride_resolution_e resolution
 
 obj_end
@@ -157,12 +169,12 @@ obj_end
 
 obj Order
 
-    uint32              ride_id
+    o Id                ride_id
     o Address           delivery_address
-    uint32              shopping_list_id
+    o Id                shopping_list_id
     o basic_objects::LocalTimeRange wish_delivery_time
     bool                is_time_fixed
-    double              wish_delivery_price
+    o Price             wish_delivery_price
 
 obj_end
 
@@ -188,13 +200,13 @@ msg_end
 
 msg AddShoppingListResponse: generic_protocol::BackwardMessage
 
-    uint32            shopping_list_id
+    o Id              shopping_list_id
 
 msg_end
 
 msg DeleteShoppingListRequest: Request
 
-    uint32            shopping_list_id
+    o Id              shopping_list_id
 
 msg_end
 
@@ -204,7 +216,7 @@ msg_end
 
 msg GetShoppingListRequest: Request
 
-    uint32            shopping_list_id
+    o Id              shopping_list_id
 
 msg_end
 
@@ -222,13 +234,13 @@ msg_end
 
 msg AddRideResponse: generic_protocol::BackwardMessage
 
-    uint32            ride_id
+    o Id              ride_id
 
 msg_end
 
 msg CancelRideRequest: Request
 
-    uint32            ride_id
+    o Id              ride_id
 
 msg_end
 
@@ -238,7 +250,7 @@ msg_end
 
 msg GetRideWithStateRequest: Request
 
-    uint32            ride_id
+    o Id              ride_id
 
 msg_end
 
@@ -256,13 +268,13 @@ msg_end
 
 msg AddOrderResponse: generic_protocol::BackwardMessage
 
-    uint32            order_id
+    o Id              order_id
 
 msg_end
 
 msg CancelOrderRequest: Request
 
-    uint32            order_id
+    o Id              order_id
 
 msg_end
 
@@ -272,7 +284,7 @@ msg_end
 
 msg AcceptOrderRequest: Request
 
-    uint32            order_id
+    o Id              order_id
 
 msg_end
 
@@ -282,7 +294,7 @@ msg_end
 
 msg DeclineOrderRequest: Request
 
-    uint32            order_id
+    o Id              order_id
 
 msg_end
 
@@ -292,7 +304,7 @@ msg_end
 
 msg NotifyShoppingStartedRequest: Request
 
-    uint32            order_id
+    o Id              order_id
 
 msg_end
 
@@ -302,8 +314,8 @@ msg_end
 
 msg NotifyShoppingEndedRequest: Request
 
-    uint32            order_id
-    double            price_in_receipt
+    o Id              order_id
+    o Price           price_in_receipt
 
 msg_end
 
@@ -313,9 +325,9 @@ msg_end
 
 msg NotifyShoppingFailedRequest: Request
 
-    uint32                order_id
+    o Id                  order_id
     e failure_reason_e    reason
-    array<uint32>         missing_items
+    array<o Id>           missing_items
     string                comment
 
 msg_end
@@ -326,7 +338,7 @@ msg_end
 
 msg NotifyDeliveredRequest: Request
 
-    uint32            order_id
+    o Id                  order_id
 
 msg_end
 
@@ -336,8 +348,8 @@ msg_end
 
 msg ConfirmDeliveryRequest: Request
 
-    uint32        order_id
-    uint32        secret_code
+    o Id          order_id
+    uint32        secret_code : [1,)
 
 msg_end
 
@@ -347,13 +359,13 @@ msg_end
 
 msg NotifyCheckedRequest: Request
 
-    uint32              order_id
+    o Id                order_id
     bool                has_missing_items
-    array<uint32>       missing_items
+    array<o Id>         missing_items
     bool                has_broken_items
-    array<uint32>       broken_items
+    array<o Id>         broken_items
     bool                has_overpriced_items
-    array<uint32>       overpriced_items
+    array<o Id>         overpriced_items
     bool                has_extra_items
     string              extra_items
 
@@ -365,8 +377,8 @@ msg_end
 
 msg RateBuyerRequest: Request
 
-    uint32            order_id
-    uint32            stars
+    o Id              order_id
+    uint32            stars : [0, 5]
 
 msg_end
 
@@ -376,8 +388,8 @@ msg_end
 
 msg RateUserRequest: Request
 
-    uint32            order_id
-    uint32            stars
+    o Id              order_id
+    uint32            stars : [0, 5]
 
 msg_end
 
