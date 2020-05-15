@@ -68,7 +68,7 @@ obj_end
 
 obj ShoppingList
 
-    array<o ShoppingItem>   items
+    array<o ShoppingItem>   items : [1,)
 
 obj_end
 
