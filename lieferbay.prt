@@ -18,7 +18,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
-# $Revision: 13018 $ $Date:: 2020-05-12 #$ $Author: serge $
+# $Revision: 13148 $ $Date:: 2020-05-27 #$ $Author: serge $
 
 ############################################################
 
@@ -27,6 +27,9 @@ protocol lieferbay
 base generic_protocol
 
 use basic_objects
+
+extern generic_protocol::Request string
+extern generic_protocol::BackwardMessage
 
 base_msg Request: generic_protocol::Request
 
